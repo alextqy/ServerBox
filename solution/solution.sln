@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SystemUpdate", "SystemUpdat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entity", "Entity\Entity.csproj", "{04F970B2-80E6-48C8-B6CF-1FEBA250818F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Log", "Log\Log.csproj", "{D6960276-B2E2-40FD-BA86-DB9612AE9AAD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{04F970B2-80E6-48C8-B6CF-1FEBA250818F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04F970B2-80E6-48C8-B6CF-1FEBA250818F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04F970B2-80E6-48C8-B6CF-1FEBA250818F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6960276-B2E2-40FD-BA86-DB9612AE9AAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6960276-B2E2-40FD-BA86-DB9612AE9AAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6960276-B2E2-40FD-BA86-DB9612AE9AAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6960276-B2E2-40FD-BA86-DB9612AE9AAD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

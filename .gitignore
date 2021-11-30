@@ -86,6 +86,17 @@ solution/ServerBox/Temp
 solution/ServerBox/.vscode
 solution/ServerBox/Upload
 
+solution/Log/.vscode
+solution/Log/.vs
+solution/Log/.config
+solution/Log/v16
+solution/Log/obj
+solution/Log/bin
+solution/Log/Log
+solution/Log/obj
+solution/Log/output
+solution/Log/app
+
 solution/MasterReset/.vscode
 solution/MasterReset/.vs
 solution/MasterReset/.config
