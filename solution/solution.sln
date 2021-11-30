@@ -7,13 +7,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MasterReset", "MasterReset\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerBox", "ServerBox\ServerBox.csproj", "{09DE4251-DDDE-4414-9F38-FE357C7BAB7A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logic", "Logic\Logic.csproj", "{F21954CC-037E-44E7-94CA-810B3906E1F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic", "Logic\Logic.csproj", "{F21954CC-037E-44E7-94CA-810B3906E1F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{38E6A163-2857-4BEF-8ACB-0CAD08BA0C5E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csproj", "{38E6A163-2857-4BEF-8ACB-0CAD08BA0C5E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Init", "Init\Init.csproj", "{0F2E032E-AC91-47B7-999F-7C5840FCE6E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Init", "Init\Init.csproj", "{0F2E032E-AC91-47B7-999F-7C5840FCE6E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigHelper", "ConfigHelper\ConfigHelper.csproj", "{FD5F6EE2-4F67-4820-84C9-5AF15714E4E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConfigHelper", "ConfigHelper\ConfigHelper.csproj", "{FD5F6EE2-4F67-4820-84C9-5AF15714E4E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service", "Service\Service.csproj", "{BE020706-1260-4675-BED7-A9490C155C1D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{FD5F6EE2-4F67-4820-84C9-5AF15714E4E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD5F6EE2-4F67-4820-84C9-5AF15714E4E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD5F6EE2-4F67-4820-84C9-5AF15714E4E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE020706-1260-4675-BED7-A9490C155C1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE020706-1260-4675-BED7-A9490C155C1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE020706-1260-4675-BED7-A9490C155C1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE020706-1260-4675-BED7-A9490C155C1D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

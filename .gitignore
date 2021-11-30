@@ -4,6 +4,17 @@ desktop.ini
 
 solution/.vs
 
+solution/Service/.vscode
+solution/Service/.vs
+solution/Service/.config
+solution/Service/v16
+solution/Service/obj
+solution/Service/bin
+solution/Service/Log
+solution/Service/obj
+solution/Service/output
+solution/Service/app
+
 solution/Models/.vscode
 solution/Models/.vs
 solution/Models/.config
