@@ -85,3 +85,14 @@ solution/MasterReset/Log
 solution/MasterReset/obj
 solution/MasterReset/output
 solution/MasterReset/app
+
+solution/SystemUpdate/.vscode
+solution/SystemUpdate/.vs
+solution/SystemUpdate/.config
+solution/SystemUpdate/v16
+solution/SystemUpdate/obj
+solution/SystemUpdate/bin
+solution/SystemUpdate/Log
+solution/SystemUpdate/obj
+solution/SystemUpdate/output
+solution/SystemUpdate/app

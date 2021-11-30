@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Init", "Init\Init.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConfigHelper", "ConfigHelper\ConfigHelper.csproj", "{FD5F6EE2-4F67-4820-84C9-5AF15714E4E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service", "Service\Service.csproj", "{BE020706-1260-4675-BED7-A9490C155C1D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service", "Service\Service.csproj", "{BE020706-1260-4675-BED7-A9490C155C1D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SystemUpdate", "SystemUpdate\SystemUpdate.csproj", "{371F63B4-9607-4782-A710-60325CF07DD3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{BE020706-1260-4675-BED7-A9490C155C1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE020706-1260-4675-BED7-A9490C155C1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE020706-1260-4675-BED7-A9490C155C1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{371F63B4-9607-4782-A710-60325CF07DD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{371F63B4-9607-4782-A710-60325CF07DD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{371F63B4-9607-4782-A710-60325CF07DD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{371F63B4-9607-4782-A710-60325CF07DD3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
