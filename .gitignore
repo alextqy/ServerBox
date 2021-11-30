@@ -15,6 +15,17 @@ solution/Service/obj
 solution/Service/output
 solution/Service/app
 
+solution/Entity/.vscode
+solution/Entity/.vs
+solution/Entity/.config
+solution/Entity/v16
+solution/Entity/obj
+solution/Entity/bin
+solution/Entity/Log
+solution/Entity/obj
+solution/Entity/output
+solution/Entity/app
+
 solution/Models/.vscode
 solution/Models/.vs
 solution/Models/.config
