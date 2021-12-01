@@ -59,6 +59,17 @@ solution/ConfigHelper/obj
 solution/ConfigHelper/output
 solution/ConfigHelper/app
 
+solution/UDP/.vscode
+solution/UDP/.vs
+solution/UDP/.config
+solution/UDP/v16
+solution/UDP/obj
+solution/UDP/bin
+solution/UDP/Log
+solution/UDP/obj
+solution/UDP/output
+solution/UDP/app
+
 solution/Init/.vscode
 solution/Init/.vs
 solution/Init/.config
