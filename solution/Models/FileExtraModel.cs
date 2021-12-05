@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Models
 {
-    internal class FileExtraModel : Base
+    public class FileExtraModel : Base
     {
         public FileExtraModel(DbContentCore DbContent) : base(DbContent) { }
 

@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace Models
 {
-    public class MessageEntity : Base
+    public class MessageModel : Base
     {
-        public MessageEntity(DbContentCore DbContent) : base(DbContent) { }
+        public MessageModel(DbContentCore DbContent) : base(DbContent) { }
 
         public void Insert(Entity.MessageEntity Data)
         {

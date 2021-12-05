@@ -17,9 +17,9 @@ namespace Service
     /// </summary>
     public class Tools
     {
-        private static string AES_key1 = "Fuck.Peace&Love!"; // 秘钥1
-        private static string AES_key2 = "Fuck.Love&Peace!"; // 秘钥2
-        private static string AES_key3 = "<HAKUNA.MATATA!>"; // 秘钥3
+        private string AES_key1 = "Fuck.Peace&Love!"; // 秘钥1
+        private string AES_key2 = "Fuck.Love&Peace!"; // 秘钥2
+        private string AES_key3 = "<HAKUNA.MATATA!>"; // 秘钥3
 
         /// <summary>
         /// 按指定符号把字符串转为数组
@@ -27,7 +27,7 @@ namespace Service
         /// <param name="KeyStr"></param>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public static string[] Explode(string KeyStr, string Param)
+        public string[] Explode(string KeyStr, string Param)
         {
             return Param.Split(KeyStr);
         }
@@ -38,7 +38,7 @@ namespace Service
         /// <param name="KeyStr"></param>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public static string Implode(string KeyStr, string[] Param)
+        public string Implode(string KeyStr, string[] Param)
         {
             return string.Join(KeyStr, Param);
         }
@@ -48,7 +48,7 @@ namespace Service
         /// </summary>
         /// <param name="DirPath"></param>
         /// <returns></returns>
-        public static bool DirIsExists(string DirPath)
+        public bool DirIsExists(string DirPath)
         {
             return Directory.Exists(DirPath);
         }
@@ -57,7 +57,7 @@ namespace Service
         /// 获取当前程序根目录
         /// </summary>
         /// <returns></returns>
-        public static string RootPath()
+        public string RootPath()
         {
             return (Directory.GetCurrentDirectory() + "/").Replace("\\", "/");
         }
@@ -66,7 +66,7 @@ namespace Service
         /// 用户根目录
         /// </summary>
         /// <returns></returns>
-        public static string BaseDir()
+        public string BaseDir()
         {
             return (Directory.GetCurrentDirectory() + "/Matrix/").Replace("\\", "/");
         }
@@ -77,7 +77,7 @@ namespace Service
         /// <param name="Path"></param>
         /// <param name="DirName"></param>
         /// <returns></returns>
-        public static bool MKDir(string Path, string DirName)
+        public bool MKDir(string Path, string DirName)
         {
             Path = Path.Replace(@"\\", "/");
             string DirPath = Path + "/" + DirName;
@@ -105,7 +105,7 @@ namespace Service
         /// </summary>
         /// <param name="DirPath"></param>
         /// <returns></returns>
-        public static bool CreateDir(string DirPath)
+        public bool CreateDir(string DirPath)
         {
             DirPath = DirPath.Replace(@"\\", "/");
             if (!Directory.Exists(DirPath))
@@ -132,7 +132,7 @@ namespace Service
         /// </summary>
         /// <param name="DirPath"></param>
         /// <returns></returns>
-        public static string[] SelectAllFile(string DirPath)
+        public string[] SelectAllFile(string DirPath)
         {
             DirPath = DirPath.Replace(@"\", "/");
             if (Directory.Exists(DirPath))
@@ -155,7 +155,7 @@ namespace Service
         /// </summary>
         /// <param name="DirPath"></param>
         /// <returns></returns>
-        public static string[] SelectAllDir(string DirPath)
+        public string[] SelectAllDir(string DirPath)
         {
             DirPath = DirPath.Replace(@"\", "/");
             if (Directory.Exists(DirPath))
@@ -179,7 +179,7 @@ namespace Service
         /// <param name="DirPath"></param>
         /// <param name="NewName"></param>
         /// <returns></returns>
-        public static bool RenameDir(string DirPath, string NewName)
+        public bool RenameDir(string DirPath, string NewName)
         {
             string DirPathRe = DirPath.Replace("\\", "/");
             string[] DirPathSub = Explode("/", DirPathRe);
@@ -211,7 +211,7 @@ namespace Service
         /// <param name="DestPath"></param>
         /// <param name="overwriteexisting"></param>
         /// <returns></returns>
-        public static bool CopyDir(string SourcePath, string DestPath, bool overwriteexisting = false)
+        public bool CopyDir(string SourcePath, string DestPath, bool overwriteexisting = false)
         {
             SourcePath = SourcePath.Replace(@"\\", "/");
             DestPath = DestPath.Replace(@"\\", "/");
@@ -272,7 +272,7 @@ namespace Service
         /// <param name="SourceDirectory"></param>
         /// <param name="TargetDirectory"></param>
         /// <returns></returns>
-        public static bool DirectoryCopy(string SourceDirectory, string TargetDirectory)
+        public bool DirectoryCopy(string SourceDirectory, string TargetDirectory)
         {
             try
             {
@@ -315,7 +315,7 @@ namespace Service
         /// <param name="DirPath"></param>
         /// <param name="DelAll"></param>
         /// <returns></returns>
-        public static bool DelDir(string DirPath, bool DelAll = false)
+        public bool DelDir(string DirPath, bool DelAll = false)
         {
             if (Directory.Exists(DirPath))
             {
@@ -341,7 +341,7 @@ namespace Service
         /// </summary>
         /// <param name="FilePath"></param>
         /// <returns></returns>
-        public static bool FileIsExists(string FilePath)
+        public bool FileIsExists(string FilePath)
         {
             return File.Exists(FilePath);
         }
@@ -352,7 +352,7 @@ namespace Service
         /// <param name="Path"></param>
         /// <param name="FileName"></param>
         /// <returns></returns>
-        public static bool MKFile(string Path, string FileName)
+        public bool MKFile(string Path, string FileName)
         {
             Path = Path.Replace(@"\\", "/");
             string FilePath = Path + "/" + FileName;
@@ -381,7 +381,7 @@ namespace Service
         /// </summary>
         /// <param name="FilePath"></param>
         /// <returns></returns>
-        public static bool CreateFile(string FilePath)
+        public bool CreateFile(string FilePath)
         {
             FilePath = FilePath.Replace(@"\\", "/");
             if (!File.Exists(FilePath))
@@ -409,7 +409,7 @@ namespace Service
         /// </summary>
         /// <param name="FilePath"></param>
         /// <returns></returns>
-        public static string FileType(string FilePath)
+        public string FileType(string FilePath)
         {
             if (File.Exists(FilePath))
             {
@@ -426,7 +426,7 @@ namespace Service
         /// </summary>
         /// <param name="FilePath"></param>
         /// <returns></returns>
-        public static FileInfo FileInfo(string FilePath)
+        public FileInfo FileInfo(string FilePath)
         {
             if (File.Exists(FilePath))
             {
@@ -445,7 +445,7 @@ namespace Service
         /// <param name="Path"></param>
         /// <param name="NewName"></param>
         /// <returns></returns>
-        public static bool RenameFile(string OldFilePath, string NewName)
+        public bool RenameFile(string OldFilePath, string NewName)
         {
             if (!File.Exists(OldFilePath))
             {
@@ -480,7 +480,7 @@ namespace Service
         /// <param name="FilePath"></param>
         /// <param name="DestPath"></param>
         /// <returns></returns>
-        public static bool CopyFile(string FilePath, string DestPath)
+        public bool CopyFile(string FilePath, string DestPath)
         {
             if (!File.Exists(FilePath))
             {
@@ -522,7 +522,7 @@ namespace Service
         /// </summary>
         /// <param name="FilePath"></param>
         /// <returns></returns>
-        public static string ReadFile(string FilePath)
+        public string ReadFile(string FilePath)
         {
             if (File.Exists(FilePath))
             {
@@ -542,7 +542,7 @@ namespace Service
         /// </summary>
         /// <param name="FilePath"></param>
         /// <returns></returns>
-        public static bool DelFile(string FilePath)
+        public bool DelFile(string FilePath)
         {
             if (File.Exists(FilePath))
             {
@@ -567,7 +567,7 @@ namespace Service
         /// 获取毫秒时间戳
         /// </summary>
         /// <returns></returns>
-        public static long TimeMS()
+        public long TimeMS()
         {
             TimeSpan TS = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0);
             return Convert.ToInt64(TS.TotalMilliseconds);
@@ -577,7 +577,7 @@ namespace Service
         /// 64位时间戳
         /// </summary>
         /// <returns></returns>
-        public static long Time()
+        public long Time()
         {
             TimeSpan TS = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0);
             return Convert.ToInt64(TS.TotalSeconds);
@@ -587,7 +587,7 @@ namespace Service
         /// 32位时间戳
         /// </summary>
         /// <returns></returns>
-        public static int Time32()
+        public int Time32()
         {
             TimeSpan TS = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0);
             return Convert.ToInt32(TS.TotalSeconds);
@@ -598,7 +598,7 @@ namespace Service
         /// </summary>
         /// <param name="TS"></param>
         /// <returns></returns>
-        public static string TimeToStr(long TS)
+        public string TimeToStr(long TS)
         {
             long unixTimeStamp = TS * 1000;
             DateTime start = new(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
@@ -611,7 +611,7 @@ namespace Service
         /// </summary>
         /// <param name="TS"></param>
         /// <returns></returns>
-        public static long StrToTime(string TS)
+        public long StrToTime(string TS)
         {
             DateTime DTime = DateTime.Parse(TS.Trim());
             DateTimeOffset DTO = new(DTime);
@@ -624,7 +624,7 @@ namespace Service
         /// <param name="ActTime"></param>
         /// <param name="Year"></param>
         /// <returns></returns>
-        public static long GetTimeStampYear(string ActTime, int Year)
+        public long GetTimeStampYear(string ActTime, int Year)
         {
             var Time = Convert.ToDateTime(ActTime).AddYears(Year);
             //var Time = DateTime.Now.AddYears(Year);
@@ -637,7 +637,7 @@ namespace Service
         /// <param name="ActTime"></param>
         /// <param name="Day"></param>
         /// <returns></returns>
-        public static long GetTimeStampDay(string ActTime, int Day)
+        public long GetTimeStampDay(string ActTime, int Day)
         {
             var Time = Convert.ToDateTime(ActTime).AddDays(Day);
             //var Time = DateTime.Now.AddYears(Year);
@@ -673,7 +673,7 @@ namespace Service
         /// </summary>
         /// <param name="EncypStr"></param>
         /// <returns></returns>
-        public static string MD5(string EncypStr)
+        public string MD5(string EncypStr)
         {
             System.Security.Cryptography.MD5CryptoServiceProvider md5 = new();
             byte[] emailBytes = Encoding.UTF8.GetBytes(EncypStr.ToLower());
@@ -687,9 +687,9 @@ namespace Service
             return EncypStr;
         }
 
-        public static string UserToken(string UserID, string UserName)
+        public string UserToken(string UserID, string UserName)
         {
-            return Tools.MD5(UserID + Tools.TimeToStr(Tools.Time()).Remove(0, 5) + UserName);
+            return this.MD5(UserID + this.TimeToStr(this.Time()).Remove(0, 5) + UserName);
         }
 
         /// <summary>
@@ -698,9 +698,9 @@ namespace Service
         /// <param name="PWD"></param>
         /// <param name="Secret"></param>
         /// <returns></returns>
-        public static string UserPWD(string PWD, string Secret)
+        public string UserPWD(string PWD, string Secret)
         {
-            return Tools.MD5(Tools.MD5(PWD + Secret) + Secret);
+            return this.MD5(this.MD5(PWD + Secret) + Secret);
         }
 
         /// <summary>
@@ -708,7 +708,7 @@ namespace Service
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
-        public static int Random(int n = 4)
+        public int Random(int n = 4)
         {
             byte[] buffer = Guid.NewGuid().ToByteArray();
             int iSeed = BitConverter.ToInt32(buffer, 0);
@@ -822,7 +822,7 @@ namespace Service
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public static bool RegCheck(string Param)
+        public bool RegCheck(string Param)
         {
             Regex Reg = new(@"^[A-Za-z0-9]+$");
             return Reg.IsMatch(Param);
@@ -833,7 +833,7 @@ namespace Service
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public static bool RegCheckPro(string Param)
+        public bool RegCheckPro(string Param)
         {
             Regex Reg = new(@"^[\u4E00-\u9FA5A-Za-z0-9_.]+$");
             return Reg.IsMatch(Param);
@@ -844,7 +844,7 @@ namespace Service
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public static bool RegNum(string Param)
+        public bool RegNum(string Param)
         {
             Regex Reg = new(@"^[0-9]*$");
             return Reg.IsMatch(Param);
@@ -855,7 +855,7 @@ namespace Service
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public static bool RegChinese(string Param)
+        public bool RegChinese(string Param)
         {
             Regex Reg = new(@"^[\u4e00-\u9fa5]{0,}$");
             return Reg.IsMatch(Param);
@@ -866,7 +866,7 @@ namespace Service
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public static int StrToInt32(string Param)
+        public int StrToInt32(string Param)
         {
             return Convert.ToInt32(Param);
         }
@@ -876,7 +876,7 @@ namespace Service
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public static long StrToInt(string Param)
+        public long StrToInt(string Param)
         {
             return Convert.ToInt64(Param);
         }
@@ -886,7 +886,7 @@ namespace Service
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public static string ByteToBase64(byte[] Param)
+        public string ByteToBase64(byte[] Param)
         {
             //if (Param == null || Param == "")
             //{
@@ -901,7 +901,7 @@ namespace Service
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public static string Base64ToByte(byte[] Param)
+        public string Base64ToByte(byte[] Param)
         {
             //if (Param == null || Param == "")
             //{
@@ -915,7 +915,7 @@ namespace Service
         /// 获取所有进程
         /// </summary>
         /// <returns></returns>
-        public static Process[] GetProcesses()
+        public Process[] GetProcesses()
         {
             Process[] Pro = Process.GetProcesses();
             return Pro;
@@ -925,7 +925,7 @@ namespace Service
         /// 获取当前进程
         /// </summary>
         /// <returns></returns>
-        public static Process GetCurrentProcess()
+        public Process GetCurrentProcess()
         {
             Process Pro = Process.GetCurrentProcess();
             return Pro;
@@ -935,7 +935,7 @@ namespace Service
         /// 获取系统类型
         /// </summary>
         /// <returns></returns>
-        public static string OSType()
+        public string OSType()
         {
             var OSTypeData = "Unknown";
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
@@ -958,7 +958,7 @@ namespace Service
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public static string SysShell(string Param1, string Param2)
+        public string SysShell(string Param1, string Param2)
         {
             var Result = "";
             if (Param1 != "" && Param2 != "")
@@ -988,7 +988,7 @@ namespace Service
         /// <param name="EncryptStr"></param>
         /// <param name="AESType"></param>
         /// <returns></returns>
-        public static string AES_Encrypt(string EncryptStr, int AESType = 1)
+        public string AES_Encrypt(string EncryptStr, int AESType = 1)
         {
             var AES_key = "";
             if (AESType == 1)
@@ -1035,7 +1035,7 @@ namespace Service
         /// <param name="DecryptStr"></param>
         /// <param name="AESType"></param>
         /// <returns></returns>
-        public static string AES_Decrypt(string DecryptStr, int AESType = 1)
+        public string AES_Decrypt(string DecryptStr, int AESType = 1)
         {
             var AES_key = "";
             if (AESType == 1)

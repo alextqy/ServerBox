@@ -1,6 +1,52 @@
-﻿namespace Entity
+﻿using System;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
+
+namespace Entity
 {
     public class PublicEntity : Base { }
+
+    public class CommonResultEntity : Base
+    {
+        [JsonPropertyName("ID")]
+        public int ID { get; set; }
+
+        [JsonPropertyName("Data")]
+        public dynamic Data { get; set; }
+
+        public CommonResultEntity()
+        {
+            this.ID = 0;
+            this.Data = null;
+        }
+    }
+
+    public class CommonListResultEntity : Base
+    {
+        [JsonPropertyName("DataList")]
+        public dynamic Data { get; set; }
+
+        public CommonListResultEntity()
+        {
+            this.Data = null;
+        }
+    }
+
+    public class DownloadFileEntity : Base
+    {
+        [JsonPropertyName("FileEntityName")]
+        public string FileEntityName { get; set; }
+        [JsonPropertyName("Data")]
+        public string Data { get; set; }
+
+        public DownloadFileEntity()
+        {
+            this.State = false;
+            this.Memo = "";
+            this.FileEntityName = "";
+            this.Data = "";
+        }
+    }
 
     public class DepartmentExtraSelectParamEntity : Base
     {
@@ -193,32 +239,6 @@
             this.ExtraDesc = "";
             this.ExtraType = 0;
             this.ExtraValue = "";
-        }
-    }
-
-    public class UserModifyParamEntity
-    {
-        public string Name { get; set; }
-        public string Password { get; set; }
-        public string Avatar { get; set; }
-        public string Wallpaper { get; set; }
-        public int Admin { get; set; }
-        public int Status { get; set; }
-        public string Permission { get; set; }
-        public int Master { get; set; }
-        public int DepartmentID { get; set; }
-
-        public UserModifyParamEntity()
-        {
-            this.Name = "";
-            this.Password = "";
-            this.Avatar = "";
-            this.Wallpaper = "";
-            this.Admin = 0;
-            this.Status = 0;
-            this.Permission = "";
-            this.Master = 0;
-            this.DepartmentID = 0;
         }
     }
 

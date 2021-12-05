@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Models
 {
-    public class UserExtraEntity : Base
+    public class UserExtraModel : Base
     {
-        public UserExtraEntity(DbContentCore DbContent) : base(DbContent) { }
+        public UserExtraModel(DbContentCore DbContent) : base(DbContent) { }
 
         public void Insert(Entity.UserExtraEntity Data)
         {

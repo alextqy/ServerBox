@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace Models
 {
-    public class OuterTokenEntity : Base
+    public class OuterTokenModel : Base
     {
-        public OuterTokenEntity(DbContentCore DbContent) : base(DbContent) { }
+        public OuterTokenModel(DbContentCore DbContent) : base(DbContent) { }
 
         public void Insert(Entity.OuterTokenEntity Data)
         {

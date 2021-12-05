@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace Models
 {
-    public class TagEntity : Base
+    public class TagModel : Base
     {
-        public TagEntity(DbContentCore DbContent) : base(DbContent) { }
+        public TagModel(DbContentCore DbContent) : base(DbContent) { }
 
         public void Insert(Entity.TagEntity Data)
         {

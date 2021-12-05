@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace Models
 {
-    public class TokenEntity : Base
+    public class TokenModel : Base
     {
-        public TokenEntity(DbContentCore DbContent) : base(DbContent) { }
+        public TokenModel(DbContentCore DbContent) : base(DbContent) { }
 
         public void Insert(Entity.TokenEntity TokenData)
         {

@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace Models
 {
-    public class UserEntity : Base
+    public class UserModel : Base
     {
-        public UserEntity(DbContentCore DbContent) : base(DbContent) { }
+        public UserModel(DbContentCore DbContent) : base(DbContent) { }
 
         public void Insert(Entity.UserEntity Data)
         {

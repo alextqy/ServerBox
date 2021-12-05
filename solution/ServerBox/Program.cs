@@ -10,11 +10,9 @@ namespace ServerBox
             CreateHostBuilder(args).Build().Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseUrls(ConfigHelper.AppSettingsHelper.GetSettings("URL")).UseStartup<Startup>();
-                });
+        public static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults(webBuilder =>
+        {
+            webBuilder.UseUrls(ConfigHelper.AppSettingsHelper.GetSettings("URL")).UseStartup<Startup>();
+        });
     }
 }
