@@ -476,20 +476,15 @@ namespace ServerBox.Controllers
         /// 同步后置操作
         /// </summary>
         /// <param name="Token"></param>
-        /// <param name="Type"></param>
+        /// <param name="TokenType"></param>
         /// <param name="FileID"></param>
         /// <returns></returns>
-        [ProducesResponseType(typeof(Models.Worker.CommonResultModel), 200)]
         [HttpPost]
         [Route("/File/Entity/Sync/Defer")]
-        public IActionResult FileEntitySyncDefer(string Token, int Type, int FileID)
+        public IActionResult FileEntitySyncDefer(string Token, int TokenType, int FileID)
         {
-            if (Token != null)
-            {
-                this.Param.Token = Token.Trim();
-            }
-            this.Param.Type = Type;
-            var Result = this.FileLogic.FileEntitySyncDefer(this.Param, FileID);
+            Token = Token == null ? "" : Token.Trim();
+            var Result = this.FileLogic.FileEntitySyncDefer(Token, TokenType, FileID);
             return Json(Result);
         }
 
@@ -497,20 +492,15 @@ namespace ServerBox.Controllers
         /// 同步失败后的操作
         /// </summary>
         /// <param name="Token"></param>
-        /// <param name="Type"></param>
+        /// <param name="TokenType"></param>
         /// <param name="FileID"></param>
         /// <returns></returns>
-        [ProducesResponseType(typeof(Models.Worker.CommonResultModel), 200)]
         [HttpPost]
         [Route("/File/Entity/Sync/Fail")]
-        public IActionResult FileEntitySyncFail(string Token, int Type, int FileID)
+        public IActionResult FileEntitySyncFail(string Token, int TokenType, int FileID)
         {
-            if (Token != null)
-            {
-                this.Param.Token = Token.Trim();
-            }
-            this.Param.Type = Type;
-            var Result = this.FileLogic.FileEntitySyncFail(this.Param, FileID);
+            Token = Token == null ? "" : Token.Trim();
+            var Result = this.FileLogic.FileEntitySyncFail(Token, TokenType, FileID);
             return Json(Result);
         }
 
@@ -518,21 +508,16 @@ namespace ServerBox.Controllers
         /// 发送文件给用户
         /// </summary>
         /// <param name="Token"></param>
-        /// <param name="Type"></param>
+        /// <param name="TokenType"></param>
         /// <param name="FileID"></param>
         /// <param name="UserID"></param>
         /// <returns></returns>
-        [ProducesResponseType(typeof(Models.Worker.CommonResultModel), 200)]
         [HttpPost]
         [Route("/Send/File/To/User")]
-        public IActionResult SendFileToUser(string Token, int Type, int FileID, int UserID)
+        public IActionResult SendFileToUser(string Token, int TokenType, int FileID, int UserID)
         {
-            if (Token != null)
-            {
-                this.Param.Token = Token.Trim();
-            }
-            this.Param.Type = Type;
-            var Result = this.FileLogic.SendFileToUser(this.Param, FileID, UserID);
+            Token = Token == null ? "" : Token.Trim();
+            var Result = this.FileLogic.SendFileToUser(Token, TokenType, FileID, UserID);
             return Json(Result);
         }
 

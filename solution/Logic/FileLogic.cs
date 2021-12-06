@@ -2041,7 +2041,7 @@ namespace Logic
             return this.Result;
         }
 
-        public Models.Worker.CommonResultModel FileEntitySyncDefer(Models.Worker.CommonParamModel Param, int FileID)
+        public Entity.CommonResultEntity FileEntitySyncDefer(string Token, int TokenType, int FileID)
         {
             if (Param.Token == "")
             {
@@ -2103,7 +2103,7 @@ namespace Logic
             return this.Result;
         }
 
-        public Models.Worker.CommonResultModel FileEntitySyncFail(Models.Worker.CommonParamModel Param, int FileID)
+        public Entity.CommonResultEntity FileEntitySyncFail(string Token, int TokenType, int FileID)
         {
             if (Param.Token == "")
             {
@@ -2149,7 +2149,7 @@ namespace Logic
             return this.Result;
         }
 
-        public Models.Worker.CommonResultModel SendFileToUser(Models.Worker.CommonParamModel Param, int FileID, int UID)
+        public Entity.CommonResultEntity SendFileToUser(string Token, int TokenType, int FileID, int UID)
         {
             if (Param.Token == "")
             {

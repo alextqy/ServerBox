@@ -123,7 +123,7 @@ namespace ServerBox.Controllers
         /// 添加部门扩展信息
         /// </summary>
         /// <param name="Token"></param>
-        /// <param name="Token"></param>
+        /// <param name="TokenType"></param>
         /// <param name="DepartmentID"></param>
         /// <param name="ExtraDesc"></param>
         /// <param name="ExtraType"></param>
@@ -163,7 +163,7 @@ namespace ServerBox.Controllers
         /// 部门扩展信息列表
         /// </summary>
         /// <param name="Token"></param>
-        /// <param name="Type"></param>
+        /// <param name="TokenType"></param>
         /// <param name="DepartmentID"></param>
         /// <param name="ExtraType"></param>
         /// <returns></returns>
