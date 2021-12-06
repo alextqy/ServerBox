@@ -9,9 +9,9 @@ namespace Logic
     {
         public UserLogic(string IP, DbContentCore DbContent) : base(IP, DbContent) { }
 
-        public Models.LoginResultModel SignIn(Models.LoginParamModel Data)
+        public Entity.LoginResultEntity SignIn(string Account, string Password, int TokenType)
         {
-            Models.LoginResultModel Result = new();
+            Entity.LoginResultEntity Result = new();
             if (Data.Account == "")
             {
                 Result.Memo = "Account error";
@@ -27,7 +27,7 @@ namespace Logic
             else
             {
                 Data.Account = Data.Account.ToLower();
-                var Info = this.UserSQLModel.FindByAccount(Data.Account);
+                var Info = this.UserModel.FindByAccount(Data.Account);
                 if (Info.ID == 0)
                 {
                     Result.Memo = "Data not found";
@@ -42,7 +42,7 @@ namespace Logic
                     if (Info.Password == PWD)
                     {
                         var Token = Tools.UserToken(Info.ID.ToString(), Info.Name);
-                        Models.Entity.TokenModel TokenData = new();
+                        Entity.TokenModel TokenData = new();
                         TokenData.UserID = Info.ID;
                         TokenData.Token = Token;
                         TokenData.TokenType = Data.Type;
@@ -52,9 +52,9 @@ namespace Logic
                             var TA = this.BeginTransaction();
                             try
                             {
-                                this.TokenSQLModel.DeleteByUserID(Info.ID, Data.Type);
-                                this.TokenSQLModel.Insert(TokenData);
-                                this.LogSQLModel.WTL(this.IP, "User " + Info.Name + " sign in, (Account:" + Data.Account + ", ID:" + Info.ID + ")", 1);
+                                this.TokenModel.DeleteByUserID(Info.ID, Data.Type);
+                                this.TokenModel.Insert(TokenData);
+                                this.LogModel.WTL(this.IP, "User " + Info.Name + " sign in, (Account:" + Data.Account + ", ID:" + Info.ID + ")", 1);
                                 this.DbContent.SaveChanges();
 
                                 if (!Tools.DirIsExists(Tools.BaseDir() + Data.Account))
@@ -102,9 +102,8 @@ namespace Logic
             return Result;
         }
 
-        public Models.Worker.LoginResultModel SignOut(Models.Worker.LogoutParamModel Data)
+        public Entity.CommonResultEntity SignOut(string Token, int TokenType)
         {
-            Models.Worker.LoginResultModel Result = new();
             if (Data.Token == "")
             {
                 Result.Memo = "Token lost";
@@ -124,7 +123,7 @@ namespace Logic
                 {
                     try
                     {
-                        this.TokenSQLModel.DeleteByUserID(UserID, Data.Type);
+                        this.TokenModel.DeleteByUserID(UserID, Data.Type);
                         this.DbContent.SaveChanges();
                         Result.Memo = "Success";
                         Result.State = true;
@@ -140,7 +139,7 @@ namespace Logic
             return Result;
         }
 
-        public Models.Worker.CommonResultModel TokenRunningState(Models.Worker.CommonParamModel Param)
+        public Entity.CommonResultEntity TokenRunningState(string Token, int TokenType)
         {
             if (Param.Token == "")
             {
@@ -152,7 +151,7 @@ namespace Logic
             }
             else
             {
-                var Data = this.TokenSQLModel.FindByToken(Param.Token, Param.Type);
+                var Data = this.TokenModel.FindByToken(Param.Token, Param.Type);
                 if (Data.ID == 0)
                 {
                     this.Result.Memo = "Fail";
@@ -166,9 +165,9 @@ namespace Logic
             return this.Result;
         }
 
-        public Models.Worker.UserInfoModel CheckSelf(Models.Worker.CommonParamModel Param)
+        public Entity.UserEntity CheckSelf(string Token, int TokenType)
         {
-            Models.Worker.UserInfoModel Result = new();
+            Entity.UserEntity Result = new();
             if (Param.Token == "")
             {
                 Result.Memo = "Token error";
@@ -186,12 +185,11 @@ namespace Logic
                 }
                 else
                 {
-                    var UserData = this.UserSQLModel.Find(UserID);
-                    if (UserData.ID > 0)
+                    Result = this.UserModel.Find(UserID);
+                    if (Result.ID > 0)
                     {
                         Result.State = true;
                         Result.Memo = "Success";
-                        Result.Data = UserData;
                     }
                     else
                     {
@@ -202,7 +200,7 @@ namespace Logic
             return Result;
         }
 
-        public Models.Worker.CommonResultModel UserModify(Models.Worker.CommonParamModel Param, int ID, Models.Worker.UserModifyParamModel Data)
+        public Entity.CommonResultEntity UserModify(string Token, int TokenType, int ID, Entity.UserEntity Data)
         {
             if (Param.Token == "")
             {
@@ -229,10 +227,10 @@ namespace Logic
                 }
                 else
                 {
-                    Models.Entity.UserModel UserData = new();
+                    Entity.UserModel UserData = new();
                     if (ID == 0 || ID == UserID)
                     {
-                        UserData = this.UserSQLModel.Find(UserID);
+                        UserData = this.UserModel.Find(UserID);
                     }
                     else
                     {
@@ -241,7 +239,7 @@ namespace Logic
                             this.Result.Memo = "Permission denied";
                             return this.Result;
                         }
-                        UserData = this.UserSQLModel.Find(ID);
+                        UserData = this.UserModel.Find(ID);
                         UserID = UserData.ID;
                     }
 
@@ -265,7 +263,7 @@ namespace Logic
                             {
                                 if (Data.DepartmentID > 0)
                                 {
-                                    var DepartmentInfo = this.DepartmentSQLModel.Find(Data.DepartmentID);
+                                    var DepartmentInfo = this.DepartmentModel.Find(Data.DepartmentID);
                                     if (DepartmentInfo.ID == 0)
                                     {
                                         this.Result.Memo = "Department not found";
@@ -275,7 +273,7 @@ namespace Logic
 
                                 try
                                 {
-                                    this.UserSQLModel.Modify(UserID, Data);
+                                    this.UserModel.Modify(UserID, Data);
                                     this.DbContent.SaveChanges();
                                     this.Result.State = true;
                                     this.Result.Memo = "Success";
@@ -302,7 +300,7 @@ namespace Logic
             return this.Result;
         }
 
-        public Models.Worker.CommonResultModel IsMaster(Models.Worker.CommonParamModel Param)
+        public Entity.CommonResultEntity IsMaster(string Token, int TokenType)
         {
             if (Param.Token == "")
             {
@@ -336,7 +334,7 @@ namespace Logic
             return this.Result;
         }
 
-        public Models.Worker.CommonResultModel CreateUser(Models.Worker.CommonParamModel Param, Models.Worker.CreateUserParamModel Data)
+        public Entity.CommonResultEntity CreateUser(string Token, int TokenType, Entity.UserEntity Data)
         {
             if (Param.Token == "")
             {
@@ -431,7 +429,7 @@ namespace Logic
                         {
                             if (Data.DepartmentID > 0)
                             {
-                                var DepartmentInfo = this.DepartmentSQLModel.Find(Data.DepartmentID);
+                                var DepartmentInfo = this.DepartmentModel.Find(Data.DepartmentID);
                                 if (DepartmentInfo.ID == 0)
                                 {
                                     this.Result.Memo = "Department not found";
@@ -439,14 +437,14 @@ namespace Logic
                                 }
                             }
 
-                            var UserInfo = this.UserSQLModel.FindByAccount(Data.Account);
+                            var UserInfo = this.UserModel.FindByAccount(Data.Account);
                             if (UserInfo.ID > 0)
                             {
                                 this.Result.Memo = "Account is exists";
                             }
                             else
                             {
-                                var CountUser = this.UserSQLModel.CountUser(); // 验证用户数
+                                var CountUser = this.UserModel.CountUser(); // 验证用户数
 
                                 var Profile = Tools.RootPath() + "Profile.json"; // 查看配置文件
                                 var ProfileObject = JsonTools.CheckProfile(Tools.RootPath() + "Profile.json");
@@ -502,7 +500,7 @@ namespace Logic
                                     }
                                 }
 
-                                Models.Entity.UserModel UserData = new();
+                                Entity.UserModel UserData = new();
                                 var Secret = Tools.Random(5);
                                 UserData.Account = Data.Account;
                                 UserData.Name = Data.Name;
@@ -519,16 +517,16 @@ namespace Logic
                                 var TA = this.BeginTransaction();
                                 try
                                 {
-                                    this.UserSQLModel.Insert(UserData);
-                                    this.LogSQLModel.WTL(this.IP, "User（ID " + UserID + ")" + " Create User (Account " + Data.Account + ")", 2);
+                                    this.UserModel.Insert(UserData);
+                                    this.LogModel.WTL(this.IP, "User（ID " + UserID + ")" + " Create User (Account " + Data.Account + ")", 2);
                                     this.DbContent.SaveChanges();
 
-                                    Models.Entity.DirModel DirData = new();
+                                    Entity.DirModel DirData = new();
                                     DirData.DirName = UserData.Name;
                                     DirData.ParentID = 0;
                                     DirData.UserID = UserData.ID;
                                     DirData.Createtime = Tools.Time32();
-                                    this.DirSQLModel.Insert(DirData);
+                                    this.DirModel.Insert(DirData);
                                     this.DbContent.SaveChanges();
 
                                     if (Tools.MKDir(Tools.BaseDir(), Data.Account))
@@ -558,7 +556,7 @@ namespace Logic
             return this.Result;
         }
 
-        public Models.Worker.CommonResultModel RemoveUser(Models.Worker.CommonParamModel Param, int ID)
+        public Entity.CommonResultEntity RemoveUser(string Token, int TokenType, int ID)
         {
             if (Param.Token == "")
             {
@@ -581,7 +579,7 @@ namespace Logic
                 }
                 else
                 {
-                    var UserInfo = this.UserSQLModel.Find(ID);
+                    var UserInfo = this.UserModel.Find(ID);
                     if (UserInfo.ID == 0)
                     {
                         this.Result.Memo = "Data not Found";
@@ -601,15 +599,15 @@ namespace Logic
                             var TA = this.BeginTransaction();
                             try
                             {
-                                this.UserSQLModel.Delete(UserInfo.ID);
-                                this.UserExtraSQLModel.DeleteByUserID(UserInfo.ID);
-                                this.FileSQLModel.DeleteByUserID(UserInfo.ID);
-                                this.DirSQLModel.DeleteByUserID(UserInfo.ID);
-                                this.MessageSQLModel.DeleteByReceiverID(UserInfo.ID);
-                                this.MessageSQLModel.DeleteBySenderID(UserInfo.ID);
-                                this.OuterTokenSQLModel.DeleteByUserID(UserInfo.ID);
-                                this.TokenSQLModel.DeleteByUserID(UserInfo.ID, 0);
-                                this.DepartmentFileSQLModel.DeleteByUserID(UserInfo.ID);
+                                this.UserModel.Delete(UserInfo.ID);
+                                this.UserExtraModel.DeleteByUserID(UserInfo.ID);
+                                this.FileModel.DeleteByUserID(UserInfo.ID);
+                                this.DirModel.DeleteByUserID(UserInfo.ID);
+                                this.MessageModel.DeleteByReceiverID(UserInfo.ID);
+                                this.MessageModel.DeleteBySenderID(UserInfo.ID);
+                                this.OuterTokenModel.DeleteByUserID(UserInfo.ID);
+                                this.TokenModel.DeleteByUserID(UserInfo.ID, 0);
+                                this.DepartmentFileModel.DeleteByUserID(UserInfo.ID);
                                 this.DbContent.SaveChanges();
                                 if (Tools.DelDir(Tools.BaseDir() + UserInfo.Account, true))
                                 {
@@ -636,9 +634,9 @@ namespace Logic
             return this.Result;
         }
 
-        public Models.Worker.UserInfoModel UserInfo(Models.Worker.CommonParamModel Param, int UID)
+        public Entity.UserEntity UserInfo(string Token, int TokenType, int UID)
         {
-            Models.Worker.UserInfoModel Result = new();
+            Entity.UserEntity Result = new();
             if (Param.Token == "")
             {
                 Result.Memo = "Token error";
@@ -664,7 +662,7 @@ namespace Logic
                 //}
                 else
                 {
-                    var UserInfo = this.UserSQLModel.Find(UID);
+                    var UserInfo = this.UserModel.Find(UID);
                     UserInfo.Password = "";
                     UserInfo.Secret = 0;
 
@@ -677,9 +675,8 @@ namespace Logic
             return Result;
         }
 
-        public Models.Worker.UserSelectResultModel SelectUser(Models.Worker.CommonParamModel Param, Models.Worker.UserSelectParamModel Data)
+        public Entity.CommonListResultEntity SelectUser(string Token, int TokenType, Entity.UserSelectParamEntity Data)
         {
-            Models.Worker.UserSelectResultModel Result = new();
             if (Param.Token == "")
             {
                 Result.Memo = "Token error";
@@ -697,7 +694,7 @@ namespace Logic
                 }
                 else
                 {
-                    Result.Data = this.UserSQLModel.Select(Data);
+                    Result.Data = this.UserModel.Select(Data);
                     for (var i = 0; i < Result.Data.Count; i++)
                     {
                         Result.Data[i].Password = "";
@@ -708,10 +705,10 @@ namespace Logic
                     Result.Memo = "Success";
                 }
             }
-            return Result;
+            return this.ResultList;
         }
 
-        public Models.Worker.CommonResultModel CreateUserExtra(Models.Worker.CommonParamModel Param, Models.Worker.CreateUserExtraParamModel Data)
+        public Entity.CommonResultEntity CreateUserExtra(string Token, int TokenType, Entity.UserExtraEntity Data)
         {
             if (Param.Token == "")
             {
@@ -767,7 +764,7 @@ namespace Logic
                         }
                     }
 
-                    Models.Entity.UserExtraModel ExtraData = new();
+                    Entity.UserExtraModel ExtraData = new();
                     ExtraData.UserID = Data.UserID;
                     ExtraData.ExtraDesc = Data.ExtraDesc;
                     ExtraData.ExtraType = Data.ExtraType;
@@ -776,7 +773,7 @@ namespace Logic
                     {
                         this.Result.State = true;
                         this.Result.Memo = "Success";
-                        this.UserExtraSQLModel.Insert(ExtraData);
+                        this.UserExtraModel.Insert(ExtraData);
                         this.DbContent.SaveChanges();
                     }
                     catch (Exception e)
@@ -789,7 +786,7 @@ namespace Logic
             return this.Result;
         }
 
-        public Models.Worker.CommonResultModel DeleteUserExtra(Models.Worker.CommonParamModel Param, int ID)
+        public Entity.CommonResultEntity DeleteUserExtra(string Token, int TokenType, int ID)
         {
             if (Param.Token == "")
             {
@@ -812,7 +809,7 @@ namespace Logic
                 }
                 else
                 {
-                    var Info = this.UserExtraSQLModel.Find(ID);
+                    var Info = this.UserExtraModel.Find(ID);
                     if (Info.ID == 0)
                     {
                         this.Result.Memo = "Data not found";
@@ -825,7 +822,7 @@ namespace Logic
                     {
                         try
                         {
-                            this.UserExtraSQLModel.Delete(ID);
+                            this.UserExtraModel.Delete(ID);
                             this.DbContent.SaveChanges();
                             this.Result.State = true;
                             this.Result.Memo = "Success";
@@ -841,39 +838,38 @@ namespace Logic
             return this.Result;
         }
 
-        public Models.Worker.UserExtraSelectResultModel SelectUserExtra(Models.Worker.CommonParamModel Param, Models.Worker.UserExtraSelectParamModel Data)
+        public Entity.CommonListResultEntity SelectUserExtra(string Token, int TokenType, Entity.UserExtraSelectParamEntity Data)
         {
-            Models.Worker.UserExtraSelectResultModel Result = new();
             if (Param.Token == "")
             {
-                Result.Memo = "Token error";
+                ResultList.Memo = "Token error";
             }
             else if (Param.Type <= 0)
             {
-                Result.Memo = "Type error";
+                ResultList.Memo = "Type error";
             }
             else if (Data.UserID < 0)
             {
-                Result.Memo = "UserID error";
+                ResultList.Memo = "UserID error";
             }
             else if (Data.ExtraDesc != "" && !Tools.RegCheckPro(Data.ExtraDesc))
             {
-                Result.Memo = "ExtraDesc format error";
+                ResultList.Memo = "ExtraDesc format error";
             }
             else if (Data.ExtraType < 0)
             {
-                Result.Memo = "ExtraType error";
+                ResultList.Memo = "ExtraType error";
             }
             else if (Data.ExtraValue != "" && !Tools.RegCheckPro(Data.ExtraValue))
             {
-                Result.Memo = "ExtraValue format error";
+                ResultList.Memo = "ExtraValue format error";
             }
             else
             {
                 var UserID = this.TokenVerify(Param.Token, Param.Type);
                 if (UserID == 0)
                 {
-                    Result.Memo = "Token lost";
+                    ResultList.Memo = "Token lost";
                 }
                 else
                 {
@@ -881,107 +877,33 @@ namespace Logic
                     {
                         if (!this.MasterVerify(UserID))
                         {
-                            Result.Memo = "Permission denied";
-                            return Result;
+                            ResultList.Memo = "Permission denied";
+                            return ResultList;
                         }
                     }
                     if (Data.UserID == 0)
                     {
                         Data.UserID = UserID;
                     }
-                    Result.State = true;
-                    Result.Memo = "Success";
-                    Result.Data = this.UserExtraSQLModel.Select(Data);
+                    ResultList.State = true;
+                    ResultList.Memo = "Success";
+                    ResultList.Data = this.UserExtraModel.Select(Data);
                 }
             }
-            return Result;
+            return ResultList;
         }
 
-        public Models.Worker.LogSelectResultModel SelectLog(Models.Worker.CommonParamModel Param, Models.Worker.LogSelectParamModel Data)
+        public Entity.CommonListResultEntity SelectLog(string Token, int TokenType, int YMD)
         {
-            Models.Worker.LogSelectResultModel Result = new();
-            if (Param.Token == "")
-            {
-                Result.Memo = "Token error";
-            }
-            else if (Param.Type <= 0)
-            {
-                Result.Memo = "Type error";
-            }
-            else
-            {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
-                if (UserID == 0)
-                {
-                    Result.Memo = "Token lost";
-                }
-                else if (!this.MasterVerify(UserID))
-                {
-                    Result.Memo = "Permission denied";
-                }
-                else
-                {
-                    Result.State = true;
-                    Result.Memo = "Success";
-                    Result.Data = this.LogSQLModel.Select(Data);
-                }
-            }
-            return Result;
+            return ResultList;
         }
 
-        public Models.Worker.CommonResultModel DeleteLog(Models.Worker.CommonParamModel Param, int ID)
+        public Entity.CommonResultEntity DeleteLog(string Token, int TokenType, int YMD)
         {
-            if (Param.Token == "")
-            {
-                this.Result.Memo = "Token error";
-            }
-            else if (Param.Type <= 0)
-            {
-                this.Result.Memo = "Type error";
-            }
-            else if (ID <= 0)
-            {
-                this.Result.Memo = "ID error";
-            }
-            else
-            {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
-                if (UserID == 0)
-                {
-                    this.Result.Memo = "Token lost";
-                }
-                else if (!this.MasterVerify(UserID))
-                {
-                    this.Result.Memo = "Permission denied";
-                }
-                else
-                {
-                    var Info = this.LogSQLModel.Find(ID);
-                    if (Info.ID == 0)
-                    {
-                        this.Result.Memo = "Data not found";
-                    }
-                    else
-                    {
-                        try
-                        {
-                            this.LogSQLModel.Delete(ID);
-                            this.DbContent.SaveChanges();
-                            this.Result.State = true;
-                            this.Result.Memo = "Success";
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine(e.Message);
-                            this.Result.Memo = "Delete error";
-                        }
-                    }
-                }
-            }
             return this.Result;
         }
 
-        public Models.Worker.CommonResultModel CreateOuterToken(Models.Worker.CommonParamModel Param, Models.Worker.CreateOuterTokenParamModel Data)
+        public Entity.CommonResultEntity CreateOuterToken(string Token, int TokenType, Entity.OuterTokenEntity Data)
         {
             if (Param.Token == "")
             {
@@ -1014,7 +936,7 @@ namespace Logic
                 {
                     try
                     {
-                        this.OuterTokenSQLModel.DeleteByUserID(UserID);
+                        this.OuterTokenModel.DeleteByUserID(UserID);
                         this.DbContent.SaveChanges();
                     }
                     catch (Exception e)
@@ -1023,14 +945,14 @@ namespace Logic
                         this.Result.Memo = "Create error";
                     }
 
-                    Models.Entity.OuterTokenModel OuterTokenData = new();
+                    Entity.OuterTokenModel OuterTokenData = new();
                     OuterTokenData.UserID = UserID;
                     OuterTokenData.OuterToken = Data.OuterToken;
                     OuterTokenData.TokenDesc = Data.TokenDesc;
                     OuterTokenData.Createtime = Tools.Time32();
                     try
                     {
-                        this.OuterTokenSQLModel.Insert(OuterTokenData);
+                        this.OuterTokenModel.Insert(OuterTokenData);
                         this.DbContent.SaveChanges();
                         this.Result.State = true;
                         this.Result.Memo = "Success";
@@ -1045,17 +967,15 @@ namespace Logic
             return this.Result;
         }
 
-        public Models.Entity.OuterTokenModel CheckOuterToken(string OuterToken)
+        public Entity.OuterTokenEntity CheckOuterToken(string OuterToken)
         {
-            Models.Entity.OuterTokenModel Result = new();
-            if (OuterToken != "")
-            {
-                Result = this.OuterTokenSQLModel.FindByToken(OuterToken);
-            }
+            Entity.OuterTokenEntity Result = new();
+            Result = this.OuterTokenModel.FindByToken(OuterToken);
+            Result.State = true;
             return Result;
         }
 
-        public Models.Worker.CommonResultModel CreateMessage(Models.Worker.CommonParamModel Param, Models.Worker.CreateMessageParamModel Data)
+        public Entity.CommonResultEntity CreateMessage(string Token, int TokenType, Entity.MessageEntity Data)
         {
             if (Param.Token == "")
             {
@@ -1098,14 +1018,14 @@ namespace Logic
                 }
                 else
                 {
-                    var ReceiverInfo = this.UserSQLModel.Find(Data.ReceiverID);
+                    var ReceiverInfo = this.UserModel.Find(Data.ReceiverID);
                     if (ReceiverInfo.ID == 0)
                     {
                         this.Result.Memo = "Receiver not found";
                     }
                     else
                     {
-                        Models.Entity.MessageModel MessageData = new();
+                        Entity.MessageModel MessageData = new();
                         MessageData.Title = Data.Title;
                         MessageData.Content = Data.Content;
                         MessageData.SenderID = UserID;
@@ -1116,7 +1036,7 @@ namespace Logic
                         {
                             this.Result.State = true;
                             this.Result.Memo = "Success";
-                            this.MessageSQLModel.Insert(MessageData);
+                            this.MessageModel.Insert(MessageData);
                             this.DbContent.SaveChanges();
                         }
                         catch (Exception e)
@@ -1130,9 +1050,9 @@ namespace Logic
             return this.Result;
         }
 
-        public Models.Worker.MessageDataModel CheckMessage(Models.Worker.CommonParamModel Param, int ID)
+        public Entity.MessageEntity CheckMessage(string Token, int TokenType, int ID)
         {
-            Models.Worker.MessageDataModel Result = new();
+            Entity.MessageEntity Result = new();
             if (Param.Token == "")
             {
                 Result.Memo = "Token error";
@@ -1154,7 +1074,7 @@ namespace Logic
                 }
                 else
                 {
-                    var Info = this.MessageSQLModel.Find(ID);
+                    var Info = this.MessageModel.Find(ID);
                     if (Info.ID == 0)
                     {
                         Result.Memo = "Data not found";
@@ -1170,7 +1090,7 @@ namespace Logic
                             try
                             {
                                 Info.State = 2;
-                                this.MessageSQLModel.Modify(Info.ID, Info);
+                                this.MessageModel.Modify(Info.ID, Info);
                                 this.DbContent.SaveChanges();
                             }
                             catch (Exception e)
@@ -1190,20 +1110,19 @@ namespace Logic
             return Result;
         }
 
-        public Models.Worker.MessageSelectResultModel MessageList(Models.Worker.CommonParamModel Param, int MessageType, int UID, int State, int StartPoint = 0, int EndPoint = 0)
+        public Entity.CommonListResultEntity MessageList(string Token, int TokenType, int MessageType, int UID, int State, int StartPoint = 0, int EndPoint = 0)
         {
-            Models.Worker.MessageSelectResultModel Result = new();
             if (Param.Token == "")
             {
-                Result.Memo = "Token error";
+                ResultList.Memo = "Token error";
             }
             else if (Param.Type <= 0)
             {
-                Result.Memo = "Type error";
+                ResultList.Memo = "Type error";
             }
             else if (MessageType <= 0)
             {
-                Result.Memo = "MessageType error";
+                ResultList.Memo = "MessageType error";
             }
             //else if (UID <= 0)
             //{
@@ -1211,18 +1130,18 @@ namespace Logic
             //}
             else if (State < 0)
             {
-                Result.Memo = "State error";
+                ResultList.Memo = "State error";
             }
             else
             {
                 var UserID = this.TokenVerify(Param.Token, Param.Type);
                 if (UserID == 0)
                 {
-                    Result.Memo = "Token lost";
+                    ResultList.Memo = "Token lost";
                 }
                 else
                 {
-                    Models.Worker.MessageSelectParamModel Data = new();
+                    Entity.MessageSelectParamModel Data = new();
 
                     if (MessageType == 1)
                     {
@@ -1247,16 +1166,16 @@ namespace Logic
                         Data.EndPoint = EndPoint;
                     }
 
-                    Result.State = true;
-                    Result.Memo = "Success";
-                    var DataList = this.MessageSQLModel.Select(Data);
-                    Result.Data = DataList;
+                    ResultList.State = true;
+                    ResultList.Memo = "Success";
+                    var DataList = this.MessageModel.Select(Data);
+                    ResultList.Data = DataList;
                 }
             }
-            return Result;
+            return ResultList;
         }
 
-        public Models.Worker.CommonResultModel DeleteMessage(Models.Worker.CommonParamModel Param, int ID)
+        public Entity.CommonResultEntity DeleteMessage(string Token, int TokenType, int ID)
         {
             if (Param.Token == "")
             {
@@ -1279,7 +1198,7 @@ namespace Logic
                 }
                 else
                 {
-                    var Info = this.MessageSQLModel.Find(ID);
+                    var Info = this.MessageModel.Find(ID);
                     if (Info.ID == 0)
                     {
                         this.Result.Memo = "Data not found";
@@ -1292,7 +1211,7 @@ namespace Logic
                     {
                         try
                         {
-                            this.MessageSQLModel.Delete(ID);
+                            this.MessageModel.Delete(ID);
                             this.DbContent.SaveChanges();
                             this.Result.State = true;
                             this.Result.Memo = "Success";
@@ -1308,7 +1227,7 @@ namespace Logic
             return this.Result;
         }
 
-        public Models.Worker.CommonResultModel SetMessage(Models.Worker.CommonParamModel Param, int ID)
+        public Entity.CommonResultEntity SetMessage(string Token, int Type, int ID)
         {
             if (Param.Token == "")
             {
@@ -1331,7 +1250,7 @@ namespace Logic
                 }
                 else
                 {
-                    var Info = this.MessageSQLModel.Find(ID);
+                    var Info = this.MessageModel.Find(ID);
                     if (Info.ID == 0)
                     {
                         this.Result.Memo = "Data not found";
@@ -1360,7 +1279,7 @@ namespace Logic
                             if (Info.State == 1)
                             {
                                 Info.State = 2;
-                                this.MessageSQLModel.Modify(ID, Info);
+                                this.MessageModel.Modify(ID, Info);
                                 this.DbContent.SaveChanges();
                             }
 
@@ -1378,7 +1297,7 @@ namespace Logic
             return this.Result;
         }
 
-        public Models.Worker.CommonResultModel ShareFilesToDepartment(Models.Worker.CommonParamModel Param, int FileID)
+        public Entity.CommonResultEntity ShareFilesToDepartment(string Token, int TokenType, int FileID)
         {
             if (Param.Token == "")
             {
@@ -1401,7 +1320,7 @@ namespace Logic
                 }
                 else
                 {
-                    var UserInfo = this.UserSQLModel.Find(UserID);
+                    var UserInfo = this.UserModel.Find(UserID);
                     if (UserInfo.ID == 0)
                     {
                         this.Result.Memo = "User not found";
@@ -1412,7 +1331,7 @@ namespace Logic
                     }
                     else
                     {
-                        var DepartmentInfo = this.DepartmentSQLModel.Find(UserInfo.DepartmentID);
+                        var DepartmentInfo = this.DepartmentModel.Find(UserInfo.DepartmentID);
                         if (DepartmentInfo.ID == 0)
                         {
                             this.Result.Memo = "Department not found";
@@ -1423,7 +1342,7 @@ namespace Logic
                         }
                         else
                         {
-                            var FileInfo = this.FileSQLModel.Find(FileID);
+                            var FileInfo = this.FileModel.Find(FileID);
                             if (FileInfo.ID == 0)
                             {
                                 this.Result.Memo = "File not found";
@@ -1439,25 +1358,25 @@ namespace Logic
                             else
                             {
                                 // 确认文件是否被分享过
-                                Models.Worker.DepartmentFileSelectParamModel CheckData = new();
+                                Entity.DepartmentFileSelectParamModel CheckData = new();
                                 CheckData.DepartmentID = DepartmentInfo.ID;
                                 CheckData.FileID = FileInfo.ID;
                                 CheckData.UserID = UserInfo.ID;
-                                var DataList = this.DepartmentFileSQLModel.Select(CheckData);
+                                var DataList = this.DepartmentFileModel.Select(CheckData);
                                 if (DataList.Count > 0)
                                 {
                                     this.Result.Memo = "Data is exists";
                                 }
                                 else
                                 {
-                                    Models.Entity.DepartmentFileModel Data = new();
+                                    Entity.DepartmentFileModel Data = new();
                                     Data.DepartmentID = UserInfo.DepartmentID;
                                     Data.FileID = FileID;
                                     Data.UserID = UserID;
                                     Data.Createtime = Tools.Time32();
                                     try
                                     {
-                                        this.DepartmentFileSQLModel.Insert(Data);
+                                        this.DepartmentFileModel.Insert(Data);
                                         this.DbContent.SaveChanges();
                                         this.Result.State = true;
                                         this.Result.Memo = "success";
@@ -1477,7 +1396,7 @@ namespace Logic
             return this.Result;
         }
 
-        public Models.Worker.CommonResultModel DeleteDepartmentFile(Models.Worker.CommonParamModel Param, int ID)
+        public Entity.CommonResultEntity DeleteDepartmentFile(string Token, int TokenType, int ID)
         {
             if (Param.Token == "")
             {
@@ -1500,7 +1419,7 @@ namespace Logic
                 }
                 else
                 {
-                    var UserInfo = this.UserSQLModel.Find(UserID);
+                    var UserInfo = this.UserModel.Find(UserID);
                     if (UserInfo.ID == 0)
                     {
                         this.Result.Memo = "User not found";
@@ -1511,7 +1430,7 @@ namespace Logic
                     }
                     else
                     {
-                        var Info = this.DepartmentFileSQLModel.Find(ID);
+                        var Info = this.DepartmentFileModel.Find(ID);
                         if (Info.ID == 0)
                         {
                             this.Result.Memo = "Data not found";
@@ -1524,7 +1443,7 @@ namespace Logic
                         {
                             try
                             {
-                                this.DepartmentFileSQLModel.Delete(ID);
+                                this.DepartmentFileModel.Delete(ID);
                                 this.DbContent.SaveChanges();
                                 this.Result.Memo = "Success";
                                 this.Result.State = true;
@@ -1541,9 +1460,9 @@ namespace Logic
             return this.Result;
         }
 
-        public Models.Worker.DepartmentFileSelectResultModel SelectDepartmentFile(Models.Worker.CommonParamModel Param, Models.Worker.DepartmentFileSelectParamModel Data)
+        public Entity.CommonListResultEntity SelectDepartmentFile(string Token, int TokenType, Entity.DepartmentFileSelectParamEntity Data)
         {
-            Models.Worker.DepartmentFileSelectResultModel Result = new();
+            Entity.DepartmentFileSelectResultModel Result = new();
             if (Param.Token == "")
             {
                 Result.Memo = "Token error";
@@ -1573,7 +1492,7 @@ namespace Logic
                 }
                 else
                 {
-                    var UserInfo = this.UserSQLModel.Find(UserID);
+                    var UserInfo = this.UserModel.Find(UserID);
                     if (UserInfo.ID == 0)
                     {
                         Result.Memo = "User not found";
@@ -1586,7 +1505,7 @@ namespace Logic
                     {
                         if (Data.UserID > 0 && Data.UserID != UserID)
                         {
-                            var CheckUser = this.UserSQLModel.Find(Data.UserID);
+                            var CheckUser = this.UserModel.Find(Data.UserID);
                             if (CheckUser.ID == 0)
                             {
                                 Result.Memo = "User not found";
@@ -1603,7 +1522,7 @@ namespace Logic
                         {
                             Data.DepartmentID = UserInfo.DepartmentID;
                         }
-                        var DepartmentInfo = this.DepartmentSQLModel.Find(Data.DepartmentID);
+                        var DepartmentInfo = this.DepartmentModel.Find(Data.DepartmentID);
                         if (DepartmentInfo.ID == 0)
                         {
                             Result.Memo = "Department not found";
@@ -1614,7 +1533,7 @@ namespace Logic
                         }
                         else
                         {
-                            Result.Data = this.DepartmentFileSQLModel.Select(Data);
+                            Result.Data = this.DepartmentFileModel.Select(Data);
                             Result.State = true;
                             Result.Memo = "Success";
                         }
@@ -1624,15 +1543,15 @@ namespace Logic
             return Result;
         }
 
-        public Models.Worker.CommonResultModel ResetMaster()
+        public Entity.CommonResultEntity ResetMaster()
         {
-            var Info = this.UserSQLModel.Find(1);
+            var Info = this.UserModel.Find(1);
             if (Info.ID == 0)
             {
                 this.Result.Memo = "Data error";
                 return this.Result;
             }
-            var Data = new Models.Worker.UserModifyParamModel
+            var Data = new Entity.UserModifyParamModel
             {
                 Password = "000000",
                 Name = "Admin",
@@ -1646,7 +1565,7 @@ namespace Logic
             };
             try
             {
-                this.UserSQLModel.Modify(1, Data);
+                this.UserModel.Modify(1, Data);
                 this.DbContent.SaveChanges();
                 this.Result.State = true;
                 this.Result.Memo = "Success";

@@ -32,6 +32,17 @@ namespace Entity
         }
     }
 
+    public class LoginResultEntity : Base
+    {
+        [JsonPropertyName("Token")]
+        public string Token { get; set; }
+
+        public LoginResultEntity()
+        {
+            this.Token = "";
+        }
+    }
+
     public class DownloadFileEntity : Base
     {
         [JsonPropertyName("FileEntityName")]

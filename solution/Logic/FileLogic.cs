@@ -210,7 +210,7 @@ namespace Logic
         public bool DeleteDirInRecursion(int ID)
         {
             // 获取目录下的所有文件列表 并设置为删除状态
-            Models.Worker.FileSelectParamModel FileSelectParam = new();
+            Entity.FileSelectParamModel FileSelectParam = new();
             FileSelectParam.DirID = ID;
             var FileList = this.FileModel.Select(FileSelectParam);
             if (FileList.Count > 0)
@@ -234,7 +234,7 @@ namespace Logic
             }
 
             // 子文件夹
-            Models.Worker.DirSelectParamModel SubData = new();
+            Entity.DirSelectParamModel SubData = new();
             SubData.ParentID = ID;
             var SubDirList = this.DirModel.Select(SubData);
             var SubState = true;
@@ -375,7 +375,7 @@ namespace Logic
 
         public Entity.CommonListResultEntity SelectDir(string Token, int TokenType, Entity.DirSelectParamEntity Data)
         {
-            Models.Worker.DirSelectResultModel Result = new();
+            Entity.DirSelectResultModel Result = new();
 
             if (Param.Token == "")
             {
@@ -587,7 +587,7 @@ namespace Logic
 
         public Entity.CommonListResultEntity SelectDirExtra(string Token, int TokenType, Entity.DirExtraSelectParamEntity Data)
         {
-            Models.Worker.DirExtraSelectResultModel Result = new();
+            Entity.DirExtraSelectResultModel Result = new();
             if (Param.Token == "")
             {
                 Result.Memo = "Token error";
@@ -635,7 +635,7 @@ namespace Logic
 
         public Entity.CommonListResultEntity FileList(string Token, int TokenType, int DirID, int State, int UID)
         {
-            Models.Worker.FileSelectResultModel Result = new();
+            Entity.FileSelectResultModel Result = new();
             if (Param.Token == "")
             {
                 Result.Memo = "Token error";
@@ -697,7 +697,7 @@ namespace Logic
 
                     try
                     {
-                        Models.Worker.FileSelectParamModel Data = new();
+                        Entity.FileSelectParamModel Data = new();
                         Data.DirID = DirID;
                         Data.State = State;
                         Data.UserID = UID;
@@ -972,7 +972,7 @@ namespace Logic
 
         public Entity.DownloadFileEntity DownloadFileEntity(string Token, int TokenType, int ID, int POS)
         {
-            Models.Worker.DownloadFileEntityModel Result = new();
+            Entity.DownloadFileEntityModel Result = new();
             if (Param.Token == "")
             {
                 Result.Memo = "Token error";
@@ -1409,7 +1409,7 @@ namespace Logic
 
         public Entity.CommonResultEntity CheckFile(string Token, int TokenType, int FileID)
         {
-            Models.Worker.FileDataModel Result = new();
+            Entity.FileDataModel Result = new();
 
             if (Param.Token == "")
             {
@@ -1453,7 +1453,7 @@ namespace Logic
                             else
                             {
                                 // 文件是否已经分享到部门
-                                Models.Worker.DepartmentFileSelectParamModel CheckData = new();
+                                Entity.DepartmentFileSelectParamModel CheckData = new();
                                 CheckData.DepartmentID = UserInfo.DepartmentID;
                                 CheckData.FileID = FileInfo.ID;
                                 CheckData.UserID = FileInfo.UserID;
@@ -1879,7 +1879,7 @@ namespace Logic
                 {
                     try
                     {
-                        Models.Worker.FileSelectParamModel Data = new();
+                        Entity.FileSelectParamModel Data = new();
                         Data.State = 3;
                         Data.UserID = UserID;
                         this.ResultList.Data = this.FileModel.Select(Data);
@@ -2281,9 +2281,9 @@ namespace Logic
             return this.Result;
         }
 
-        public Models.Worker.DownloadFileEntityModel DownloadDemo(Models.Worker.CommonParamModel Param, string LangType)
+        public Entity.DownloadFileEntityModel DownloadDemo(string Token, int TokenType, string LangType)
         {
-            Models.Worker.DownloadFileEntityModel Result = new();
+            Entity.DownloadFileEntityModel Result = new();
             if (Param.Token == "")
             {
                 Result.Memo = "Token error";
@@ -2334,7 +2334,7 @@ namespace Logic
             return Result;
         }
 
-        public Models.Worker.CommonResultModel ImportUser(Models.Worker.CommonParamModel Param, IFormFile FileEntity)
+        public Entity.CommonResultModel ImportUser(Entity.CommonParamModel Param, IFormFile FileEntity)
         {
             if (Param.Token == "")
             {
