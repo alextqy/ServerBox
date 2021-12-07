@@ -73,7 +73,7 @@ namespace Logic
                 }
                 else
                 {
-                    Models.Entity.ConfigModel ConfigData = new();
+                    Entity.ConfigModel ConfigData = new();
                     ConfigData.ConfigKey = Data.ConfigKey;
                     ConfigData.ConfigDesc = Data.ConfigDesc;
                     ConfigData.ConfigType = Data.ConfigType;

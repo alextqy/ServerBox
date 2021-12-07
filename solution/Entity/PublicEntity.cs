@@ -47,6 +47,7 @@ namespace Entity
     {
         [JsonPropertyName("FileEntityName")]
         public string FileEntityName { get; set; }
+
         [JsonPropertyName("Data")]
         public string Data { get; set; }
 

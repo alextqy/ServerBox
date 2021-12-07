@@ -76,7 +76,7 @@ namespace Logic
                     }
                     else
                     {
-                        Models.Entity.DirModel DirData = new();
+                        Entity.DirModel DirData = new();
                         DirData.DirName = Data.DirName;
                         DirData.ParentID = Data.ParentID;
                         DirData.UserID = UserID;
@@ -500,7 +500,7 @@ namespace Logic
                     }
                     else
                     {
-                        Models.Entity.DirExtraModel ExtraData = new();
+                        Entity.DirExtraModel ExtraData = new();
                         ExtraData.DirID = Data.DirID;
                         ExtraData.ExtraDesc = Data.ExtraDesc;
                         ExtraData.ExtraType = Data.ExtraType;
@@ -817,7 +817,7 @@ namespace Logic
 
                         var TA = this.BeginTransaction();
 
-                        Models.Entity.FileModel FileData = new();
+                        Entity.FileModel FileData = new();
                         FileData.FileName = Data.FileName;
                         FileData.UserID = UserID;
                         FileData.Createtime = CreateTimeMS;
@@ -1534,7 +1534,7 @@ namespace Logic
                     }
                     else
                     {
-                        Models.Entity.FileExtraModel ExtraData = new();
+                        Entity.FileExtraModel ExtraData = new();
                         ExtraData.FileID = Data.FileID;
                         ExtraData.ExtraDesc = Data.ExtraDesc;
                         ExtraData.ExtraType = Data.ExtraType;
@@ -1727,7 +1727,7 @@ namespace Logic
 
                                 var TA = this.BeginTransaction();
 
-                                Models.Entity.FileModel FileData = new();
+                                Entity.FileModel FileData = new();
                                 FileData.FileName = FileInfo.FileName;
                                 FileData.UserID = FileInfo.UserID;
                                 FileData.Createtime = CreateTimeMS;
@@ -2211,7 +2211,7 @@ namespace Logic
                                     var FileName = FileInfo.FileName + "_AT" + CreateTimeMS.ToString();
                                     var FileDir = Tools.BaseDir() + UserInfo.Account + "/" + FileName + "." + CreateTimeMS.ToString() + "/";
 
-                                    Models.Entity.FileModel NewFile = new();
+                                    Entity.FileModel NewFile = new();
                                     NewFile.FileName = FileName;
                                     NewFile.UserID = UserInfo.ID;
                                     NewFile.Createtime = CreateTimeMS;
@@ -2281,9 +2281,9 @@ namespace Logic
             return this.Result;
         }
 
-        public Entity.DownloadFileEntityModel DownloadDemo(string Token, int TokenType, string LangType)
+        public Entity.DownloadFileEntity DownloadDemo(string Token, int TokenType, string LangType)
         {
-            Entity.DownloadFileEntityModel Result = new();
+            Entity.DownloadFileEntity Result = new();
             if (Param.Token == "")
             {
                 Result.Memo = "Token error";
@@ -2334,7 +2334,7 @@ namespace Logic
             return Result;
         }
 
-        public Entity.CommonResultModel ImportUser(Entity.CommonParamModel Param, IFormFile FileEntity)
+        public Entity.CommonResultEntity ImportUser(string Token, int TokenType, IFormFile FileEntity)
         {
             if (Param.Token == "")
             {
@@ -2462,7 +2462,7 @@ namespace Logic
                             return this.Result;
                         }
 
-                        var UserObject = new Models.Entity.UserModel();
+                        var UserObject = new Entity.UserModel();
                         var Secret = Tools.Random(5);
                         UserObject.Account = u.Account.ToLower();
                         UserObject.Name = u.Name;

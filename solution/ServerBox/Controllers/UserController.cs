@@ -556,17 +556,15 @@ namespace ServerBox.Controllers
         /// 导入用户
         /// </summary>
         /// <param name="Token"></param>
-        /// <param name="Type"></param>
+        /// <param name="TokenType"></param>
         /// <param name="FileEntity"></param>
         /// <returns></returns>
-        [ProducesResponseType(typeof(Entity.CommonResultModel), 200)]
         [HttpPost]
         [Route("/Import/User")]
-        public IActionResult ImportUser(string Token, int Type, IFormFile FileEntity)
+        public IActionResult ImportUser(string Token, int TokenType, IFormFile FileEntity)
         {
-            this.Param.Token = Token == null ? "" : Token.Trim();
-            this.Param.Type = Type;
-            var Result = this.FileLogic.ImportUser(this.Param, FileEntity);
+            Token = Token == null ? "" : Token.Trim().ToLower();
+            var Result = this.FileLogic.ImportUser(Token, TokenType, FileEntity);
             return Json(Result);
         }
 

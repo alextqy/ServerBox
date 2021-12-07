@@ -67,7 +67,7 @@ namespace Logic
                                 }
                             }
 
-                            Models.Entity.DepartmentModel DepartmentData = new();
+                            Entity.DepartmentModel DepartmentData = new();
                             DepartmentData.DepartmentName = Data.DepartmentName;
                             DepartmentData.ParentID = Data.ParentID;
                             DepartmentData.State = 1;
@@ -478,7 +478,7 @@ namespace Logic
                     }
                     else
                     {
-                        Models.Entity.DepartmentExtraModel DepartmentExtraData = new();
+                        Entity.DepartmentExtraModel DepartmentExtraData = new();
                         DepartmentExtraData.DepartmentID = Data.DepartmentID;
                         DepartmentExtraData.ExtraDesc = Data.ExtraDesc;
                         DepartmentExtraData.ExtraType = Data.ExtraType;
