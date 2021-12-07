@@ -1,3 +1,4 @@
+using Init;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -15,7 +16,9 @@ namespace ServerBox
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            //Environment.Exit(0); // ≥Ã–Ú÷’÷π
+            var Init = new SysInit();
+            if (!Init.SetDatabase()) { Environment.Exit(0); }
+            if (!Init.Run()) { Environment.Exit(0); }
         }
         public IConfiguration Configuration { get; }
         public void ConfigureServices(IServiceCollection services)

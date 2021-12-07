@@ -10,7 +10,7 @@ using Microsoft.Data.Sqlite;
 
 namespace Init
 {
-    public class Init : Base
+    public class SysInit : Base
     {
         /// <summary>
         /// 项目启动

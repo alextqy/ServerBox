@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ConfigHelper\ConfigHelper.csproj" />
+    <ProjectReference Include="..\Init\Init.csproj" />
     <ProjectReference Include="..\Logic\Logic.csproj" />
     <ProjectReference Include="..\Models\Models.csproj" />
   </ItemGroup>
