@@ -7,8 +7,8 @@ namespace Entity
     {
 
         [NotMapped]
-        [JsonPropertyName("State")]
-        public bool State { get; set; }
+        [JsonPropertyName("ResultStatus")]
+        public bool ResultStatus { get; set; }
 
         [NotMapped]
         [JsonPropertyName("StatusCode")]
@@ -20,7 +20,7 @@ namespace Entity
 
         public Base()
         {
-            this.State = false;
+            this.ResultStatus = false;
             this.StatusCode = 200;
             this.Memo = "";
         }

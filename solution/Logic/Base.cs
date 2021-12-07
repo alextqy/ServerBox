@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
 using Models;
+using Npoi.Mapper;
 using Service;
 using System;
+using System.Collections.Generic;
 
 namespace Logic
 {
@@ -61,6 +63,71 @@ namespace Logic
             return this.DbContent.Database.BeginTransaction();
         }
 
+        public Entity.DirEntity RootPath(int UserID)
+        {
+            Entity.DirEntity DirInfo = new();
+            var UserInfo = this.UserModel.Find(UserID);
+            if (UserInfo.ID != 0)
+            {
+                DirInfo = this.DirModel.RootDir(UserID);
+            }
+            return DirInfo;
+        }
+
+        // 账号统计
+        public bool AccountStat(int UserIncrement)
+        {
+            var CountUser = this.UserModel.CountUser() + UserIncrement; // 验证用户数
+            var ActivationCode = ConfigHelper.AppSettingsHelper.GetSettings("ActivationCode");
+            if (ActivationCode != "")
+            {
+                // 获取操作系统类型和机器码
+                var OSType = Tools.OSType();
+                string Motherboard;
+                if (OSType == "Linux")
+                {
+                    Motherboard = Tools.SysShell("dmidecode", "-s system-uuid").Trim();
+                }
+                else if (OSType == "Windows")
+                {
+                    Motherboard = Tools.SysShell("wmic", "csproduct get UUID").Replace("UUID", "").Trim();
+                }
+                else
+                {
+                    Motherboard = "";
+                }
+
+                if (Motherboard != "")
+                {
+                    var DeCode = Tools.AES_Decrypt(ActivationCode, 3); // 解密
+                    var DeCodeArr = Tools.Explode("_", DeCode);
+                    var HardwareCode = DeCodeArr[1];
+                    if (HardwareCode != Motherboard) // 验证机器码
+                    {
+                        ConfigHelper.AppSettingsHelper.WriteSettings("ActivationCode", ""); // 清空当前激活码
+                        return false;
+                    }
+                    var UserLimit = Tools.StrToInt32(DeCodeArr[2]) + 5;
+                    if (CountUser >= UserLimit)
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                if (CountUser > 5)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         public int TokenVerify(string Token, int TokenType)
         {
             if (Token == null)
@@ -107,6 +174,34 @@ namespace Logic
             }
         }
 
+        // 个人权限(逗号分隔) 1新建 2读取 3修改 4删除 5下载 6上传 7复制 8移动 9分享
+        public bool PermissionVerify(int UserID, int PermissionType)
+        {
+            if (UserID <= 0)
+            {
+                return false;
+            }
+            else
+            {
+                var Info = this.UserModel.Find(UserID);
+                if (Info.ID == 0)
+                {
+                    return false;
+                }
+                else
+                {
+                    if (Info.Permission.Contains(PermissionType.ToString()))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+
         public bool MasterVerify(int UserID)
         {
             if (UserID <= 0)
@@ -145,6 +240,48 @@ namespace Logic
                     return true;
                 }
             }
+        }
+
+        public void WTL(string IP, string Content, int ActionType)
+        {
+            // Models.Entity.LogModel Data = new();
+            // Data.IP = IP;
+            // Data.ActionType = ActionType;
+            // Data.ActionTime = Convert.ToInt32(Tools.Time());
+            // Data.ActionDesc = Content;
+            // this.Insert(Data);
+        }
+    }
+
+    public class UserExcelHandler
+    {
+        string FilePath { get; set; }
+        int StartRow { get; set; }
+
+        public UserExcelHandler(string FilePath, int StartRow = 0)
+        {
+            this.FilePath = FilePath;
+            this.StartRow = StartRow;
+        }
+
+        public List<Entity.CommonImportUserEntity> Reader()
+        {
+            var Handler = new Mapper(this.FilePath) { FirstRowIndex = StartRow };
+            var UserList = new List<Entity.CommonImportUserEntity>();
+            var ObjectRows = Handler.Take<dynamic>("sheet1");
+            foreach (var Rows in ObjectRows)
+            {
+                string Row = Rows.Value.ToString().Replace("{", "").Replace("}", "").Replace(" ", "").Replace("=", " ").Trim();
+                var RowList = Row.Split(",");
+                var Obj = new Entity.CommonImportUserEntity
+                {
+                    Account = RowList[0].Split(" ")[1],
+                    Name = RowList[1].Split(" ")[1],
+                    Password = RowList[2].Split(" ")[1],
+                };
+                UserList.Add(Obj);
+            }
+            return UserList;
         }
     }
 }

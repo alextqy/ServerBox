@@ -13,13 +13,13 @@ namespace Logic
 
         public Entity.CommonResultEntity CreateDir(string Token, int TokenType, Entity.DirEntity Data)
         {
-            if (Param.Token == "")
+            if (Token == "")
             {
                 this.Result.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
-                this.Result.Memo = "Type error";
+                this.Result.Memo = "TokenType error";
             }
             else if (Data.DirName == "")
             {
@@ -35,7 +35,7 @@ namespace Logic
             }
             else
             {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
+                var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
                     this.Result.Memo = "Token lost";
@@ -76,7 +76,7 @@ namespace Logic
                     }
                     else
                     {
-                        Entity.DirModel DirData = new();
+                        Entity.DirEntity DirData = new();
                         DirData.DirName = Data.DirName;
                         DirData.ParentID = Data.ParentID;
                         DirData.UserID = UserID;
@@ -86,7 +86,7 @@ namespace Logic
                             this.DirModel.Insert(DirData);
                             this.DbContent.SaveChanges();
                             this.Result.ID = DirData.ID;
-                            this.Result.State = true;
+                            this.Result.ResultStatus = true;
                             this.Result.Memo = "Success";
                         }
                         catch (Exception e)
@@ -102,13 +102,13 @@ namespace Logic
 
         public Entity.CommonResultEntity DirInfo(string Token, int TokenType, int ID)
         {
-            if (Param.Token == "")
+            if (Token == "")
             {
                 Result.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
-                Result.Memo = "Type error";
+                Result.Memo = "TokenType error";
             }
             else if (ID <= 0)
             {
@@ -116,7 +116,7 @@ namespace Logic
             }
             else
             {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
+                var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
                     Result.Memo = "Token lost";
@@ -130,7 +130,7 @@ namespace Logic
                     }
                     else
                     {
-                        this.Result.State = true;
+                        this.Result.ResultStatus = true;
                         this.Result.Memo = "Success";
                         this.Result.Data = DirInfo;
                     }
@@ -141,13 +141,13 @@ namespace Logic
 
         public Entity.CommonResultEntity DeleteDir(string Token, int TokenType, int ID)
         {
-            if (Param.Token == "")
+            if (Token == "")
             {
                 this.Result.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
-                this.Result.Memo = "Type error";
+                this.Result.Memo = "TokenType error";
             }
             else if (ID <= 0)
             {
@@ -155,7 +155,7 @@ namespace Logic
             }
             else
             {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
+                var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID <= 0)
                 {
                     this.Result.Memo = "Token lost";
@@ -197,7 +197,7 @@ namespace Logic
                             else
                             {
                                 TA.Commit();
-                                this.Result.State = true;
+                                this.Result.ResultStatus = true;
                                 this.Result.Memo = "Success";
                             }
                         }
@@ -210,7 +210,7 @@ namespace Logic
         public bool DeleteDirInRecursion(int ID)
         {
             // 获取目录下的所有文件列表 并设置为删除状态
-            Entity.FileSelectParamModel FileSelectParam = new();
+            Entity.FileSelectParamEntity FileSelectParam = new();
             FileSelectParam.DirID = ID;
             var FileList = this.FileModel.Select(FileSelectParam);
             if (FileList.Count > 0)
@@ -234,7 +234,7 @@ namespace Logic
             }
 
             // 子文件夹
-            Entity.DirSelectParamModel SubData = new();
+            Entity.DirSelectParamEntity SubData = new();
             SubData.ParentID = ID;
             var SubDirList = this.DirModel.Select(SubData);
             var SubState = true;
@@ -270,13 +270,13 @@ namespace Logic
 
         public Entity.CommonResultEntity ModifyDir(string Token, int TokenType, int ID, Entity.DirEntity Data)
         {
-            if (Param.Token == "")
+            if (Token == "")
             {
                 this.Result.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
-                this.Result.Memo = "Type error";
+                this.Result.Memo = "TokenType error";
             }
             else if (ID <= 0)
             {
@@ -296,7 +296,7 @@ namespace Logic
             }
             else
             {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
+                var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
                     this.Result.Memo = "Token lost";
@@ -359,7 +359,7 @@ namespace Logic
                             Info.ParentID = Data.ParentID;
                             this.DirModel.Modify(ID, Info);
                             this.DbContent.SaveChanges();
-                            this.Result.State = true;
+                            this.Result.ResultStatus = true;
                             this.Result.Memo = "Success";
                         }
                         catch (Exception e)
@@ -375,38 +375,36 @@ namespace Logic
 
         public Entity.CommonListResultEntity SelectDir(string Token, int TokenType, Entity.DirSelectParamEntity Data)
         {
-            Entity.DirSelectResultModel Result = new();
-
-            if (Param.Token == "")
+            if (Token == "")
             {
-                Result.Memo = "Token error";
+                ResultList.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
-                Result.Memo = "Type error";
+                ResultList.Memo = "TokenType error";
             }
             else if (Data.DirName != "" && !Tools.RegCheckPro(Data.DirName))
             {
-                Result.Memo = "Dir name error";
+                ResultList.Memo = "Dir name error";
             }
             else if (Data.ParentID < 0)
             {
-                Result.Memo = "ParentID error";
+                ResultList.Memo = "ParentID error";
             }
             else if (Data.UserID < 0)
             {
-                Result.Memo = "UserID";
+                ResultList.Memo = "UserID";
             }
             else
             {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
+                var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
-                    Result.Memo = "Token lost";
+                    ResultList.Memo = "Token lost";
                 }
                 else if (!this.PermissionVerify(UserID, 2))
                 {
-                    Result.Memo = "Permission denied";
+                    ResultList.Memo = "Permission denied";
                 }
                 else
                 {
@@ -414,8 +412,8 @@ namespace Logic
                     {
                         if (!this.MasterVerify(UserID))
                         {
-                            Result.Memo = "Permission denied";
-                            return Result;
+                            ResultList.Memo = "Permission denied";
+                            return ResultList;
                         }
                     }
                     if (Data.ParentID > 0)
@@ -423,20 +421,20 @@ namespace Logic
                         var ParentDirInfo = this.DirModel.Find(Data.ParentID);
                         if (ParentDirInfo.UserID != UserID && !this.MasterVerify(UserID))
                         {
-                            Result.Memo = "Permission denied";
-                            return Result;
+                            ResultList.Memo = "Permission denied";
+                            return ResultList;
                         }
                     }
-                    Result.CurrentDirID = Data.ParentID;
+                    ResultList.Info = Data.ParentID;
                     if (Data.ParentID == 0)
                     {
                         var RootDir = this.RootPath(UserID);
                         Data.ParentID = RootDir.ID;
-                        Result.CurrentDirID = RootDir.ID;
+                        ResultList.Info = RootDir.ID;
                     }
-                    ResultList.State = true;
+                    ResultList.ResultStatus = true;
                     ResultList.Memo = "Success";
-                    ResultList.Data = this.DirModel.Select(Data);
+                    ResultList.DataList = this.DirModel.Select(Data);
                 }
             }
             return this.ResultList;
@@ -444,13 +442,13 @@ namespace Logic
 
         public Entity.CommonResultEntity CreateDirExtra(string Token, int TokenType, Entity.DirExtraEntity Data)
         {
-            if (Param.Token == "")
+            if (Token == "")
             {
                 this.Result.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
-                this.Result.Memo = "Type error";
+                this.Result.Memo = "TokenType error";
             }
             else if (Data.DirID <= 0)
             {
@@ -478,7 +476,7 @@ namespace Logic
             }
             else
             {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
+                var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
                     this.Result.Memo = "Token lost";
@@ -500,14 +498,14 @@ namespace Logic
                     }
                     else
                     {
-                        Entity.DirExtraModel ExtraData = new();
+                        Entity.DirExtraEntity ExtraData = new();
                         ExtraData.DirID = Data.DirID;
                         ExtraData.ExtraDesc = Data.ExtraDesc;
                         ExtraData.ExtraType = Data.ExtraType;
                         ExtraData.ExtraValue = Data.ExtraValue;
                         try
                         {
-                            this.Result.State = true;
+                            this.Result.ResultStatus = true;
                             this.Result.Memo = "Success";
                             this.DirExtraModel.Insert(ExtraData);
                             this.DbContent.SaveChanges();
@@ -525,13 +523,13 @@ namespace Logic
 
         public Entity.CommonResultEntity DeleteDirExtra(string Token, int TokenType, int ID)
         {
-            if (Param.Token == "")
+            if (Token == "")
             {
                 this.Result.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
-                this.Result.Memo = "Type error";
+                this.Result.Memo = "TokenType error";
             }
             else if (ID <= 0)
             {
@@ -539,7 +537,7 @@ namespace Logic
             }
             else
             {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
+                var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
                     this.Result.Memo = "Token lost";
@@ -571,7 +569,7 @@ namespace Logic
                         {
                             this.DirExtraModel.Delete(ID);
                             this.DbContent.SaveChanges();
-                            this.Result.State = true;
+                            this.Result.ResultStatus = true;
                             this.Result.Memo = "Success";
                         }
                         catch (Exception e)
@@ -587,62 +585,60 @@ namespace Logic
 
         public Entity.CommonListResultEntity SelectDirExtra(string Token, int TokenType, Entity.DirExtraSelectParamEntity Data)
         {
-            Entity.DirExtraSelectResultModel Result = new();
-            if (Param.Token == "")
+            if (Token == "")
             {
-                Result.Memo = "Token error";
+                ResultList.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
-                Result.Memo = "Type error";
+                ResultList.Memo = "TokenType error";
             }
             else if (Data.DirID <= 0)
             {
-                this.Result.Memo = "DirID error";
+                this.ResultList.Memo = "DirID error";
             }
             else
             {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
+                var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
-                    Result.Memo = "Token lost";
+                    ResultList.Memo = "Token lost";
                 }
                 else if (!this.PermissionVerify(UserID, 2))
                 {
-                    Result.Memo = "Permission denied";
+                    ResultList.Memo = "Permission denied";
                 }
                 else
                 {
                     var DirInfo = this.DirModel.Find(Data.DirID);
                     if (DirInfo.ID == 0)
                     {
-                        Result.Memo = "Data error";
-                        return Result;
+                        ResultList.Memo = "Data error";
+                        return ResultList;
                     }
                     if (DirInfo.UserID != UserID && !this.MasterVerify(UserID))
                     {
-                        Result.Memo = "Permission denied";
-                        return Result;
+                        ResultList.Memo = "Permission denied";
+                        return ResultList;
                     }
 
-                    Result.State = true;
-                    Result.Memo = "Success";
-                    Result.Data = this.DirExtraModel.Select(Data);
+                    ResultList.ResultStatus = true;
+                    ResultList.Memo = "Success";
+                    ResultList.DataList = this.DirExtraModel.Select(Data);
                 }
             }
-            return Result;
+            return ResultList;
         }
 
         public Entity.CommonListResultEntity FileList(string Token, int TokenType, int DirID, int State, int UID)
         {
-            Entity.FileSelectResultModel Result = new();
-            if (Param.Token == "")
+            if (Token == "")
             {
-                Result.Memo = "Token error";
+                ResultList.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
-                Result.Memo = "Type error";
+                ResultList.Memo = "TokenType error";
             }
             else if (DirID < 0)
             {
@@ -658,7 +654,7 @@ namespace Logic
             }
             else
             {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
+                var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
                     Result.Memo = "Token lost";
@@ -673,8 +669,8 @@ namespace Logic
                     {
                         if (!this.MasterVerify(UserID))
                         {
-                            Result.Memo = "Permission denied";
-                            return Result;
+                            ResultList.Memo = "Permission denied";
+                            return ResultList;
                         }
                     }
                     if (DirID > 0)
@@ -682,49 +678,49 @@ namespace Logic
                         var DirInfo = this.DirModel.Find(DirID);
                         if (DirInfo.ID == 0)
                         {
-                            Result.Memo = "Dir is not exist";
-                            return Result;
+                            ResultList.Memo = "Dir is not exist";
+                            return ResultList;
                         }
                         if (DirInfo.UserID != UserID)
                         {
                             if (!this.MasterVerify(UserID))
                             {
-                                Result.Memo = "Permission denied";
-                                return Result;
+                                ResultList.Memo = "Permission denied";
+                                return ResultList;
                             }
                         }
                     }
 
                     try
                     {
-                        Entity.FileSelectParamModel Data = new();
+                        Entity.FileSelectParamEntity Data = new();
                         Data.DirID = DirID;
                         Data.State = State;
                         Data.UserID = UID;
-                        Result.Data = this.FileModel.Select(Data);
-                        Result.State = true;
-                        Result.Memo = "Success";
+                        ResultList.DataList = this.FileModel.Select(Data);
+                        ResultList.ResultStatus = true;
+                        ResultList.Memo = "Success";
                     }
                     catch (Exception e)
                     {
                         Console.WriteLine(e.Message);
-                        Result.Memo = "Error";
+                        ResultList.Memo = "Error";
                     }
                 }
             }
 
-            return Result;
+            return ResultList;
         }
 
         public Entity.CommonResultEntity CreateFile(string Token, int TokenType, Entity.FileEntity Data)
         {
-            if (Param.Token == "")
+            if (Token == "")
             {
                 this.Result.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
-                this.Result.Memo = "Type error";
+                this.Result.Memo = "TokenType error";
             }
             else if (Data.FileName == "")
             {
@@ -742,7 +738,7 @@ namespace Logic
             {
                 this.Result.Memo = "FileType error";
             }
-            else if (Data.FileSize <= 0)
+            else if (Convert.ToInt32(Data.FileSize) <= 0)
             {
                 this.Result.Memo = "FileSize error";
             }
@@ -760,7 +756,7 @@ namespace Logic
             //}
             else
             {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
+                var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
                     this.Result.Memo = "Token lost";
@@ -817,14 +813,14 @@ namespace Logic
 
                         var TA = this.BeginTransaction();
 
-                        Entity.FileModel FileData = new();
+                        Entity.FileEntity FileData = new();
                         FileData.FileName = Data.FileName;
                         FileData.UserID = UserID;
                         FileData.Createtime = CreateTimeMS;
                         FileData.FileType = Data.FileType;
                         FileData.State = 1;
                         FileData.FileSize = Data.FileSize.ToString();
-                        var BlockSizeDecimal = (decimal)((Double)Data.FileSize / (Double)Tools.StrToInt32(this.ConfigModel.CheckConfigValue("BlockSize")));
+                        var BlockSizeDecimal = Convert.ToDecimal(Convert.ToDouble(Data.FileSize) / Convert.ToDouble(this.ConfigModel.CheckConfigValue("BlockSize")));
                         FileData.BlockSize = (int)Math.Ceiling(BlockSizeDecimal);
                         FileData.UploadBlockSize = 0;
                         FileData.ServerStoragePath = FileDir.Replace("\\", "/");
@@ -836,7 +832,7 @@ namespace Logic
                         {
                             this.FileModel.Insert(FileData);
                             this.DbContent.SaveChanges();
-                            this.Result.State = true;
+                            this.Result.ResultStatus = true;
                             this.Result.Memo = "Success";
                             this.Result.ID = FileData.ID;
                         }
@@ -867,13 +863,13 @@ namespace Logic
 
         public Entity.CommonResultEntity UploadFileEntity(string Token, int TokenType, int ID, string FileSectionName, IFormFile FileEntity)
         {
-            if (Param.Token == "")
+            if (Token == "")
             {
                 this.Result.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
-                this.Result.Memo = "Type error";
+                this.Result.Memo = "TokenType error";
             }
             else if (ID <= 0)
             {
@@ -897,7 +893,7 @@ namespace Logic
             }
             else
             {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
+                var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
                     this.Result.Memo = "Token lost";
@@ -919,7 +915,7 @@ namespace Logic
                     }
                     else if (FileInfo.State != 1)
                     {
-                        this.Result.State = true;
+                        this.Result.ResultStatus = true;
                         this.Result.Memo = "Upload complete";
                     }
                     else
@@ -957,7 +953,7 @@ namespace Logic
                             this.FileModel.Modify(FileInfo.ID, FileInfo);
                             this.DbContent.SaveChanges();
                             this.Result.Memo = "Success";
-                            this.Result.State = true;
+                            this.Result.ResultStatus = true;
                         }
                         catch (Exception e)
                         {
@@ -972,14 +968,14 @@ namespace Logic
 
         public Entity.DownloadFileEntity DownloadFileEntity(string Token, int TokenType, int ID, int POS)
         {
-            Entity.DownloadFileEntityModel Result = new();
-            if (Param.Token == "")
+            Entity.DownloadFileEntity Result = new();
+            if (Token == "")
             {
                 Result.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
-                Result.Memo = "Type error";
+                Result.Memo = "TokenType error";
             }
             else if (ID <= 0)
             {
@@ -991,7 +987,7 @@ namespace Logic
             }
             else
             {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
+                var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
                     Result.Memo = "Token lost";
@@ -1037,7 +1033,7 @@ namespace Logic
                                     var FileEntityPathList = Tools.Explode("/", FileEntity);
                                     Result.FileEntityName = FileEntityPathList[FileEntityPathList.Length - 1];
                                     Result.Data = Tools.ByteToBase64(Data);
-                                    Result.State = true;
+                                    Result.ResultStatus = true;
                                     Result.Memo = "Success";
                                 }
                             }
@@ -1055,13 +1051,13 @@ namespace Logic
 
         public Entity.CommonResultEntity DeleteFile(string Token, int TokenType, int ID)
         {
-            if (Param.Token == "")
+            if (Token == "")
             {
                 this.Result.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
-                this.Result.Memo = "Type error";
+                this.Result.Memo = "TokenType error";
             }
             else if (ID <= 0)
             {
@@ -1069,7 +1065,7 @@ namespace Logic
             }
             else
             {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
+                var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
                     this.Result.Memo = "Token lost";
@@ -1123,7 +1119,7 @@ namespace Logic
                                 }
                             }
                             TA.Commit();
-                            this.Result.State = true;
+                            this.Result.ResultStatus = true;
                             this.Result.Memo = "Success";
                         }
                     }
@@ -1134,13 +1130,13 @@ namespace Logic
 
         public Entity.CommonResultEntity ModifyFile(string Token, int TokenType, int ID, Entity.FileEntity Data)
         {
-            if (Param.Token == "")
+            if (Token == "")
             {
                 this.Result.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
-                this.Result.Memo = "Type error";
+                this.Result.Memo = "TokenType error";
             }
             else if (ID <= 0)
             {
@@ -1158,7 +1154,7 @@ namespace Logic
             {
                 this.Result.Memo = "State error";
             }
-            else if (Data.FileSize <= 0)
+            else if (Convert.ToInt32(Data.FileSize) <= 0)
             {
                 this.Result.Memo = "FileSize error";
             }
@@ -1180,7 +1176,7 @@ namespace Logic
             }
             else
             {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
+                var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
                     this.Result.Memo = "Token lost";
@@ -1295,7 +1291,7 @@ namespace Logic
                             }
 
                             TA.Commit();
-                            this.Result.State = true;
+                            this.Result.ResultStatus = true;
                             this.Result.Memo = "Success";
                         }
                     }
@@ -1306,13 +1302,13 @@ namespace Logic
 
         public Entity.CommonResultEntity MoveFile(string Token, int TokenType, int ID, int DirID)
         {
-            if (Param.Token == "")
+            if (Token == "")
             {
                 this.Result.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
-                this.Result.Memo = "Type error";
+                this.Result.Memo = "TokenType error";
             }
             else if (ID <= 0)
             {
@@ -1324,7 +1320,7 @@ namespace Logic
             }
             else
             {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
+                var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
                     this.Result.Memo = "Token lost";
@@ -1393,7 +1389,7 @@ namespace Logic
                         {
                             this.FileModel.Modify(ID, FileInfo);
                             this.DbContent.SaveChanges();
-                            this.Result.State = true;
+                            this.Result.ResultStatus = true;
                             this.Result.Memo = "Success";
                         }
                         catch (Exception e)
@@ -1409,15 +1405,13 @@ namespace Logic
 
         public Entity.CommonResultEntity CheckFile(string Token, int TokenType, int FileID)
         {
-            Entity.FileDataModel Result = new();
-
-            if (Param.Token == "")
+            if (Token == "")
             {
                 Result.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
-                Result.Memo = "Type error";
+                Result.Memo = "TokenType error";
             }
             else if (FileID <= 0)
             {
@@ -1425,7 +1419,7 @@ namespace Logic
             }
             else
             {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
+                var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
                     Result.Memo = "Token lost";
@@ -1453,7 +1447,7 @@ namespace Logic
                             else
                             {
                                 // 文件是否已经分享到部门
-                                Entity.DepartmentFileSelectParamModel CheckData = new();
+                                Entity.DepartmentFileSelectParamEntity CheckData = new();
                                 CheckData.DepartmentID = UserInfo.DepartmentID;
                                 CheckData.FileID = FileInfo.ID;
                                 CheckData.UserID = FileInfo.UserID;
@@ -1466,7 +1460,7 @@ namespace Logic
                             }
                         }
 
-                        Result.State = true;
+                        Result.ResultStatus = true;
                         Result.Memo = "Success";
                         Result.Data = FileInfo;
                     }
@@ -1478,13 +1472,13 @@ namespace Logic
 
         public Entity.CommonResultEntity CreateFileExtra(string Token, int TokenType, Entity.FileExtraEntity Data)
         {
-            if (Param.Token == "")
+            if (Token == "")
             {
                 this.Result.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
-                this.Result.Memo = "Type error";
+                this.Result.Memo = "TokenType error";
             }
             else if (Data.FileID <= 0)
             {
@@ -1512,7 +1506,7 @@ namespace Logic
             }
             else
             {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
+                var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
                     this.Result.Memo = "Token lost";
@@ -1534,7 +1528,7 @@ namespace Logic
                     }
                     else
                     {
-                        Entity.FileExtraModel ExtraData = new();
+                        Entity.FileExtraEntity ExtraData = new();
                         ExtraData.FileID = Data.FileID;
                         ExtraData.ExtraDesc = Data.ExtraDesc;
                         ExtraData.ExtraType = Data.ExtraType;
@@ -1543,7 +1537,7 @@ namespace Logic
                         {
                             this.FileExtraModel.Insert(ExtraData);
                             this.DbContent.SaveChanges();
-                            this.Result.State = true;
+                            this.Result.ResultStatus = true;
                             this.Result.Memo = "Success";
                         }
                         catch (Exception e)
@@ -1559,13 +1553,13 @@ namespace Logic
 
         public Entity.CommonResultEntity DeleteFileExtra(string Token, int TokenType, int ID)
         {
-            if (Param.Token == "")
+            if (Token == "")
             {
                 this.Result.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
-                this.Result.Memo = "Type error";
+                this.Result.Memo = "TokenType error";
             }
             else if (ID <= 0)
             {
@@ -1573,7 +1567,7 @@ namespace Logic
             }
             else
             {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
+                var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
                     this.Result.Memo = "Token lost";
@@ -1606,7 +1600,7 @@ namespace Logic
                             {
                                 this.FileExtraModel.Delete(ID);
                                 this.DbContent.SaveChanges();
-                                this.Result.State = true;
+                                this.Result.ResultStatus = true;
                                 this.Result.Memo = "Success";
                             }
                             catch (Exception e)
@@ -1622,15 +1616,15 @@ namespace Logic
             return this.Result;
         }
 
-        public Entity.CommonListResultEntity SelectFileExtra(string Token, int TokenType, Entity.FileExtraEntity Data)
+        public Entity.CommonListResultEntity SelectFileExtra(string Token, int TokenType, Entity.FileExtraSelectParamEntity Data)
         {
             if (Token == "")
             {
                 this.ResultList.Memo = "Token error";
             }
-            else if (Type <= 0)
+            else if (TokenType <= 0)
             {
-                this.ResultList.Memo = "Type error";
+                this.ResultList.Memo = "TokenType error";
             }
             else if (Data.FileID <= 0)
             {
@@ -1653,9 +1647,9 @@ namespace Logic
                 }
                 else
                 {
-                    this.ResultList.State = true;
+                    this.ResultList.ResultStatus = true;
                     this.ResultList.Memo = "Success";
-                    this.ResultList.Data = this.FileExtraModel.Select(Data);
+                    this.ResultList.DataList = this.FileExtraModel.Select(Data);
                 }
             }
             return this.ResultList;
@@ -1663,13 +1657,13 @@ namespace Logic
 
         public Entity.CommonResultEntity CopyFile(string Token, int TokenType, int DirID, int FileID)
         {
-            if (Param.Token == "")
+            if (Token == "")
             {
                 this.Result.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
-                this.Result.Memo = "Type error";
+                this.Result.Memo = "TokenType error";
             }
             else if (DirID <= 0)
             {
@@ -1681,7 +1675,7 @@ namespace Logic
             }
             else
             {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
+                var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
                     this.Result.Memo = "Token lost";
@@ -1727,7 +1721,7 @@ namespace Logic
 
                                 var TA = this.BeginTransaction();
 
-                                Entity.FileModel FileData = new();
+                                Entity.FileEntity FileData = new();
                                 FileData.FileName = FileInfo.FileName;
                                 FileData.UserID = FileInfo.UserID;
                                 FileData.Createtime = CreateTimeMS;
@@ -1774,7 +1768,7 @@ namespace Logic
 
                                 TA.Commit();
                                 this.Result.ID = FileData.ID;
-                                this.Result.State = true;
+                                this.Result.ResultStatus = true;
                                 this.Result.Memo = "Success";
                             }
                         }
@@ -1786,13 +1780,13 @@ namespace Logic
 
         public Entity.CommonResultEntity FileLockSwitch(string Token, int TokenType, int FileID)
         {
-            if (Param.Token == "")
+            if (Token == "")
             {
                 this.Result.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
-                this.Result.Memo = "Type error";
+                this.Result.Memo = "TokenType error";
             }
             else if (FileID <= 0)
             {
@@ -1800,7 +1794,7 @@ namespace Logic
             }
             else
             {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
+                var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
                     this.Result.Memo = "Token lost";
@@ -1842,7 +1836,7 @@ namespace Logic
                                 FileInfo.State = Switch;
                                 this.FileModel.Modify(FileID, FileInfo);
                                 this.DbContent.SaveChanges();
-                                this.Result.State = true;
+                                this.Result.ResultStatus = true;
                                 this.Result.Memo = "Success";
                             }
                             catch (Exception e)
@@ -1860,17 +1854,17 @@ namespace Logic
 
         public Entity.CommonListResultEntity FileLockList(string Token, int TokenType)
         {
-            if (Param.Token == "")
+            if (Token == "")
             {
                 this.ResultList.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
-                this.ResultList.Memo = "Type error";
+                this.ResultList.Memo = "TokenType error";
             }
             else
             {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
+                var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
                     this.ResultList.Memo = "Token lost";
@@ -1879,11 +1873,11 @@ namespace Logic
                 {
                     try
                     {
-                        Entity.FileSelectParamModel Data = new();
+                        Entity.FileSelectParamEntity Data = new();
                         Data.State = 3;
                         Data.UserID = UserID;
-                        this.ResultList.Data = this.FileModel.Select(Data);
-                        this.ResultList.State = true;
+                        this.ResultList.DataList = this.FileModel.Select(Data);
+                        this.ResultList.ResultStatus = true;
                         this.ResultList.Memo = "Success";
                     }
                     catch (Exception e)
@@ -1898,13 +1892,13 @@ namespace Logic
 
         public Entity.CommonResultEntity FileEntitySyncPrefix(string Token, int TokenType, int FileID)
         {
-            if (Param.Token == "")
+            if (Token == "")
             {
                 this.Result.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
-                this.Result.Memo = "Type error";
+                this.Result.Memo = "TokenType error";
             }
             else if (FileID <= 0)
             {
@@ -1912,7 +1906,7 @@ namespace Logic
             }
             else
             {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
+                var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
                     this.Result.Memo = "Token lost";
@@ -1948,7 +1942,7 @@ namespace Logic
                             }
                             if (Tools.CreateDir(SyncDir))
                             {
-                                this.Result.State = true;
+                                this.Result.ResultStatus = true;
                                 this.Result.Memo = "Success";
                             }
                         }
@@ -1961,13 +1955,13 @@ namespace Logic
 
         public Entity.CommonResultEntity FileEntitySync(string Token, int TokenType, int FileID, string FileSectionName, IFormFile FileEntity)
         {
-            if (Param.Token == "")
+            if (Token == "")
             {
                 this.Result.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
-                this.Result.Memo = "Type error";
+                this.Result.Memo = "TokenType error";
             }
             else if (FileID <= 0)
             {
@@ -1991,7 +1985,7 @@ namespace Logic
             }
             else
             {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
+                var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
                     this.Result.Memo = "Token lost";
@@ -2026,7 +2020,7 @@ namespace Logic
                                     FileEntity.CopyTo(Stream);
                                     Stream.Flush();
                                 }
-                                this.Result.State = true;
+                                this.Result.ResultStatus = true;
                                 this.Result.Memo = "Success";
                             }
                             catch (Exception e)
@@ -2043,13 +2037,13 @@ namespace Logic
 
         public Entity.CommonResultEntity FileEntitySyncDefer(string Token, int TokenType, int FileID)
         {
-            if (Param.Token == "")
+            if (Token == "")
             {
                 this.Result.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
-                this.Result.Memo = "Type error";
+                this.Result.Memo = "TokenType error";
             }
             else if (FileID <= 0)
             {
@@ -2057,7 +2051,7 @@ namespace Logic
             }
             else
             {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
+                var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
                     this.Result.Memo = "Token lost";
@@ -2089,7 +2083,7 @@ namespace Logic
                             if (DoRename2)
                             {
                                 Tools.DelDir(OldPath + "_bak", true); // 删除备份文件夹
-                                this.Result.State = true;
+                                this.Result.ResultStatus = true;
                                 this.Result.Memo = "Success";
                             }
                             else
@@ -2105,13 +2099,13 @@ namespace Logic
 
         public Entity.CommonResultEntity FileEntitySyncFail(string Token, int TokenType, int FileID)
         {
-            if (Param.Token == "")
+            if (Token == "")
             {
                 this.Result.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
-                this.Result.Memo = "Type error";
+                this.Result.Memo = "TokenType error";
             }
             else if (FileID <= 0)
             {
@@ -2119,7 +2113,7 @@ namespace Logic
             }
             else
             {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
+                var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
                     this.Result.Memo = "Token lost";
@@ -2140,7 +2134,7 @@ namespace Logic
                         }
                         else
                         {
-                            this.Result.State = true;
+                            this.Result.ResultStatus = true;
                             this.Result.Memo = "Success";
                         }
                     }
@@ -2151,13 +2145,13 @@ namespace Logic
 
         public Entity.CommonResultEntity SendFileToUser(string Token, int TokenType, int FileID, int UID)
         {
-            if (Param.Token == "")
+            if (Token == "")
             {
                 this.Result.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
-                this.Result.Memo = "Type error";
+                this.Result.Memo = "TokenType error";
             }
             else if (FileID <= 0)
             {
@@ -2169,7 +2163,7 @@ namespace Logic
             }
             else
             {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
+                var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
                     this.Result.Memo = "Token lost";
@@ -2211,7 +2205,7 @@ namespace Logic
                                     var FileName = FileInfo.FileName + "_AT" + CreateTimeMS.ToString();
                                     var FileDir = Tools.BaseDir() + UserInfo.Account + "/" + FileName + "." + CreateTimeMS.ToString() + "/";
 
-                                    Entity.FileModel NewFile = new();
+                                    Entity.FileEntity NewFile = new();
                                     NewFile.FileName = FileName;
                                     NewFile.UserID = UserInfo.ID;
                                     NewFile.Createtime = CreateTimeMS;
@@ -2268,7 +2262,7 @@ namespace Logic
                                         return this.Result;
                                     }
 
-                                    this.Result.State = true;
+                                    this.Result.ResultStatus = true;
                                     this.Result.Memo = "Success";
                                     this.Result.ID = NewFile.ID;
                                     TA.Commit();
@@ -2284,15 +2278,15 @@ namespace Logic
         public Entity.DownloadFileEntity DownloadDemo(string Token, int TokenType, string LangType)
         {
             Entity.DownloadFileEntity Result = new();
-            if (Param.Token == "")
+            if (Token == "")
             {
                 Result.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
-                Result.Memo = "Type error";
+                Result.Memo = "TokenType error";
             }
-            else if (this.TokenVerify(Param.Token, Param.Type) == 0)
+            else if (this.TokenVerify(Token, TokenType) == 0)
             {
                 Result.Memo = "Token lost";
             }
@@ -2320,7 +2314,7 @@ namespace Logic
                             var FileEntityPathList = Tools.Explode("/", FileEntity);
                             Result.FileEntityName = FileEntityPathList[FileEntityPathList.Length - 1];
                             Result.Data = Tools.ByteToBase64(Data);
-                            Result.State = true;
+                            Result.ResultStatus = true;
                             Result.Memo = "Success";
                         }
                     }
@@ -2336,13 +2330,13 @@ namespace Logic
 
         public Entity.CommonResultEntity ImportUser(string Token, int TokenType, IFormFile FileEntity)
         {
-            if (Param.Token == "")
+            if (Token == "")
             {
                 this.Result.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
-                this.Result.Memo = "Type error";
+                this.Result.Memo = "TokenType error";
             }
             else if (FileEntity == null)
             {
@@ -2350,7 +2344,7 @@ namespace Logic
             }
             else
             {
-                var User = this.TokenVerify(Param.Token, Param.Type);
+                var User = this.TokenVerify(Token, TokenType);
                 if (User == 0)
                 {
                     this.Result.Memo = "Token lost";
@@ -2462,7 +2456,7 @@ namespace Logic
                             return this.Result;
                         }
 
-                        var UserObject = new Entity.UserModel();
+                        var UserObject = new Entity.UserEntity();
                         var Secret = Tools.Random(5);
                         UserObject.Account = u.Account.ToLower();
                         UserObject.Name = u.Name;
@@ -2475,7 +2469,7 @@ namespace Logic
                         try
                         {
                             this.UserModel.Insert(UserObject);
-                            this.Result.State = true;
+                            this.Result.ResultStatus = true;
                             this.Result.Memo = "Success";
                         }
                         catch (Exception e)
@@ -2497,7 +2491,7 @@ namespace Logic
                     TA.Commit();
 
                     Tools.DelFile(FileData);
-                    this.Result.State = true;
+                    this.Result.ResultStatus = true;
                     this.Result.Memo = "Success";
                 }
             }

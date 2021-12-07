@@ -24,11 +24,15 @@ namespace Entity
     public class CommonListResultEntity : Base
     {
         [JsonPropertyName("DataList")]
-        public dynamic Data { get; set; }
+        public dynamic DataList { get; set; }
+
+        [JsonPropertyName("Info")]
+        public dynamic Info { get; set; }
 
         public CommonListResultEntity()
         {
-            this.Data = null;
+            this.DataList = null;
+            this.Info = null;
         }
     }
 
@@ -53,7 +57,7 @@ namespace Entity
 
         public DownloadFileEntity()
         {
-            this.State = false;
+            this.ResultStatus = false;
             this.Memo = "";
             this.FileEntityName = "";
             this.Data = "";
@@ -271,6 +275,20 @@ namespace Entity
             this.Admin = 0;
             this.Master = 0;
             this.DepartmentID = 0;
+        }
+    }
+
+    public class CommonImportUserEntity
+    {
+        public string Account { get; set; }
+        public string Name { get; set; }
+        public string Password { get; set; }
+
+        public CommonImportUserEntity()
+        {
+            Account = "";
+            Name = "";
+            Password = "";
         }
     }
 }

@@ -10,13 +10,13 @@ namespace Logic
 
         public Entity.ConfigEntity CheckConfig(string Token, int TokenType, int ID)
         {
-            Models.ConfigDataModel Result = new();
+            Entity.ConfigEntity Result = new();
 
-            if (Param.Token == "")
+            if (Token == "")
             {
                 Result.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
                 Result.Memo = "Type error";
             }
@@ -26,7 +26,7 @@ namespace Logic
             }
             else
             {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
+                var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
                     Result.Memo = "Token lost";
@@ -37,9 +37,12 @@ namespace Logic
                 }
                 else
                 {
-                    Result.State = true;
-                    Result.Memo = "Success";
-                    Result.Data = this.ConfigSQLModel.Find(ID);
+                    Result = this.ConfigModel.Find(ID);
+                    if (Result.ID > 0)
+                    {
+                        Result.ResultStatus = true;
+                        Result.Memo = "Success";
+                    }
                 }
             }
 
@@ -48,11 +51,11 @@ namespace Logic
 
         public Entity.CommonResultEntity ModifyConfig(string Token, int TokenType, int ID, Entity.ConfigEntity Data)
         {
-            if (Param.Token == "")
+            if (Token == "")
             {
                 this.Result.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
                 this.Result.Memo = "Type error";
             }
@@ -62,7 +65,7 @@ namespace Logic
             }
             else
             {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
+                var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
                     this.Result.Memo = "Token lost";
@@ -73,16 +76,16 @@ namespace Logic
                 }
                 else
                 {
-                    Entity.ConfigModel ConfigData = new();
+                    Entity.ConfigEntity ConfigData = new();
                     ConfigData.ConfigKey = Data.ConfigKey;
                     ConfigData.ConfigDesc = Data.ConfigDesc;
                     ConfigData.ConfigType = Data.ConfigType;
                     ConfigData.ConfigValue = Data.ConfigValue;
                     try
                     {
-                        this.Result.State = true;
+                        this.Result.ResultStatus = true;
                         this.Result.Memo = "Success";
-                        this.ConfigSQLModel.Modify(ID, ConfigData);
+                        this.ConfigModel.Modify(ID, ConfigData);
                         this.DbContent.SaveChanges();
                     }
                     catch (Exception e)
@@ -97,18 +100,17 @@ namespace Logic
 
         public Entity.CommonResultEntity GetHardDiskSpaceInfo(string Token, int TokenType)
         {
-            Models.CommonDataModel Result = new();
-            if (Param.Token == "")
+            if (Token == "")
             {
                 Result.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
                 Result.Memo = "Type error";
             }
             else
             {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
+                var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
                     Result.Memo = "Token lost";
@@ -127,7 +129,7 @@ namespace Logic
                             var LSUM = Drive.TotalSize / (1024 * 1024 * 1024); // 总空间(GB)
                             var LDR = Drive.TotalFreeSpace / (1024 * 1024 * 1024); // 剩余空间(GB)
                             Result.Data = LSUM.ToString() + "_" + LDR.ToString();
-                            Result.State = true;
+                            Result.ResultStatus = true;
                             Result.Memo = "Success";
                         }
                     }
@@ -138,12 +140,11 @@ namespace Logic
 
         public Entity.CommonResultEntity DecryptProInspection(string Token, int TokenType, string Data, int CodeType = 1)
         {
-            Models.CommonDataModel Result = new();
-            if (Param.Token == "")
+            if (Token == "")
             {
                 Result.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
                 Result.Memo = "Type error";
             }
@@ -157,14 +158,14 @@ namespace Logic
             }
             else
             {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
+                var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
                     Result.Memo = "Token lost";
                 }
                 else
                 {
-                    Result.State = true;
+                    Result.ResultStatus = true;
                     Result.Memo = "Success";
                     Result.Data = Tools.AES_Decrypt(Data, CodeType);
                 }
@@ -174,12 +175,11 @@ namespace Logic
 
         public Entity.CommonResultEntity GenerateActivationCodeInspection(string Token, int TokenType, string EncryptedCode, int NumberOfAccounts = 5)
         {
-            Models.CommonDataModel Result = new();
-            if (Param.Token == "")
+            if (Token == "")
             {
                 Result.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
                 Result.Memo = "Type error";
             }
@@ -202,7 +202,7 @@ namespace Logic
                 DeCodeArr[2] = (Tools.StrToInt(DeCodeArr[2]) + NumberOfAccounts).ToString(); // 计算总账号数
                 var EnCode = Tools.Implode("_", DeCodeArr);
                 Result.Data = Tools.AES_Encrypt(EnCode, 2);
-                Result.State = true;
+                Result.ResultStatus = true;
                 Result.Memo = "Success";
             }
             return Result;
@@ -210,25 +210,24 @@ namespace Logic
 
         public Entity.CommonResultEntity GetHardwareCode(string Token, int TokenType)
         {
-            Models.CommonDataModel Result = new();
-            if (Param.Token == "")
+            if (Token == "")
             {
                 Result.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
                 Result.Memo = "Type error";
             }
             else
             {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
+                var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
                     Result.Memo = "Token lost";
                 }
                 else
                 {
-                    Result.State = true;
+                    Result.ResultStatus = true;
                     Result.Memo = "Success";
                     var OSType = Tools.OSType();
                     string Motherboard;
@@ -248,10 +247,10 @@ namespace Logic
                     if (Motherboard != "")
                     {
                         var OldAccountsNum = "0";
-                        var CheckProfile = JsonTools.CheckProfile(Tools.RootPath() + "Profile.json"); // 是否已经激活过
-                        if (CheckProfile.ActivationCode != "")
+                        var ActivationCode = ConfigHelper.AppSettingsHelper.GetSettings("ActivationCode");
+                        if (ActivationCode != "")
                         {
-                            var DeCode = Tools.AES_Decrypt(CheckProfile.ActivationCode, 3);
+                            var DeCode = Tools.AES_Decrypt(ActivationCode, 3);
                             OldAccountsNum = Tools.Explode("_", DeCode)[2];
                         }
                         Motherboard = Tools.AES_Encrypt(Tools.TimeMS().ToString() + "_" + Motherboard + "_" + OldAccountsNum);
@@ -265,11 +264,11 @@ namespace Logic
 
         public Entity.CommonResultEntity ProductActivation(string Token, int TokenType, string EncryptedCode)
         {
-            if (Param.Token == "")
+            if (Token == "")
             {
                 this.Result.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
                 this.Result.Memo = "Type error";
             }
@@ -279,7 +278,7 @@ namespace Logic
             }
             else
             {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
+                var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
                     this.Result.Memo = "Token lost";
@@ -290,13 +289,13 @@ namespace Logic
                     if (DeCode != "")
                     {
                         var DeCodeArr = Tools.Explode("_", DeCode);
-                        var ProfileObject = JsonTools.CheckProfile(Tools.RootPath() + "Profile.json");
-                        if (ProfileObject.ActivationCode != "")
+                        var ActivationCode = ConfigHelper.AppSettingsHelper.GetSettings("ActivationCode");
+                        if (ActivationCode != "")
                         {
-                            if (ProfileObject.ActivationCode != EncryptedCode)
+                            if (ActivationCode != EncryptedCode)
                             {
                                 var NewHardwareCode = DeCodeArr[1];
-                                var OldHardwareCode = Tools.Explode("_", Tools.AES_Decrypt(ProfileObject.ActivationCode, 3))[1];
+                                var OldHardwareCode = Tools.Explode("_", Tools.AES_Decrypt(ActivationCode, 3))[1];
                                 if (OldHardwareCode != NewHardwareCode)
                                 {
                                     this.Result.Memo = "Activation fails";
@@ -336,15 +335,18 @@ namespace Logic
                                 }
                             }
                         }
-                        ProfileObject.ActivationCode = Tools.AES_Encrypt(Tools.Implode("_", DeCodeArr), 3); // 解密
-                        var JsonString = JsonTools.ProfileToString(ProfileObject); // 配置项转为json格式
-                        var Profile = Tools.RootPath() + "Profile.json"; // 查看配置文件
-                        JsonTools.StringToFile(Profile, JsonString); // 写入文件
-
-                        this.Result.State = true;
-                        var NumberOfAccounts = Tools.StrToInt32(DeCodeArr[2]) + 5;
-                        this.Result.Memo = "The system has opened " + NumberOfAccounts.ToString() + " accounts";
-                        this.Result.ID = Tools.StrToInt32(NumberOfAccounts.ToString());
+                        ActivationCode = Tools.AES_Encrypt(Tools.Implode("_", DeCodeArr), 3); // 解密
+                        if (ConfigHelper.AppSettingsHelper.WriteSettings("ActivationCode", ActivationCode)) // 写入文件
+                        {
+                            this.Result.ResultStatus = true;
+                            var NumberOfAccounts = Tools.StrToInt32(DeCodeArr[2]) + 5;
+                            this.Result.Memo = "The system has opened " + NumberOfAccounts.ToString() + " accounts";
+                            this.Result.ID = Tools.StrToInt32(NumberOfAccounts.ToString());
+                        }
+                        else
+                        {
+                            this.Result.Memo = "Activation fails";
+                        }
                     }
                 }
             }
@@ -353,37 +355,37 @@ namespace Logic
 
         public Entity.CommonResultEntity AccountNumberStatistics(string Token, int TokenType)
         {
-            Models.CommonDataModel Result = new();
-            if (Param.Token == "")
+
+            if (Token == "")
             {
                 Result.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
                 Result.Memo = "Type error";
             }
             else
             {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
+                var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
                     Result.Memo = "Token lost";
                 }
                 else
                 {
-                    var UserCount = this.UserSQLModel.CountUser(); // 统计已使用的账号
-                    var ProfileObject = JsonTools.CheckProfile(Tools.RootPath() + "Profile.json");
-                    if (ProfileObject.ActivationCode == "")
+                    var UserCount = this.UserModel.CountUser(); // 统计已使用的账号
+                    var ActivationCode = ConfigHelper.AppSettingsHelper.GetSettings("ActivationCode");
+                    if (ActivationCode == "")
                     {
                         Result.Data = UserCount.ToString() + "_5";
                     }
                     else
                     {
-                        var ActivationCodeString = Tools.AES_Decrypt(ProfileObject.ActivationCode, 3);
+                        var ActivationCodeString = Tools.AES_Decrypt(ActivationCode, 3);
                         var AccountNumber = (Tools.StrToInt32(Tools.Explode("_", ActivationCodeString)[2]) + 5).ToString();
                         Result.Data = UserCount.ToString() + "_" + AccountNumber;
                     }
-                    Result.State = true;
+                    Result.ResultStatus = true;
                     Result.Memo = "Success";
                 }
             }

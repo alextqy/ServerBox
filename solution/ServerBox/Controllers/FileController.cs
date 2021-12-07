@@ -382,7 +382,7 @@ namespace ServerBox.Controllers
         public IActionResult SelectFileExtra(string Token, int TokenType, int FileID, string ExtraDesc, int ExtraType, string ExtraValue)
         {
             Token = Token == null ? "" : Token.Trim();
-            Entity.FileExtraEntity Data = new();
+            Entity.FileExtraSelectParamEntity Data = new();
             Data.FileID = FileID;
             Data.ExtraDesc = ExtraDesc.Trim();
             Data.ExtraType = ExtraType;

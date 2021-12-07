@@ -11,17 +11,17 @@ namespace Logic
 
         public Entity.CommonResultEntity CreateDepartment(string Token, int TokenType, Entity.DepartmentEntity Data)
         {
-            if (Param.Token == "")
+            if (Token == "")
             {
                 this.Result.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
                 this.Result.Memo = "Type error";
             }
             else
             {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
+                var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
                     this.Result.Memo = "Token lost";
@@ -32,7 +32,7 @@ namespace Logic
                 }
                 else
                 {
-                    var Info = this.DepartmentSQLModel.FindByName(Data.DepartmentName, Data.ParentID);
+                    var Info = this.DepartmentModel.FindByName(Data.DepartmentName, Data.ParentID);
                     if (Info.ID != 0)
                     {
                         this.Result.Memo = "DepartmentName is exists";
@@ -59,7 +59,7 @@ namespace Logic
                         {
                             if (Data.ParentID > 0)
                             {
-                                var ParentInfo = this.DepartmentSQLModel.Find(Data.ParentID);
+                                var ParentInfo = this.DepartmentModel.Find(Data.ParentID);
                                 if (ParentInfo.ID == 0)
                                 {
                                     this.Result.Memo = "Parent Department is not exists";
@@ -67,18 +67,18 @@ namespace Logic
                                 }
                             }
 
-                            Entity.DepartmentModel DepartmentData = new();
+                            Entity.DepartmentEntity DepartmentData = new();
                             DepartmentData.DepartmentName = Data.DepartmentName;
                             DepartmentData.ParentID = Data.ParentID;
                             DepartmentData.State = 1;
                             DepartmentData.Createtime = Tools.Time32();
                             try
                             {
-                                this.DepartmentSQLModel.Insert(DepartmentData);
+                                this.DepartmentModel.Insert(DepartmentData);
                                 this.DbContent.SaveChanges();
                                 this.Result.ID = DepartmentData.ID;
                                 this.Result.Memo = "Success";
-                                this.Result.State = true;
+                                this.Result.ResultStatus = true;
                             }
                             catch (Exception e)
                             {
@@ -94,11 +94,11 @@ namespace Logic
 
         public Entity.CommonResultEntity DeleteDepartment(string Token, int TokenType, int ID)
         {
-            if (Param.Token == "")
+            if (Token == "")
             {
                 this.Result.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
                 this.Result.Memo = "Type error";
             }
@@ -108,7 +108,7 @@ namespace Logic
             }
             else
             {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
+                var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
                     this.Result.Memo = "Token lost";
@@ -119,13 +119,13 @@ namespace Logic
                 }
                 else
                 {
-                    var DepartmentInfo = this.DepartmentSQLModel.Find(ID);
+                    var DepartmentInfo = this.DepartmentModel.Find(ID);
                     if (DepartmentInfo.ID > 0)
                     {
                         var TA = this.BeginTransaction();
                         try
                         {
-                            this.DepartmentFileSQLModel.DeleteByDepartmentID(DepartmentInfo.ID);
+                            this.DepartmentFileModel.DeleteByDepartmentID(DepartmentInfo.ID);
                             this.DbContent.SaveChanges();
                         }
                         catch (Exception e)
@@ -144,7 +144,7 @@ namespace Logic
                         else
                         {
                             TA.Commit();
-                            this.Result.State = true;
+                            this.Result.ResultStatus = true;
                             this.Result.Memo = "Success";
                         }
                     }
@@ -161,19 +161,19 @@ namespace Logic
         public bool DeleteDepartmentInRecursion(int ID)
         {
             // 获取部门下的所有人员 并设置为无部门状态
-            Models.UserSelectParamModel UserSelectParam = new();
+            Entity.UserSelectParamEntity UserSelectParam = new();
             UserSelectParam.DepartmentID = ID;
-            var UserList = this.UserSQLModel.Select(UserSelectParam);
+            var UserList = this.UserModel.Select(UserSelectParam);
             if (UserList.Count > 0)
             {
                 try
                 {
                     for (var i = 0; i < UserList.Count; i++)
                     {
-                        Models.UserModifyParamModel Data = new();
+                        Entity.UserEntity Data = new();
                         Data.DepartmentID = 0;
                         Data.Admin = 1;
-                        this.UserSQLModel.Modify(UserList[i].ID, Data);
+                        this.UserModel.Modify(UserList[i].ID, Data);
                     }
                     this.DbContent.SaveChanges();
 
@@ -186,9 +186,9 @@ namespace Logic
             }
 
             // 子部门
-            Models.DepartmentSelectParamModel SubData = new();
+            Entity.DepartmentSelectParamEntity SubData = new();
             SubData.ParentID = ID;
-            var SubList = this.DepartmentSQLModel.Select(SubData);
+            var SubList = this.DepartmentModel.Select(SubData);
             var SubState = true;
             if (SubList.Count > 0)
             {
@@ -209,7 +209,7 @@ namespace Logic
 
             try
             {
-                this.DepartmentSQLModel.Delete(ID);
+                this.DepartmentModel.Delete(ID);
                 this.DbContent.SaveChanges();
                 return true;
             }
@@ -222,17 +222,17 @@ namespace Logic
 
         public Entity.CommonResultEntity ToggleDepartment(string Token, int TokenType, int ID)
         {
-            if (Param.Token == "")
+            if (Token == "")
             {
                 this.Result.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
                 this.Result.Memo = "Type error";
             }
             else
             {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
+                var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
                     this.Result.Memo = "Token lost";
@@ -243,7 +243,7 @@ namespace Logic
                 }
                 else
                 {
-                    var Info = this.DepartmentSQLModel.Find(ID);
+                    var Info = this.DepartmentModel.Find(ID);
                     if (Info.ID == 0)
                     {
                         this.Result.Memo = "Data not found";
@@ -260,9 +260,9 @@ namespace Logic
                         }
                         try
                         {
-                            this.DepartmentSQLModel.Modify(ID, Info);
+                            this.DepartmentModel.Modify(ID, Info);
                             this.DbContent.SaveChanges();
-                            this.Result.State = true;
+                            this.Result.ResultStatus = true;
                             this.Result.Memo = "Success";
                         }
                         catch (Exception e)
@@ -278,17 +278,17 @@ namespace Logic
 
         public Entity.CommonResultEntity ModifyDepartment(string Token, int TokenType, int ID, Entity.DepartmentEntity Data)
         {
-            if (Param.Token == "")
+            if (Token == "")
             {
                 this.Result.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
                 this.Result.Memo = "Type error";
             }
             else
             {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
+                var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
                     this.Result.Memo = "Token lost";
@@ -299,7 +299,7 @@ namespace Logic
                 }
                 else
                 {
-                    var Info = this.DepartmentSQLModel.Find(ID);
+                    var Info = this.DepartmentModel.Find(ID);
                     if (Info.ID == 0)
                     {
                         this.Result.Memo = "Data not found";
@@ -318,7 +318,7 @@ namespace Logic
                         {
                             if (Data.ParentID > 0)
                             {
-                                var ParentInfo = this.DepartmentSQLModel.Find(Data.ParentID);
+                                var ParentInfo = this.DepartmentModel.Find(Data.ParentID);
                                 if (ParentInfo.ID == 0)
                                 {
                                     this.Result.Memo = "Parent Department is not exists";
@@ -328,7 +328,7 @@ namespace Logic
 
                             if (Info.DepartmentName != Data.DepartmentName || Info.ParentID != Data.ParentID)
                             {
-                                var CheckInfo = this.DepartmentSQLModel.FindByName(Data.DepartmentName, Data.ParentID);
+                                var CheckInfo = this.DepartmentModel.FindByName(Data.DepartmentName, Data.ParentID);
                                 if (CheckInfo.ID != 0)
                                 {
                                     this.Result.Memo = "Department is exists";
@@ -340,9 +340,9 @@ namespace Logic
                             Info.ParentID = Data.ParentID;
                             try
                             {
-                                this.DepartmentSQLModel.Modify(ID, Info);
+                                this.DepartmentModel.Modify(ID, Info);
                                 this.DbContent.SaveChanges();
-                                this.Result.State = true;
+                                this.Result.ResultStatus = true;
                                 this.Result.Memo = "Success";
                             }
                             catch (Exception e)
@@ -359,12 +359,12 @@ namespace Logic
 
         public Entity.DepartmentEntity DepartmentInfo(string Token, int TokenType, int ID)
         {
-            Models.DepartmentDataModel Result = new();
-            if (Param.Token == "")
+            Entity.DepartmentEntity Result = new();
+            if (Token == "")
             {
                 Result.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
                 Result.Memo = "Type error";
             }
@@ -374,7 +374,7 @@ namespace Logic
             }
             else
             {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
+                var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
                     Result.Memo = "Token lost";
@@ -385,12 +385,11 @@ namespace Logic
                 }
                 else
                 {
-                    var Data = this.DepartmentSQLModel.Find(ID);
+                    var Data = this.DepartmentModel.Find(ID);
                     if (Data.ID > 0)
                     {
-                        Result.State = true;
+                        Result.ResultStatus = true;
                         Result.Memo = "success";
-                        Result.Data = Data;
                     }
                     else
                     {
@@ -403,11 +402,11 @@ namespace Logic
 
         public Entity.CommonListResultEntity SelectDepartment(string Token, int TokenType, Entity.DepartmentSelectParamEntity Data)
         {
-            if (Param.Token == "")
+            if (Token == "")
             {
                 Result.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
                 Result.Memo = "Type error";
             }
@@ -424,7 +423,7 @@ namespace Logic
                 }
                 else
                 {
-                    this.Result.State = true;
+                    this.Result.ResultStatus = true;
                     this.Result.Memo = "Success";
                     this.Result.Data = this.DepartmentModel.Select(Data);
                 }
@@ -434,11 +433,11 @@ namespace Logic
 
         public Entity.CommonResultEntity CreateDepartmentExtra(string Token, int TokenType, Entity.DepartmentExtraEntity Data)
         {
-            if (Param.Token == "")
+            if (Token == "")
             {
                 this.Result.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
                 this.Result.Memo = "Type error";
             }
@@ -460,7 +459,7 @@ namespace Logic
             }
             else
             {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
+                var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
                     this.Result.Memo = "Token lost";
@@ -471,23 +470,23 @@ namespace Logic
                 }
                 else
                 {
-                    var DepartmentInfo = this.DepartmentSQLModel.Find(Data.DepartmentID);
+                    var DepartmentInfo = this.DepartmentModel.Find(Data.DepartmentID);
                     if (DepartmentInfo.ID == 0)
                     {
                         this.Result.Memo = "Department not found";
                     }
                     else
                     {
-                        Entity.DepartmentExtraModel DepartmentExtraData = new();
+                        Entity.DepartmentExtraEntity DepartmentExtraData = new();
                         DepartmentExtraData.DepartmentID = Data.DepartmentID;
                         DepartmentExtraData.ExtraDesc = Data.ExtraDesc;
                         DepartmentExtraData.ExtraType = Data.ExtraType;
                         DepartmentExtraData.ExtraValue = Data.ExtraValue;
                         try
                         {
-                            this.DepartmentExtraSQLModel.Insert(DepartmentExtraData);
+                            this.DepartmentExtraModel.Insert(DepartmentExtraData);
                             this.DbContent.SaveChanges();
-                            this.Result.State = true;
+                            this.Result.ResultStatus = true;
                             this.Result.Memo = "Success";
                         }
                         catch (Exception e)
@@ -503,11 +502,11 @@ namespace Logic
 
         public Entity.CommonResultEntity DeleteDepartmentExtra(string Token, int TokenType, int ID)
         {
-            if (Param.Token == "")
+            if (Token == "")
             {
                 this.Result.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
                 this.Result.Memo = "Type error";
             }
@@ -517,7 +516,7 @@ namespace Logic
             }
             else
             {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
+                var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
                     this.Result.Memo = "Token lost";
@@ -528,7 +527,7 @@ namespace Logic
                 }
                 else
                 {
-                    var Info = this.DepartmentExtraSQLModel.Find(ID);
+                    var Info = this.DepartmentExtraModel.Find(ID);
                     if (Info.ID == 0)
                     {
                         this.Result.Memo = "Data not found";
@@ -537,9 +536,9 @@ namespace Logic
                     {
                         try
                         {
-                            this.DepartmentExtraSQLModel.Delete(ID);
+                            this.DepartmentExtraModel.Delete(ID);
                             this.DbContent.SaveChanges();
-                            this.Result.State = true;
+                            this.Result.ResultStatus = true;
                             this.Result.Memo = "Success";
                         }
                         catch (Exception e)
@@ -555,11 +554,11 @@ namespace Logic
 
         public Entity.CommonListResultEntity SelectDepartmentExtra(string Token, int TokenType, Entity.DepartmentExtraSelectParamEntity Data)
         {
-            if (Param.Token == "")
+            if (Token == "")
             {
                 Result.Memo = "Token error";
             }
-            else if (Param.Type <= 0)
+            else if (TokenType <= 0)
             {
                 Result.Memo = "Type error";
             }
@@ -573,7 +572,7 @@ namespace Logic
             }
             else
             {
-                var UserID = this.TokenVerify(Param.Token, Param.Type);
+                var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
                     Result.Memo = "Token lost";
@@ -584,9 +583,9 @@ namespace Logic
                 }
                 else
                 {
-                    Result.State = true;
+                    Result.ResultStatus = true;
                     Result.Memo = "Success";
-                    Result.Data = this.DepartmentExtraSQLModel.Select(Data);
+                    Result.Data = this.DepartmentExtraModel.Select(Data);
                 }
             }
             return this.ResultList;

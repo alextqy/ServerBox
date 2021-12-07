@@ -46,7 +46,7 @@ namespace Models
             }
         }
 
-        public void Modify(int ID, Entity.UserModifyParamEntity Data)
+        public void Modify(int ID, Entity.UserEntity Data)
         {
             Entity.UserEntity Info = new();
             try
