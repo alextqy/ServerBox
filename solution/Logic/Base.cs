@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
 using Models;
+using Entity;
 using Npoi.Mapper;
 using Service;
 using System;
@@ -12,24 +13,24 @@ namespace Logic
         public string IP { set; get; }
         public DbContentCore DbContent { set; get; }
         public Tools Tools { set; get; }
-        public Entity.CommonResultEntity Result { set; get; }
-        public Entity.CommonListResultEntity ResultList { set; get; }
+        public CommonResultEntity Result { set; get; }
+        public CommonListResultEntity ResultList { set; get; }
 
-        public Models.ConfigModel ConfigModel { set; get; }
-        public Models.DepartmentExtraModel DepartmentExtraModel { set; get; }
-        public Models.DepartmentFileModel DepartmentFileModel { set; get; }
-        public Models.DepartmentModel DepartmentModel { set; get; }
-        public Models.DirExtraModel DirExtraModel { set; get; }
-        public Models.DirModel DirModel { set; get; }
-        public Models.FileExtraModel FileExtraModel { set; get; }
-        public Models.FileModel FileModel { set; get; }
-        public Models.FileTagModel FileTagModel { set; get; }
-        public Models.MessageModel MessageModel { set; get; }
-        public Models.OuterTokenModel OuterTokenModel { set; get; }
-        public Models.TagModel TagModel { set; get; }
-        public Models.TokenModel TokenModel { set; get; }
-        public Models.UserExtraModel UserExtraModel { set; get; }
-        public Models.UserModel UserModel { set; get; }
+        public ConfigModel ConfigModel { set; get; }
+        public DepartmentExtraModel DepartmentExtraModel { set; get; }
+        public DepartmentFileModel DepartmentFileModel { set; get; }
+        public DepartmentModel DepartmentModel { set; get; }
+        public DirExtraModel DirExtraModel { set; get; }
+        public DirModel DirModel { set; get; }
+        public FileExtraModel FileExtraModel { set; get; }
+        public FileModel FileModel { set; get; }
+        public FileTagModel FileTagModel { set; get; }
+        public MessageModel MessageModel { set; get; }
+        public OuterTokenModel OuterTokenModel { set; get; }
+        public TagModel TagModel { set; get; }
+        public TokenModel TokenModel { set; get; }
+        public UserExtraModel UserExtraModel { set; get; }
+        public UserModel UserModel { set; get; }
 
         public Base() { this.Tools = new Service.Tools(); }
 
@@ -37,25 +38,25 @@ namespace Logic
         {
             this.IP = IP;
             this.DbContent = DbContent;
-            this.Tools = new Service.Tools();
-            this.Result = new Entity.CommonResultEntity();
-            this.ResultList = new Entity.CommonListResultEntity();
+            this.Tools = new Tools();
+            this.Result = new CommonResultEntity();
+            this.ResultList = new CommonListResultEntity();
 
-            this.ConfigModel = new Models.ConfigModel(this.DbContent);
-            this.DepartmentExtraModel = new Models.DepartmentExtraModel(this.DbContent);
-            this.DepartmentFileModel = new Models.DepartmentFileModel(this.DbContent);
-            this.DepartmentModel = new Models.DepartmentModel(this.DbContent);
-            this.DirExtraModel = new Models.DirExtraModel(this.DbContent);
-            this.DirModel = new Models.DirModel(this.DbContent);
-            this.FileExtraModel = new Models.FileExtraModel(this.DbContent);
-            this.FileModel = new Models.FileModel(this.DbContent);
-            this.FileTagModel = new Models.FileTagModel(this.DbContent);
-            this.MessageModel = new Models.MessageModel(this.DbContent);
-            this.OuterTokenModel = new Models.OuterTokenModel(this.DbContent);
-            this.TagModel = new Models.TagModel(this.DbContent);
-            this.TokenModel = new Models.TokenModel(this.DbContent);
-            this.UserExtraModel = new Models.UserExtraModel(this.DbContent);
-            this.UserModel = new Models.UserModel(this.DbContent);
+            this.ConfigModel = new ConfigModel(this.DbContent);
+            this.DepartmentExtraModel = new DepartmentExtraModel(this.DbContent);
+            this.DepartmentFileModel = new DepartmentFileModel(this.DbContent);
+            this.DepartmentModel = new DepartmentModel(this.DbContent);
+            this.DirExtraModel = new DirExtraModel(this.DbContent);
+            this.DirModel = new DirModel(this.DbContent);
+            this.FileExtraModel = new FileExtraModel(this.DbContent);
+            this.FileModel = new FileModel(this.DbContent);
+            this.FileTagModel = new FileTagModel(this.DbContent);
+            this.MessageModel = new MessageModel(this.DbContent);
+            this.OuterTokenModel = new OuterTokenModel(this.DbContent);
+            this.TagModel = new TagModel(this.DbContent);
+            this.TokenModel = new TokenModel(this.DbContent);
+            this.UserExtraModel = new UserExtraModel(this.DbContent);
+            this.UserModel = new UserModel(this.DbContent);
         }
 
         public IDbContextTransaction BeginTransaction()
@@ -63,9 +64,9 @@ namespace Logic
             return this.DbContent.Database.BeginTransaction();
         }
 
-        public Entity.DirEntity RootPath(int UserID)
+        public DirEntity RootPath(int UserID)
         {
-            Entity.DirEntity DirInfo = new();
+            DirEntity DirInfo = new();
             var UserInfo = this.UserModel.Find(UserID);
             if (UserInfo.ID != 0)
             {
@@ -244,7 +245,7 @@ namespace Logic
 
         public void WTL(string IP, string Content, int ActionType)
         {
-            // Models.Entity.LogModel Data = new();
+            // LogModel Data = new();
             // Data.IP = IP;
             // Data.ActionType = ActionType;
             // Data.ActionTime = Convert.ToInt32(Tools.Time());
@@ -264,16 +265,16 @@ namespace Logic
             this.StartRow = StartRow;
         }
 
-        public List<Entity.CommonImportUserEntity> Reader()
+        public List<CommonImportUserEntity> Reader()
         {
             var Handler = new Mapper(this.FilePath) { FirstRowIndex = StartRow };
-            var UserList = new List<Entity.CommonImportUserEntity>();
+            var UserList = new List<CommonImportUserEntity>();
             var ObjectRows = Handler.Take<dynamic>("sheet1");
             foreach (var Rows in ObjectRows)
             {
                 string Row = Rows.Value.ToString().Replace("{", "").Replace("}", "").Replace(" ", "").Replace("=", " ").Trim();
                 var RowList = Row.Split(",");
-                var Obj = new Entity.CommonImportUserEntity
+                var Obj = new CommonImportUserEntity
                 {
                     Account = RowList[0].Split(" ")[1],
                     Name = RowList[1].Split(" ")[1],

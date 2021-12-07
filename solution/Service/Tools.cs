@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
@@ -59,7 +61,8 @@ namespace Service
         /// <returns></returns>
         public string RootPath()
         {
-            return (Directory.GetCurrentDirectory() + "/").Replace("\\", "/");
+            //return (Directory.GetCurrentDirectory() + "/").Replace("\\", "/");
+            return (Directory.GetParent("../") + "/").Replace("\\", "/");
         }
 
         /// <summary>
@@ -1076,6 +1079,51 @@ namespace Service
             }
         }
 
+        /// <summary>
+        /// Windows命令行
+        /// </summary>
+        /// <param name="CommandLine"></param>
+        /// <returns></returns>
+        public string CMD(string CommandLine)
+        {
+            CommandLine = CommandLine.Trim().TrimStart('&') + "&exit";//&执行两条命令的标识，这里第二条命令的目的是当调用ReadToEnd()方法是，不会出现假死状态
+            string outputMsg = "";
+            Process pro = new();
+            pro.StartInfo.FileName = "cmd.exe"; // 调用cmd.exe
+            pro.StartInfo.UseShellExecute = false; // 是否启用shell启动进程
+            pro.StartInfo.RedirectStandardError = true;
+            pro.StartInfo.RedirectStandardInput = true;
+            pro.StartInfo.RedirectStandardOutput = true; // 重定向的设置
+            pro.StartInfo.CreateNoWindow = true; // 不创建窗口
+            pro.Start();
+            pro.StandardInput.WriteLine(CommandLine); // 执行cmd语句
+            pro.StandardInput.AutoFlush = true;
 
+            outputMsg += pro.StandardOutput.ReadToEnd(); //读取返回信息
+            //outputMsg=outputMsg.Substring(outputMsg.IndexOf(commandLine)+commandLine.Length);//返回发送命令之后的信息
+
+            pro.WaitForExit(); //等待程序执行完退出，不过感觉不用这条命令，也可以达到同样的效果
+            pro.Close();
+            return outputMsg;
+        }
+
+        /// <summary>
+        /// 获取本地IP地址
+        /// </summary>
+        /// <returns></returns>
+        public string LocalIP()
+        {
+            string HostName = Dns.GetHostName();
+            var IPAddrList = Dns.GetHostAddresses(HostName);
+            var Result = "";
+            foreach (IPAddress IP in IPAddrList)
+            {
+                if (IP.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    Result = IP.ToString();
+                }
+            }
+            return Result;
+        }
     }
 }

@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using System;
-using System.Diagnostics;
+﻿using System;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
@@ -8,8 +6,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Service;
+using Microsoft.Data.Sqlite;
 
-namespace Logic
+namespace Init
 {
     public class Init : Base
     {
@@ -17,96 +16,46 @@ namespace Logic
         /// 项目启动
         /// </summary>
         /// <returns></returns>
-        public static void Run()
+        public bool Run()
         {
-            string Profile = Tools.RootPath() + "Profile.json"; // 查看配置文件
-            if (!File.Exists(Profile))
+            if (Convert.ToBoolean(ConfigHelper.AppSettingsHelper.GetSettings("SystemInit").ToLower()) == true) // 初始化判断
             {
-                bool Step1 = Tools.CreateFile(Profile); // 创建配置文件
-                if (!Step1)
-                {
-                    Console.WriteLine("ERROR: Failed to create configuration file!");
-                    DelInitFile(); // 回到起始状态
-                    Environment.Exit(0); // 程序终止
-                    return;
-                }
-
-                // 写入初始化配置数据
-                SystemProfile ProfileObject = new(); // 实例化配置项
-                string JsonString = JsonTools.ProfileToString(ProfileObject); // 配置项转为json格式
-                bool Step2 = JsonTools.StringToFile(Profile, JsonString); // 写入文件
-                if (!Step2)
-                {
-                    Console.WriteLine("ERROR: Failed to modify configuration file!");
-                    DelInitFile(); // 回到起始状态
-                    Environment.Exit(0); // 程序终止
-                    return;
-                }
-            }
-
-            SystemProfile Config = SystemProfile.CheckConfig(); // 获取配置项实体
-            if (Config.SystemInit) // 初始化判断
-            {
-                DelInitFile(); // 回到起始状态
+                #region Step1 初始化项目文件
+                BakInitFile(); // 设置为起始状态
                 string BaseDir = Tools.RootPath() + "Matrix"; // 新建基础目录
-                if (Tools.DirIsExists(BaseDir)) // 清理旧目录
-                {
-                    Tools.DelDir(BaseDir, true);
-                }
-                bool Step3 = Tools.CreateDir(BaseDir); // 创建目录
-                if (!Step3)
+                if (!Tools.CreateDir(BaseDir))
                 {
                     Console.WriteLine("ERROR: Failed to make base dir!");
                     DelInitFile(); // 回到起始状态
-                    Environment.Exit(0); // 程序终止
-                    return;
+                    return false;
                 }
-
                 string DaoRoom = Tools.RootPath() + "DaoRoom.db"; // 数据库文件路径
-                bool Step4 = Tools.CreateFile(DaoRoom); // 创建数据库文件
-                if (!Step4)
+                if (!Tools.CreateFile(DaoRoom))
                 {
                     Console.WriteLine("ERROR: Failed to make database file!");
                     DelInitFile(); // 回到起始状态
-                    Environment.Exit(0); // 程序终止
-                    return;
+                    return false;
                 }
-
-                // 连接数据库
-                string ConString = "Data Source = " + DaoRoom;
-                SqliteConnection SqliteObject = new(ConString);
+                SqliteConnection SqliteObject = new("Data Source = " + DaoRoom); // 连接数据库
                 try
                 {
                     SqliteObject.Open(); // 打开链接
+                    SqliteCommand InitDatabase = new(CreateTable(), SqliteObject);// 初始化数据表
+                    InitDatabase.ExecuteNonQuery();
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e.Message);
                     Console.WriteLine("ERROR: Failed to connect database!");
                     DelInitFile(); // 回到起始状态
-                    Environment.Exit(0); // 程序终止
-                    return;
+                    return false;
                 }
+                #endregion
 
-                // 初始化数据表
+                #region Step2 初始化系统数据
                 try
                 {
-                    SqliteCommand InitDatabase = new(CreateTable(), SqliteObject); // 执行SQL
-                    InitDatabase.ExecuteNonQuery();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                    Console.WriteLine("ERROR: Failed to initialize database!");
-                    SqliteObject.Close(); // 关闭链接
-                    DelInitFile(); // 回到起始状态
-                    Environment.Exit(0); // 程序终止
-                    return;
-                }
-
-                // 初始化系统数据
-                try
-                {
+                    // 初始化超级管理员数据
                     int Secret = Tools.Random(5); // 获取随机数
                     string PWD = "123456"; // 设置管理员初始密码
                     string Password = Tools.UserPWD(PWD, Secret.ToString()); // 初始化生成管理员密码
@@ -114,6 +63,7 @@ namespace Logic
                     SqliteCommand InitAdminData = new(AdminSQL, SqliteObject); // 执行SQL
                     InitAdminData.ExecuteNonQuery();
 
+                    // 初始化超级管理员文件夹数据
                     string AdminDirSQL = "INSERT INTO Dir (DirName, ParentID, UserID, Createtime) VALUES ('root', 0, 1, " + Tools.Time32().ToString() + ");"; // 设置管理员文件夹
                     SqliteCommand InitAdminDirData = new(AdminDirSQL, SqliteObject); // 执行SQL
                     InitAdminDirData.ExecuteNonQuery();
@@ -143,61 +93,62 @@ namespace Logic
                     string ConfigPreviewSizeLimitSQL = "INSERT INTO Config (ConfigKey, ConfigDesc, ConfigType, ConfigValue) VALUES ('PreviewSizeLimit', 'preview size limit', 0, '" + PreviewSizeLimit.ToString() + "');";
                     SqliteCommand InitConfigPreviewSizeLimitData = new(ConfigPreviewSizeLimitSQL, SqliteObject); // 执行SQL
                     InitConfigPreviewSizeLimitData.ExecuteNonQuery();
-
-                    SqliteObject.Close(); // 关闭链接
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e.Message);
                     Console.WriteLine("ERROR: Failed to initialize admin data!");
-                    SqliteObject.Close(); // 关闭链接
                     DelInitFile(); // 回到起始状态
-                    Environment.Exit(0); // 程序终止
-                    return;
+                    return false;
                 }
+                SqliteObject.Close(); // 关闭链接
+                #endregion
 
-                // 新建管理员目录
-                bool Step5 = Tools.CreateDir(BaseDir + "/root");
-                if (!Step5)
+                #region Step3 完成初始化
+                if (!Tools.CreateDir(BaseDir + "/root")) // 新建管理员目录
                 {
                     Console.WriteLine("ERROR: Failed to make admin dir!");
                     DelInitFile(); // 回到起始状态
-                    Environment.Exit(0); // 程序终止
-                    return;
+                    return false;
                 }
-
-                // 修改配置文件
-                Config.SystemInit = false; // 设置初始化完成状态
-                string JsonString = JsonTools.ProfileToString(Config);
-                bool Step6 = JsonTools.StringToFile(Profile, JsonString);
-                if (!Step6)
+                if (!ConfigHelper.AppSettingsHelper.WriteSettings("SystemInit", "false")) // 修改配置文件
                 {
                     Console.WriteLine("ERROR: Failed to modify configuration file!");
                     DelInitFile(); // 回到起始状态
-                    Environment.Exit(0); // 程序终止
-                    return;
+                    return false;
                 }
+                #endregion
 
                 Console.WriteLine("System initialization completed!");
             }
-            Console.WriteLine("========== Ver 1.0.0 beta ==========");
+            Console.WriteLine("========== Ver 0.0.1 beta ==========");
             Console.WriteLine("Bit Box is working!");
+            return true;
         }
 
         /// <summary>
         /// 删除配置文件和数据库文件
         /// </summary>
-        public static void DelInitFile()
+        public void BakInitFile()
         {
-            Tools.DelFile(Tools.RootPath() + "Profile.json");
+            Tools.RenameDir(Tools.RootPath() + "Matrix", "old_Matrix_" + Tools.TimeMS().ToString());
+            Tools.RenameFile(Tools.RootPath() + "DaoRoom.db", "old_DaoRoom.db_" + Tools.TimeMS().ToString());
+        }
+
+        /// <summary>
+        /// 删除配置文件和数据库文件
+        /// </summary>
+        public void DelInitFile()
+        {
+            Tools.DelDir(Tools.RootPath() + "Matrix");
             Tools.DelFile(Tools.RootPath() + "DaoRoom.db");
         }
 
         /// <summary>
-        /// 创建数据表
+        /// SQL
         /// </summary>
         /// <returns></returns>
-        public static string CreateTable()
+        public string CreateTable()
         {
             string SQLParam = "";
 
@@ -380,51 +331,79 @@ namespace Logic
         }
 
         /// <summary>
-        /// 定时任务
+        /// 设置数据库环境变量(以管理员身份运行系统)
         /// </summary>
-        public static void RunTask()
+        public bool SetDatabase()
         {
-            //Task.Factory.StartNew(() => Init.CrondTask1(), TaskCreationOptions.LongRunning);
-            Task.Factory.StartNew(() => Init.UDPServer(), TaskCreationOptions.LongRunning);
+            if (Tools.OSType() == "Windows")
+            {
+                var SysParentPath = (Directory.GetParent(Tools.RootPath()).Parent.ToString()).Replace("\\", "/");
+                var DatabasePath = SysParentPath + "/sqlite3";
+                if (!Tools.DirIsExists(DatabasePath))
+                {
+                    Console.WriteLine("Database not found !!!");
+                    return false;
+                }
+                else
+                {
+                    var PathValue = Environment.GetEnvironmentVariable("Path"); // 获取系统变量Path的值
+                    if (PathValue == null || PathValue == "")
+                    {
+                        Console.WriteLine("Sys environment error !!!");
+                        return false;
+                    }
+                    if (!PathValue.Contains(DatabasePath))
+                    {
+                        var PathData = PathValue + ";" + DatabasePath;
+                        try
+                        {
+                            Environment.SetEnvironmentVariable("Path", PathData, EnvironmentVariableTarget.Machine);
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.Message);
+                            Console.WriteLine("Please run the system as an administrator !!!");
+                            return false;
+                        }
+                    }
+                }
+            }
+            return true;
         }
 
-        //async public static void CrondTask1()
-        //{
-        //    await Task.Delay(0);
-        //    while (true)
-        //    {
-        //        Thread.Sleep(1000);
-        //        Console.WriteLine("A" + "---" + Tools.TimeMS());
-        //    }
-        //}
+        /// <summary>
+        /// 定时任务
+        /// </summary>
+        public void RunTask()
+        {
+            //Task.Factory.StartNew(() => Init.CrondTask1(), TaskCreationOptions.LongRunning);
+            Task.Factory.StartNew(() => UDPServer(), TaskCreationOptions.LongRunning);
+        }
 
         /// <summary>
         /// UDP广播服务
         /// </summary>
-        async public static void UDPServer()
+        async public void UDPServer()
         {
             await Task.Delay(0);
 
-            var UDPPort = ConfigHelper.GetConfig("UDP_Port");
-            var URLS = ConfigHelper.GetConfig("urls").Split(";");
-            var URL_HTTP = Tools.Explode(":", URLS[0])[2];
-            var URL_HTTPS = "null";
-            if (URLS[1].Length > 0)
-            {
-                URL_HTTPS = Tools.Explode(":", URLS[1])[2];
-            }
-            var Message = LocalIP() + ":" + URL_HTTP + "_" + LocalIP() + ":" + URL_HTTPS; // 待发送的信息
-
-            var IPSegment = Tools.Explode(".", LocalIP())[2]; // 获取服务器网段
+            //var UDPPort = ConfigHelper.AppSettingsHelper.GetSettings("UDPPort");
+            //var URLS = ConfigHelper.AppSettingsHelper.GetSettings("urls").Split(";");
+            //var URL_HTTP = Tools.Explode(":", URLS[0])[2];
+            //var URL_HTTPS = "null";
+            //if (URLS[1].Length > 0) { URL_HTTPS = Tools.Explode(":", URLS[1])[2]; }
+            //var Message = Tools.LocalIP() + ":" + URL_HTTP + "_" + Tools.LocalIP() + ":" + URL_HTTPS; // 待发送的信息
+            //var IPSegment = Tools.Explode(".", Tools.LocalIP())[2]; // 获取服务器网段
             // var UDPAddr = "192.168." + IPSegment + ".255"; // 构造UDP服务端地址
+            //var UDPAddr = IPAddress.Broadcast;
+
             var UDPAddr = IPAddress.Broadcast;
+            var UDPPort = ConfigHelper.AppSettingsHelper.GetSettings("UDPPort");
 
             UdpClient UDP = new();
             UDP.Connect(UDPAddr, Convert.ToInt32(UDPPort));
-            Byte[] Data = Encoding.Default.GetBytes(Message);
-
+            Byte[] Data = Encoding.Default.GetBytes(ConfigHelper.AppSettingsHelper.GetSettings("URL"));
             Console.WriteLine("UDP server working on {0}", UDPAddr + ":" + Convert.ToInt32(UDPPort));
-
             while (true)
             {
                 try
@@ -442,12 +421,12 @@ namespace Logic
         /// <summary>
         /// UDP广播接收服务(未使用)
         /// </summary>
-        async public static void ReceiveUDPServer()
+        async public void ReceiveUDPServer()
         {
             await Task.Delay(0);
             int Recv;
             var Data = new byte[64];
-            var UDPPort = ConfigHelper.GetConfig("UDP_Port");
+            var UDPPort = ConfigHelper.AppSettingsHelper.GetSettings("UDPPort");
             var Message = ""; // 待发送的信息
             Socket Newsock = new(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp); // 实例化端口
             Newsock.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true); // 地址可重复使用
@@ -455,7 +434,7 @@ namespace Logic
             try
             {
                 Newsock.Bind(IP); // 绑定网络地址
-                Console.WriteLine("UDP: server working on {0}", LocalIP() + ":" + Convert.ToInt32(UDPPort));
+                Console.WriteLine("UDP: server working on {0}", Tools.LocalIP() + ":" + Convert.ToInt32(UDPPort));
 
                 IPEndPoint Sender = new(IPAddress.Any, 0); // 获取得到客户端IP
                 var Remote = (EndPoint)(Sender); // 客户端IP
@@ -467,7 +446,7 @@ namespace Logic
                     var URLS = Environment.GetEnvironmentVariable("ASPNETCORE_URLS").Split(";");
                     var URL_HTTPS = Tools.Explode(":", URLS[0])[2];
                     var URL_HTTP = Tools.Explode(":", URLS[1])[2];
-                    Message = LocalIP() + ":" + URL_HTTPS + "_" + LocalIP() + ":" + URL_HTTP;
+                    Message = Tools.LocalIP() + ":" + URL_HTTPS + "_" + Tools.LocalIP() + ":" + URL_HTTP;
                 }
                 Data = Encoding.ASCII.GetBytes(Message);
                 Newsock.SendTo(Data, Data.Length, SocketFlags.None, Remote); // 发送信息
@@ -483,127 +462,6 @@ namespace Logic
             {
                 Newsock.Close();
             }
-        }
-
-        /// <summary>
-        /// 获取本地IP地址
-        /// </summary>
-        /// <returns></returns>
-        public static string LocalIP()
-        {
-            string HostName = Dns.GetHostName();
-            var IPAddrList = Dns.GetHostAddresses(HostName);
-            var Result = "";
-            foreach (IPAddress IP in IPAddrList)
-            {
-                if (IP.AddressFamily == AddressFamily.InterNetwork)
-                {
-                    Result = IP.ToString();
-                }
-            }
-            return Result;
-        }
-
-        async public static void GetProcesses()
-        {
-            await Task.Delay(0);
-            foreach (var P in Tools.GetProcesses())
-            {
-                Console.WriteLine(P.ProcessName);
-            }
-            Thread.Sleep(5000);
-        }
-
-        /// <summary>
-        /// 设置数据库环境变量(以管理员身份运行系统)
-        /// </summary>
-        public static void SetDatabase()
-        {
-            if (Tools.OSType() == "Windows")
-            {
-                var SysParentPath = (Directory.GetParent(Tools.RootPath()).Parent.ToString()).Replace("\\", "/");
-                var DatabasePath = SysParentPath + "/sqlite3";
-                if (!Tools.DirIsExists(DatabasePath))
-                {
-                    Console.WriteLine("Database not found !!!");
-                    System.Environment.Exit(0);
-                }
-                else
-                {
-                    var PathValue = Environment.GetEnvironmentVariable("Path"); // 获取系统变量Path的值
-                    if (PathValue == null || PathValue == "")
-                    {
-                        Console.WriteLine("Sys environment error !!!");
-                        System.Environment.Exit(0);
-                    }
-                    if (!PathValue.Contains(DatabasePath))
-                    {
-                        var PathData = PathValue + ";" + DatabasePath;
-                        try
-                        {
-                            Environment.SetEnvironmentVariable("Path", PathData, EnvironmentVariableTarget.Machine);
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine(e.Message);
-                            Console.WriteLine("Please run the system as an administrator !!!");
-                            System.Environment.Exit(0);
-                        }
-                    }
-                }
-            }
-        }
-
-        public static string CMD(string CommandLine)
-        {
-            CommandLine = CommandLine.Trim().TrimStart('&') + "&exit";//&执行两条命令的标识，这里第二条命令的目的是当调用ReadToEnd()方法是，不会出现假死状态
-            string outputMsg = "";
-            Process pro = new();
-            pro.StartInfo.FileName = "cmd.exe";//调用cmd.exe
-            pro.StartInfo.UseShellExecute = false;//是否启用shell启动进程
-            pro.StartInfo.RedirectStandardError = true;
-            pro.StartInfo.RedirectStandardInput = true;
-            pro.StartInfo.RedirectStandardOutput = true;//重定向的设置
-            pro.StartInfo.CreateNoWindow = true;//不创建窗口
-            pro.Start();
-            pro.StandardInput.WriteLine(CommandLine);//执行cmd语句
-            pro.StandardInput.AutoFlush = true;
-
-            outputMsg += pro.StandardOutput.ReadToEnd();//读取返回信息
-            //outputMsg=outputMsg.Substring(outputMsg.IndexOf(commandLine)+commandLine.Length);//返回发送命令之后的信息
-
-            pro.WaitForExit();//等待程序执行完退出，不过感觉不用这条命令，也可以达到同样的效果
-            pro.Close();
-
-            return outputMsg;
-        }
-    }
-
-    /// <summary>
-    /// 获取配置文件
-    /// </summary>
-    public static class _ConfigHelper
-    {
-        private static IConfiguration _Configuration { get; set; }
-
-        static _ConfigHelper()
-        {
-            //在当前目录或者根目录中寻找appsettings.json文件
-            var ConfigFileName = "appsettings.json";
-
-            var Directory = AppContext.BaseDirectory;
-            Directory = Directory.Replace("\\", "/");
-
-            var ConfigFilePath = $"{Directory}/{ConfigFileName}";
-
-            var Builder = new ConfigurationBuilder().AddJsonFile(ConfigFilePath, false, true);
-
-            _Configuration = Builder.Build();
-        }
-
-        public static string GetConfig(string ConfigName)
-        {
-            return _Configuration[ConfigName];
         }
     }
 }

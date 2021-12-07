@@ -1,6 +1,7 @@
 desktop.ini
 /.vs
 /.vscode
+solution/Matrix
 
 solution/.vs
 
@@ -92,7 +93,6 @@ solution/ServerBox/output
 solution/ServerBox/app
 solution/ServerBox/Profile.json
 solution/ServerBox/DaoRoom.db
-solution/ServerBox/Matrix/*
 solution/ServerBox/Temp
 solution/ServerBox/.vscode
 solution/ServerBox/Upload

@@ -15,6 +15,7 @@ namespace ServerBox
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            //Environment.Exit(0); // ≥Ã–Ú÷’÷π
         }
         public IConfiguration Configuration { get; }
         public void ConfigureServices(IServiceCollection services)

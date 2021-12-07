@@ -17,18 +17,6 @@ namespace ConfigHelper
     public class AppSettingsObject
     {
         /// <summary>
-        /// 
-        /// </summary>
-        /// <value></value>
-        public string Logging { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value></value>
-        public string AllowedHosts { get; set; }
-
-        /// <summary>
         /// 项目地址
         /// </summary>
         /// <value></value>
@@ -64,8 +52,6 @@ namespace ConfigHelper
         // 配置项实体
         public AppSettingsObject()
         {
-            this.Logging = "";
-            this.AllowedHosts = "";
             this.URL = "";
             this.UDPPort = "";
             this.DataBase = "";

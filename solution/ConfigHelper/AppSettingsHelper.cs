@@ -9,6 +9,11 @@ namespace ConfigHelper
     {
         public AppSettingsHelper() { }
 
+        public static bool AppSettingsState()
+        {
+            return File.Exists(Directory.GetParent("../") + "/" + "appsettings.json");
+        }
+
         public static string GetSettings(string key)
         {
             var _Configuration = new ConfigurationBuilder().AddJsonFile(Directory.GetParent("../") + "/" + "appsettings.json", optional: true, reloadOnChange: true).Build();
