@@ -17,7 +17,6 @@
   <ItemGroup>
     <ProjectReference Include="..\ConfigHelper\ConfigHelper.csproj" />
     <ProjectReference Include="..\Entity\Entity.csproj" />
-    <ProjectReference Include="..\Log\Log.csproj" />
     <ProjectReference Include="..\Models\Models.csproj" />
     <ProjectReference Include="..\Service\Service.csproj" />
   </ItemGroup>
