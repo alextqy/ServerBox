@@ -281,14 +281,14 @@ namespace Init
                 ");";
 
             // log
-            SQLParam += "DROP TABLE IF EXISTS log;";
-            SQLParam += "CREATE TABLE log(" +
-                "ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
-                "IP VARCHAR(128) NOT NULL," +
-                "ActionType INT(1) NOT NULL," +
-                "ActionTime INT(10) NOT NULL," +
-                "ActionDesc VARCHAR(65535) NOT NULL" +
-                ");";
+            //SQLParam += "DROP TABLE IF EXISTS log;";
+            //SQLParam += "CREATE TABLE log(" +
+            //    "ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+            //    "IP VARCHAR(128) NOT NULL," +
+            //    "ActionType INT(1) NOT NULL," +
+            //    "ActionTime INT(10) NOT NULL," +
+            //    "ActionDesc VARCHAR(65535) NOT NULL" +
+            //    ");";
 
             // message
             SQLParam += "DROP TABLE IF EXISTS message;";

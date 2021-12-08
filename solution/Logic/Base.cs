@@ -241,14 +241,19 @@ namespace Logic
             }
         }
 
-        public void WTL(string IP, string Content, int ActionType)
+        /// <summary>
+        /// 日志记录
+        /// </summary>
+        /// <param name="Content"></param>
+        /// <param name="ActionType"></param>
+        /// <param name="IP"></param>
+        public bool WTL(string Content, int ActionType, string IP = "")
         {
-            // LogModel Data = new();
-            // Data.IP = IP;
-            // Data.ActionType = ActionType;
-            // Data.ActionTime = Convert.ToInt32(Tools.Time());
-            // Data.ActionDesc = Content;
-            // this.Insert(Data);
+            if (String.IsNullOrEmpty(IP))
+            {
+                IP = this.IP;
+            }
+            return true;
         }
     }
 

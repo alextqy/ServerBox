@@ -54,7 +54,7 @@ namespace Logic
                             {
                                 this.TokenModel.DeleteByUserID(Info.ID, TokenType);
                                 this.TokenModel.Insert(TokenData);
-                                this.WTL(this.IP, "User " + Info.Name + " sign in, (Account:" + Account + ", ID:" + Info.ID + ")", 1);
+                                this.WTL("User " + Info.Name + " sign in, (Account:" + Account + ", ID:" + Info.ID + ")", 1);
                                 this.DbContent.SaveChanges();
 
                                 if (!Tools.DirIsExists(Tools.BaseDir() + Account))
@@ -514,7 +514,7 @@ namespace Logic
                                 try
                                 {
                                     this.UserModel.Insert(UserData);
-                                    this.WTL(this.IP, "User（ID " + UserID + ")" + " Create User (Account " + Data.Account + ")", 2);
+                                    this.WTL("User（ID " + UserID + ")" + " Create User (Account " + Data.Account + ")", 2);
                                     this.DbContent.SaveChanges();
 
                                     Entity.DirEntity DirData = new();

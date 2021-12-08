@@ -352,10 +352,10 @@ namespace ServerBox.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("/Delete/Log")]
-        public IActionResult DeleteLog(string Token, int TokenType, int ID)
+        public IActionResult DeleteLog(string Token, int TokenType, int YMD)
         {
             Token = Token == null ? "" : Token.Trim().ToLower();
-            var Result = this.UserLogic.DeleteLog(Token, TokenType, ID);
+            var Result = this.UserLogic.DeleteLog(Token, TokenType, YMD);
             return Json(Result);
         }
 
