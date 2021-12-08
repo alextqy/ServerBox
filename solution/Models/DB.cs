@@ -6,10 +6,6 @@ namespace Models
 
     public class DbContentCore : DbContext
     {
-        public DbContentCore(DbContextOptions<DbContentCore> options) : base(options) { }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { }
-        protected override void OnModelCreating(ModelBuilder modelBuilder) { base.OnModelCreating(modelBuilder); }
-
         public DbSet<Entity.ConfigEntity> ConfigEntity { get; set; }
         public DbSet<Entity.DepartmentExtraEntity> DepartmentExtraEntity { get; set; }
         public DbSet<Entity.DepartmentEntity> DepartmentEntity { get; set; }
@@ -25,6 +21,10 @@ namespace Models
         public DbSet<Entity.DepartmentFileEntity> DepartmentFileEntity { get; set; }
         public DbSet<Entity.TagEntity> TagEntity { get; set; }
         public DbSet<Entity.FileTagEntity> FileTagEntity { get; set; }
+
+        public DbContentCore(DbContextOptions<DbContentCore> options) : base(options) { }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { }
+        protected override void OnModelCreating(ModelBuilder modelBuilder) { base.OnModelCreating(modelBuilder); }
     }
 
 }

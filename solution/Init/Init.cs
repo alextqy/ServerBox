@@ -29,7 +29,7 @@ namespace Init
         {
             if (Tools.OSType() == "Windows")
             {
-                var DatabasePath = Tools.RootPath() + "/sqlite3";
+                var DatabasePath = Tools.RootPath() + "sqlite3";
                 if (!Tools.DirIsExists(DatabasePath))
                 {
                     Console.WriteLine("Database not found !!!");
