@@ -3,7 +3,7 @@ desktop.ini
 /.vscode
 solution/.vs
 solution/Matrix
-/Log
+solution/Log
 solution/old_*
 solution/DaoRoom.db
 solution/Init.conf
@@ -89,15 +89,15 @@ solution/ServerBox/Log
 solution/ServerBox/output
 solution/ServerBox/app
 
-solution/Log/.vscode
-solution/Log/.vs
-solution/Log/.config
-solution/Log/v16
-solution/Log/obj
-solution/Log/bin
-solution/Log/Log
-solution/Log/output
-solution/Log/app
+solution/SysLog/.vscode
+solution/SysLog/.vs
+solution/SysLog/.config
+solution/SysLog/v16
+solution/SysLog/obj
+solution/SysLog/bin
+solution/SysLog/Log
+solution/SysLog/output
+solution/SysLog/app
 
 solution/MasterReset/.vscode
 solution/MasterReset/.vs

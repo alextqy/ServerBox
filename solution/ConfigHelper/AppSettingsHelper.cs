@@ -15,7 +15,7 @@ namespace ConfigHelper
         /// 初始化状态
         /// </summary>
         /// <returns></returns>
-        public static bool InitState() { return Tools.FileIsExists(Directory.GetParent("../") + "/" + "Init.conf"); }
+        public static bool InitState() { return Tools.FileIsExists(Tools.RootPath() + "Init.conf"); }
 
         /// <summary>
         /// 初始化系统完成
@@ -23,7 +23,7 @@ namespace ConfigHelper
         /// <returns></returns>
         public static bool SetInit()
         {
-            var InitFile = Directory.GetParent("../") + "/" + "Init.conf";
+            var InitFile = Tools.RootPath() + "Init.conf";
             if (!Tools.FileIsExists(InitFile))
             {
                 if (!Tools.CreateFile(InitFile))
@@ -39,7 +39,7 @@ namespace ConfigHelper
         /// 配置文件状态
         /// </summary>
         /// <returns></returns>
-        public static bool AppSettingsState() { return Tools.FileIsExists(Directory.GetParent("../") + "/" + "appsettings.json"); }
+        public static bool AppSettingsState() { return Tools.FileIsExists(Tools.RootPath() + "appsettings.json"); }
 
         /// <summary>
         /// 获取配置信息
@@ -48,10 +48,10 @@ namespace ConfigHelper
         /// <returns></returns>
         public static string GetSettings(string key)
         {
-            var _Configuration = new ConfigurationBuilder().AddJsonFile(Directory.GetParent("../") + "/" + "appsettings.json", optional: true, reloadOnChange: true).Build();
+            var _Configuration = new ConfigurationBuilder().AddJsonFile(Tools.RootPath() + "appsettings.json", optional: true, reloadOnChange: true).Build();
             return _Configuration[key];
 
-            //using StreamReader FilePath = new(Directory.GetParent("../") + "/" + "appsettings.json");
+            //using StreamReader FilePath = new(Tools.RootPath() + "appsettings.json");
             //using JsonTextReader Reader = new(FilePath);
             //JObject JsonObject = (JObject)JToken.ReadFrom(Reader);
             //Reader.Close();
@@ -60,7 +60,7 @@ namespace ConfigHelper
 
         //public static bool WriteSettings(string k, string v)
         //{
-        //    var FilePath = Directory.GetParent("../") + "/" + "appsettings.json";
+        //    var FilePath = Tools.RootPath() + "appsettings.json";
         //    JObject JsonObject;
         //    StreamReader JsonFile = new(FilePath);
         //    JsonTextReader Reader = new(JsonFile);

@@ -23,9 +23,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UDP", "UDP\UDP.csproj", "{6
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Init", "Init\Init.csproj", "{FC0B03DB-FCB5-4E51-8544-A2FFE0E386C7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Log", "Log\Log.csproj", "{B6E2E298-AE6C-4C51-B365-41137C0C7479}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SysLog", "Log\SysLog.csproj", "{B6E2E298-AE6C-4C51-B365-41137C0C7479}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrondTask", "CrondTask\CrondTask.csproj", "{2714D48B-DE57-4A10-8B1B-C1BC70EDB504}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrondTask", "CrondTask\CrondTask.csproj", "{2714D48B-DE57-4A10-8B1B-C1BC70EDB504}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

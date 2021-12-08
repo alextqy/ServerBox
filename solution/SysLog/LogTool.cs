@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Service;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -21,7 +22,9 @@ namespace Log
 
         public static void LogHandler()
         {
-
+            var LogDir = Tools.RootPath() + "Log";
+            //Tools.CreateDir(LogDir);
+            Console.WriteLine(LogDir);
         }
 
     }
