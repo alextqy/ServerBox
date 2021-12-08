@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 using System.IO;
 
 namespace ConfigHelper
@@ -28,10 +29,19 @@ namespace ConfigHelper
             JsonTextReader Reader = new(JsonFile);
             JsonObject = (JObject)JToken.ReadFrom(Reader);
             JsonObject[k] = v;
-            var Writer = new StreamWriter(FilePath);
-            JsonTextWriter Jsonwriter = new(Writer);
-            JsonObject.WriteTo(Jsonwriter);
-            return false;
+            try
+            {
+                using StreamWriter Writer = new(FilePath, false);
+                JsonTextWriter Jsonwriter = new(Writer);
+                JsonObject.WriteTo(Jsonwriter);
+                Writer.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+            return true;
         }
     }
 }

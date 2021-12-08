@@ -135,7 +135,7 @@ namespace Init
         /// </summary>
         public void DelInitFile()
         {
-            Tools.DelDir(Tools.RootPath() + "Matrix");
+            Tools.DelDir(Tools.RootPath() + "Matrix", true);
             Tools.DelFile(Tools.RootPath() + "DaoRoom.db");
         }
 
