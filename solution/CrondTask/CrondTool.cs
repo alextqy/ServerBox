@@ -1,4 +1,4 @@
-﻿using Log;
+﻿using SysLog;
 using System.Threading.Tasks;
 using UDP;
 

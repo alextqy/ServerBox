@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Log
+namespace SysLog
 {
     public class Base
     {
