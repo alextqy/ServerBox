@@ -41,7 +41,7 @@ namespace UDP
 
             UdpClient UDP = new();
             UDP.Connect(UDPAddr, Convert.ToInt32(UDPPort));
-            Byte[] Data = Encoding.Default.GetBytes(ConfigHelper.AppSettingsHelper.GetSettings("URL"));
+            Byte[] Data = Encoding.Default.GetBytes(ConfigHelper.AppSettingsHelper.GetSettings("URL").Replace("*", Tools.LocalIP()));
             Console.WriteLine("UDP server working on {0}", UDPAddr + ":" + Convert.ToInt32(UDPPort));
             while (true)
             {
@@ -60,7 +60,7 @@ namespace UDP
         /// <summary>
         /// UDP广播接收服务(未使用)
         /// </summary>
-        async public void ReceiveUDPServer()
+        public static async void ReceiveUDPServer()
         {
             await Task.Delay(0);
             int Recv;
