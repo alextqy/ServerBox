@@ -3,7 +3,7 @@ desktop.ini
 /.vscode
 solution/.vs
 solution/Matrix
-solution/Log
+/Log
 solution/old_*
 solution/DaoRoom.db
 solution/Init.conf
