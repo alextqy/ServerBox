@@ -11,15 +11,6 @@ namespace UDP
     public class UDPTool : Base
     {
         /// <summary>
-        /// 定时任务
-        /// </summary>
-        public static void RunTask()
-        {
-            //Task.Factory.StartNew(() => Init.CrondTask1(), TaskCreationOptions.LongRunning);
-            Task.Factory.StartNew(() => UDPServer(), TaskCreationOptions.LongRunning);
-        }
-
-        /// <summary>
         /// UDP广播服务
         /// </summary>
         public static async void UDPServer()

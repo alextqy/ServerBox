@@ -3,6 +3,7 @@ desktop.ini
 /.vscode
 solution/.vs
 solution/Matrix
+solution/Log
 solution/old_*
 solution/DaoRoom.db
 solution/Init.conf
@@ -117,3 +118,13 @@ solution/SystemUpdate/bin
 solution/SystemUpdate/Log
 solution/SystemUpdate/output
 solution/SystemUpdate/app
+
+solution/CrondTask/.vscode
+solution/CrondTask/.vs
+solution/CrondTask/.config
+solution/CrondTask/v16
+solution/CrondTask/obj
+solution/CrondTask/bin
+solution/CrondTask/Log
+solution/CrondTask/output
+solution/CrondTask/app

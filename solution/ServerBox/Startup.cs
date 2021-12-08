@@ -1,3 +1,4 @@
+using CrondTask;
 using Init;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -8,7 +9,6 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
-using UDP;
 
 namespace ServerBox
 {
@@ -22,7 +22,7 @@ namespace ServerBox
             if (!Init.CheckConfigFile()) { Environment.Exit(0); }
             if (!Init.SetDatabase()) { Environment.Exit(0); }
             if (!Init.Run()) { Environment.Exit(0); }
-            UDPTool.RunTask();
+            CrondTool.RunTask();
         }
         public IConfiguration Configuration { get; }
         public void ConfigureServices(IServiceCollection services)

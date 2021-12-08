@@ -75,7 +75,6 @@ namespace Models
             if (Data.Password != "")
             {
                 var CheckPassword = Tools.UserPWD(Data.Password, Info.Secret.ToString());
-                Console.WriteLine(CheckPassword);
                 if (Info.Password != CheckPassword)
                 {
                     var Secret = Tools.Random(5);
