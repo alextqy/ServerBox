@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
+using UDP;
 
 namespace ServerBox
 {
@@ -19,6 +20,7 @@ namespace ServerBox
             var Init = new SysInit();
             if (!Init.SetDatabase()) { Environment.Exit(0); }
             if (!Init.Run()) { Environment.Exit(0); }
+            UDPTool.RunTask();
         }
         public IConfiguration Configuration { get; }
         public void ConfigureServices(IServiceCollection services)

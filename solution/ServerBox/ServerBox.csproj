@@ -19,6 +19,7 @@
     <ProjectReference Include="..\Init\Init.csproj" />
     <ProjectReference Include="..\Logic\Logic.csproj" />
     <ProjectReference Include="..\Models\Models.csproj" />
+    <ProjectReference Include="..\UDP\UDP.csproj" />
   </ItemGroup>
 
 </Project>

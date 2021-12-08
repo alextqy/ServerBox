@@ -56,12 +56,20 @@ namespace Service
         }
 
         /// <summary>
+        /// 获取当前模块路径
+        /// </summary>
+        /// <returns></returns>
+        public string CurrentPath()
+        {
+            return (Directory.GetCurrentDirectory() + "/").Replace("\\", "/");
+        }
+
+        /// <summary>
         /// 获取当前程序根目录
         /// </summary>
         /// <returns></returns>
         public string RootPath()
         {
-            //return (Directory.GetCurrentDirectory() + "/").Replace("\\", "/");
             return (Directory.GetParent("../") + "/").Replace("\\", "/");
         }
 
