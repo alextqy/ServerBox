@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Models;
+using Service;
 
 namespace Logic
 {
@@ -247,7 +248,7 @@ namespace Logic
                     if (Motherboard != "")
                     {
                         var OldAccountsNum = "0";
-                        var ActivationCode = ConfigHelper.AppSettingsHelper.GetSettings("ActivationCode");
+                        var ActivationCode = ConfigHelper.AppSettingsHelper.ActivationCode();
                         if (ActivationCode != "")
                         {
                             var DeCode = Tools.AES_Decrypt(ActivationCode, 3);
@@ -289,7 +290,7 @@ namespace Logic
                     if (DeCode != "")
                     {
                         var DeCodeArr = Tools.Explode("_", DeCode);
-                        var ActivationCode = ConfigHelper.AppSettingsHelper.GetSettings("ActivationCode");
+                        var ActivationCode = ConfigHelper.AppSettingsHelper.ActivationCode();
                         if (ActivationCode != "")
                         {
                             if (ActivationCode != EncryptedCode)
@@ -336,7 +337,7 @@ namespace Logic
                             }
                         }
                         ActivationCode = Tools.AES_Encrypt(Tools.Implode("_", DeCodeArr), 3); // 解密
-                        if (ConfigHelper.AppSettingsHelper.WriteSettings("ActivationCode", ActivationCode)) // 写入文件
+                        if (ConfigHelper.AppSettingsHelper.Activation(ActivationCode)) // 写入文件
                         {
                             this.Result.ResultStatus = true;
                             var NumberOfAccounts = Tools.StrToInt32(DeCodeArr[2]) + 5;
@@ -374,7 +375,7 @@ namespace Logic
                 else
                 {
                     var UserCount = this.UserModel.CountUser(); // 统计已使用的账号
-                    var ActivationCode = ConfigHelper.AppSettingsHelper.GetSettings("ActivationCode");
+                    var ActivationCode = ConfigHelper.AppSettingsHelper.ActivationCode();
                     if (ActivationCode == "")
                     {
                         Result.Data = UserCount.ToString() + "_5";

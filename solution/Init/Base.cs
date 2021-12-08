@@ -1,15 +1,7 @@
-﻿using Service;
-using System;
-
-namespace Init
+﻿namespace Init
 {
     public class Base
     {
-        public Tools Tools { set; get; }
-
-        public Base()
-        {
-            this.Tools = new Tools();
-        }
+        public Base() { }
     }
 }

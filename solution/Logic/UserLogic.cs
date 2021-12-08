@@ -445,7 +445,7 @@ namespace Logic
                             else
                             {
                                 var CountUser = this.UserModel.CountUser(); // 验证用户数
-                                var ActivationCode = ConfigHelper.AppSettingsHelper.GetSettings("ActivationCode");
+                                var ActivationCode = ConfigHelper.AppSettingsHelper.ActivationCode();
                                 if (ActivationCode != "")
                                 {
                                     var OSType = Tools.OSType();
@@ -470,7 +470,7 @@ namespace Logic
                                         var HardwareCode = DeCodeArr[1];
                                         if (HardwareCode != Motherboard)
                                         {
-                                            ConfigHelper.AppSettingsHelper.WriteSettings("ActivationCode", ""); // 清空当前激活码
+                                            ConfigHelper.AppSettingsHelper.Unactivation(); // 清空当前激活码
                                             this.Result.Memo = "Create error";
                                             return this.Result;
                                         }

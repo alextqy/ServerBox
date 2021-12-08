@@ -5,6 +5,8 @@ solution/.vs
 solution/Matrix
 solution/old_*
 solution/DaoRoom.db
+solution/Init.conf
+solution/ActivationFile.conf
 
 solution/Service/.vscode
 solution/Service/.vs

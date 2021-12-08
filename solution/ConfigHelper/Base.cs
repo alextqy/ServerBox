@@ -4,11 +4,7 @@ namespace ConfigHelper
 {
     public class Base
     {
-        public Tools Tools;
-        public Base()
-        {
-            this.Tools = new Tools();
-        }
+        public Base() { }
     }
 
     /// <summary>
@@ -37,12 +33,12 @@ namespace ConfigHelper
         /// <summary>
         /// 初始化判断
         /// </summary>
-        public bool SystemInit { get; set; }
+        //public bool SystemInit { get; set; }
 
         /// <summary>
         /// 正式版验证码
         /// </summary>
-        public string ActivationCode { get; set; }
+        //public string ActivationCode { get; set; }
 
         /// <summary>
         /// token生命周期(小时)
@@ -55,8 +51,8 @@ namespace ConfigHelper
             this.URL = "";
             this.UDPPort = "";
             this.DataBase = "";
-            this.SystemInit = true;
-            this.ActivationCode = "";
+            //this.SystemInit = true;
+            //this.ActivationCode = "";
             this.TokenPeriod = 0;
         }
     }

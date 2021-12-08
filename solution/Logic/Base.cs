@@ -12,7 +12,6 @@ namespace Logic
     {
         public string IP { set; get; }
         public DbContentCore DbContent { set; get; }
-        public Tools Tools { set; get; }
         public CommonResultEntity Result { set; get; }
         public CommonListResultEntity ResultList { set; get; }
 
@@ -32,13 +31,12 @@ namespace Logic
         public UserExtraModel UserExtraModel { set; get; }
         public UserModel UserModel { set; get; }
 
-        public Base() { this.Tools = new Service.Tools(); }
+        public Base() { }
 
         public Base(string IP, DbContentCore DbContent)
         {
             this.IP = IP;
             this.DbContent = DbContent;
-            this.Tools = new Tools();
             this.Result = new CommonResultEntity();
             this.ResultList = new CommonListResultEntity();
 
@@ -79,7 +77,7 @@ namespace Logic
         public bool AccountStat(int UserIncrement)
         {
             var CountUser = this.UserModel.CountUser() + UserIncrement; // 验证用户数
-            var ActivationCode = ConfigHelper.AppSettingsHelper.GetSettings("ActivationCode");
+            var ActivationCode = ConfigHelper.AppSettingsHelper.ActivationCode();
             if (ActivationCode != "")
             {
                 // 获取操作系统类型和机器码
@@ -105,7 +103,7 @@ namespace Logic
                     var HardwareCode = DeCodeArr[1];
                     if (HardwareCode != Motherboard) // 验证机器码
                     {
-                        ConfigHelper.AppSettingsHelper.WriteSettings("ActivationCode", ""); // 清空当前激活码
+                        ConfigHelper.AppSettingsHelper.Unactivation(); // 清空当前激活码
                         return false;
                     }
                     var UserLimit = Tools.StrToInt32(DeCodeArr[2]) + 5;

@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Models;
+using Service;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace Logic
 {

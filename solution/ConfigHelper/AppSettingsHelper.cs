@@ -1,5 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Service;
 using System;
 using System.IO;
 
@@ -9,44 +11,113 @@ namespace ConfigHelper
     {
         public AppSettingsHelper() { }
 
-        public static bool AppSettingsState()
+        /// <summary>
+        /// 初始化状态
+        /// </summary>
+        /// <returns></returns>
+        public static bool InitState() { return Tools.FileIsExists(Directory.GetParent("../") + "/" + "Init.conf"); }
+
+        /// <summary>
+        /// 初始化系统完成
+        /// </summary>
+        /// <returns></returns>
+        public static bool SetInit()
         {
-            return File.Exists(Directory.GetParent("../") + "/" + "appsettings.json");
+            var InitFile = Directory.GetParent("../") + "/" + "Init.conf";
+            if (!Tools.FileIsExists(InitFile))
+            {
+                if (!Tools.CreateFile(InitFile))
+                {
+                    return false;
+                }
+            }
+            if (!Tools.WriteFile(InitFile, Tools.TimeMS().ToString())) { return false; }
+            return true;
         }
 
+        /// <summary>
+        /// 配置文件状态
+        /// </summary>
+        /// <returns></returns>
+        public static bool AppSettingsState() { return Tools.FileIsExists(Directory.GetParent("../") + "/" + "appsettings.json"); }
+
+        /// <summary>
+        /// 获取配置信息
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public static string GetSettings(string key)
         {
-            //var _Configuration = new ConfigurationBuilder().AddJsonFile(Directory.GetParent("../") + "/" + "appsettings.json", optional: true, reloadOnChange: true).Build();
-            //return _Configuration[key];
+            var _Configuration = new ConfigurationBuilder().AddJsonFile(Directory.GetParent("../") + "/" + "appsettings.json", optional: true, reloadOnChange: true).Build();
+            return _Configuration[key];
 
-            using StreamReader FilePath = new(Directory.GetParent("../") + "/" + "appsettings.json");
-            using JsonTextReader Reader = new(FilePath);
-            JObject JsonObject = (JObject)JToken.ReadFrom(Reader);
-            Reader.Close();
-            return (string)JsonObject[key];
+            //using StreamReader FilePath = new(Directory.GetParent("../") + "/" + "appsettings.json");
+            //using JsonTextReader Reader = new(FilePath);
+            //JObject JsonObject = (JObject)JToken.ReadFrom(Reader);
+            //Reader.Close();
+            //return (string)JsonObject[key];
         }
 
-        public static bool WriteSettings(string k, string v)
+        //public static bool WriteSettings(string k, string v)
+        //{
+        //    var FilePath = Directory.GetParent("../") + "/" + "appsettings.json";
+        //    JObject JsonObject;
+        //    StreamReader JsonFile = new(FilePath);
+        //    JsonTextReader Reader = new(JsonFile);
+        //    JsonObject = (JObject)JToken.ReadFrom(Reader);
+        //    JsonObject[k] = v;
+        //    try
+        //    {
+        //        using StreamWriter Writer = new(FilePath, false);
+        //        JsonTextWriter Jsonwriter = new(Writer);
+        //        JsonObject.WriteTo(Jsonwriter);
+        //        Writer.Close();
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Console.WriteLine(e.Message);
+        //        return false;
+        //    }
+        //    return true;
+        //}
+
+        /// <summary>
+        /// 激活码
+        /// </summary>
+        /// <returns></returns>
+        public static string ActivationCode()
         {
-            var FilePath = Directory.GetParent("../") + "/" + "appsettings.json";
-            JObject JsonObject;
-            StreamReader JsonFile = new(FilePath);
-            JsonTextReader Reader = new(JsonFile);
-            JsonObject = (JObject)JToken.ReadFrom(Reader);
-            JsonObject[k] = v;
-            try
+            var ActivationFile = Directory.GetParent("../") + "/ActivationFile.conf";
+            if (!Tools.FileIsExists(ActivationFile)) { return ""; }
+            var ActivationCode = Tools.ReadFile(ActivationFile);
+            if (String.IsNullOrEmpty(ActivationCode))
             {
-                using StreamWriter Writer = new(FilePath, false);
-                JsonTextWriter Jsonwriter = new(Writer);
-                JsonObject.WriteTo(Jsonwriter);
-                Writer.Close();
+                Tools.DelFile(ActivationFile);
+                return "";
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return false;
-            }
+            else { return ActivationCode; }
+        }
+
+        /// <summary>
+        /// 产品激活
+        /// </summary>
+        /// <param name="ActivationCode"></param>
+        /// <returns></returns>
+        public static bool Activation(string ActivationCode)
+        {
+            var ActivationFile = Directory.GetParent("../") + "/ActivationFile.conf";
+            if (!Tools.CreateFile(ActivationFile)) { return false; }
+            if (!Tools.WriteFile(ActivationFile, ActivationCode)) { return false; }
             return true;
+        }
+
+        /// <summary>
+        /// 取消激活
+        /// </summary>
+        /// <returns></returns>
+        public static bool Unactivation()
+        {
+            return Tools.DelFile(Directory.GetParent("../") + "/ActivationFile.sys");
         }
     }
 }

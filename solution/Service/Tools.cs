@@ -17,11 +17,11 @@ namespace Service
     /// catch (Exception e)
     /// Console.Error.WriteLine(e.Message);
     /// </summary>
-    public class Tools
+    public static class Tools
     {
-        private string AES_key1 = "Fuck.Peace&Love!"; // 秘钥1
-        private string AES_key2 = "Fuck.Love&Peace!"; // 秘钥2
-        private string AES_key3 = "<HAKUNA.MATATA!>"; // 秘钥3
+        private static string AES_key1 = "Fuck.Peace&Love!"; // 秘钥1
+        private static string AES_key2 = "Fuck.Love&Peace!"; // 秘钥2
+        private static string AES_key3 = "<HAKUNA.MATATA!>"; // 秘钥3
 
         /// <summary>
         /// 按指定符号把字符串转为数组
@@ -29,7 +29,7 @@ namespace Service
         /// <param name="KeyStr"></param>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public string[] Explode(string KeyStr, string Param)
+        public static string[] Explode(string KeyStr, string Param)
         {
             return Param.Split(KeyStr);
         }
@@ -40,7 +40,7 @@ namespace Service
         /// <param name="KeyStr"></param>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public string Implode(string KeyStr, string[] Param)
+        public static string Implode(string KeyStr, string[] Param)
         {
             return string.Join(KeyStr, Param);
         }
@@ -50,7 +50,7 @@ namespace Service
         /// </summary>
         /// <param name="DirPath"></param>
         /// <returns></returns>
-        public bool DirIsExists(string DirPath)
+        public static bool DirIsExists(string DirPath)
         {
             return Directory.Exists(DirPath);
         }
@@ -59,7 +59,7 @@ namespace Service
         /// 获取当前模块路径
         /// </summary>
         /// <returns></returns>
-        public string CurrentPath()
+        public static string CurrentPath()
         {
             return (Directory.GetCurrentDirectory() + "/").Replace("\\", "/");
         }
@@ -68,7 +68,7 @@ namespace Service
         /// 获取当前程序根目录
         /// </summary>
         /// <returns></returns>
-        public string RootPath()
+        public static string RootPath()
         {
             return (Directory.GetParent("../") + "/").Replace("\\", "/");
         }
@@ -77,7 +77,7 @@ namespace Service
         /// 用户根目录
         /// </summary>
         /// <returns></returns>
-        public string BaseDir()
+        public static string BaseDir()
         {
             return (Directory.GetCurrentDirectory() + "/Matrix/").Replace("\\", "/");
         }
@@ -88,7 +88,7 @@ namespace Service
         /// <param name="Path"></param>
         /// <param name="DirName"></param>
         /// <returns></returns>
-        public bool MKDir(string Path, string DirName)
+        public static bool MKDir(string Path, string DirName)
         {
             Path = Path.Replace(@"\\", "/");
             string DirPath = Path + "/" + DirName;
@@ -116,7 +116,7 @@ namespace Service
         /// </summary>
         /// <param name="DirPath"></param>
         /// <returns></returns>
-        public bool CreateDir(string DirPath)
+        public static bool CreateDir(string DirPath)
         {
             DirPath = DirPath.Replace(@"\\", "/");
             if (!Directory.Exists(DirPath))
@@ -143,7 +143,7 @@ namespace Service
         /// </summary>
         /// <param name="DirPath"></param>
         /// <returns></returns>
-        public string[] SelectAllFile(string DirPath)
+        public static string[] SelectAllFile(string DirPath)
         {
             DirPath = DirPath.Replace(@"\", "/");
             if (Directory.Exists(DirPath))
@@ -166,7 +166,7 @@ namespace Service
         /// </summary>
         /// <param name="DirPath"></param>
         /// <returns></returns>
-        public string[] SelectAllDir(string DirPath)
+        public static string[] SelectAllDir(string DirPath)
         {
             DirPath = DirPath.Replace(@"\", "/");
             if (Directory.Exists(DirPath))
@@ -190,7 +190,7 @@ namespace Service
         /// <param name="DirPath"></param>
         /// <param name="NewName"></param>
         /// <returns></returns>
-        public bool RenameDir(string DirPath, string NewName)
+        public static bool RenameDir(string DirPath, string NewName)
         {
             string DirPathRe = DirPath.Replace("\\", "/");
             string[] DirPathSub = Explode("/", DirPathRe);
@@ -222,7 +222,7 @@ namespace Service
         /// <param name="DestPath"></param>
         /// <param name="overwriteexisting"></param>
         /// <returns></returns>
-        public bool CopyDir(string SourcePath, string DestPath, bool overwriteexisting = false)
+        public static bool CopyDir(string SourcePath, string DestPath, bool overwriteexisting = false)
         {
             SourcePath = SourcePath.Replace(@"\\", "/");
             DestPath = DestPath.Replace(@"\\", "/");
@@ -283,7 +283,7 @@ namespace Service
         /// <param name="SourceDirectory"></param>
         /// <param name="TargetDirectory"></param>
         /// <returns></returns>
-        public bool DirectoryCopy(string SourceDirectory, string TargetDirectory)
+        public static bool DirectoryCopy(string SourceDirectory, string TargetDirectory)
         {
             try
             {
@@ -326,7 +326,7 @@ namespace Service
         /// <param name="DirPath"></param>
         /// <param name="DelAll"></param>
         /// <returns></returns>
-        public bool DelDir(string DirPath, bool DelAll = false)
+        public static bool DelDir(string DirPath, bool DelAll = false)
         {
             if (Directory.Exists(DirPath))
             {
@@ -352,7 +352,7 @@ namespace Service
         /// </summary>
         /// <param name="FilePath"></param>
         /// <returns></returns>
-        public bool FileIsExists(string FilePath)
+        public static bool FileIsExists(string FilePath)
         {
             return File.Exists(FilePath);
         }
@@ -363,7 +363,7 @@ namespace Service
         /// <param name="Path"></param>
         /// <param name="FileName"></param>
         /// <returns></returns>
-        public bool MKFile(string Path, string FileName)
+        public static bool MKFile(string Path, string FileName)
         {
             Path = Path.Replace(@"\\", "/");
             string FilePath = Path + "/" + FileName;
@@ -392,7 +392,7 @@ namespace Service
         /// </summary>
         /// <param name="FilePath"></param>
         /// <returns></returns>
-        public bool CreateFile(string FilePath)
+        public static bool CreateFile(string FilePath)
         {
             FilePath = FilePath.Replace(@"\\", "/");
             if (!File.Exists(FilePath))
@@ -420,7 +420,7 @@ namespace Service
         /// </summary>
         /// <param name="FilePath"></param>
         /// <returns></returns>
-        public string FileType(string FilePath)
+        public static string FileType(string FilePath)
         {
             if (File.Exists(FilePath))
             {
@@ -437,7 +437,7 @@ namespace Service
         /// </summary>
         /// <param name="FilePath"></param>
         /// <returns></returns>
-        public FileInfo FileInfo(string FilePath)
+        public static FileInfo FileInfo(string FilePath)
         {
             if (File.Exists(FilePath))
             {
@@ -456,7 +456,7 @@ namespace Service
         /// <param name="Path"></param>
         /// <param name="NewName"></param>
         /// <returns></returns>
-        public bool RenameFile(string OldFilePath, string NewName)
+        public static bool RenameFile(string OldFilePath, string NewName)
         {
             if (!File.Exists(OldFilePath))
             {
@@ -491,7 +491,7 @@ namespace Service
         /// <param name="FilePath"></param>
         /// <param name="DestPath"></param>
         /// <returns></returns>
-        public bool CopyFile(string FilePath, string DestPath)
+        public static bool CopyFile(string FilePath, string DestPath)
         {
             if (!File.Exists(FilePath))
             {
@@ -528,12 +528,27 @@ namespace Service
             }
         }
 
+        public static bool WriteFile(string FilePath, string Content, bool AppendState = false)
+        {
+            try
+            {
+                using StreamWriter FileWriter = new(FilePath, append: AppendState);
+                FileWriter.WriteLine(Content);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+            return true;
+        }
+
         /// <summary>
         /// 文件读取
         /// </summary>
         /// <param name="FilePath"></param>
         /// <returns></returns>
-        public string ReadFile(string FilePath)
+        public static string ReadFile(string FilePath)
         {
             if (File.Exists(FilePath))
             {
@@ -553,7 +568,7 @@ namespace Service
         /// </summary>
         /// <param name="FilePath"></param>
         /// <returns></returns>
-        public bool DelFile(string FilePath)
+        public static bool DelFile(string FilePath)
         {
             if (File.Exists(FilePath))
             {
@@ -578,7 +593,7 @@ namespace Service
         /// 获取毫秒时间戳
         /// </summary>
         /// <returns></returns>
-        public long TimeMS()
+        public static long TimeMS()
         {
             TimeSpan TS = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0);
             return Convert.ToInt64(TS.TotalMilliseconds);
@@ -588,7 +603,7 @@ namespace Service
         /// 64位时间戳
         /// </summary>
         /// <returns></returns>
-        public long Time()
+        public static long Time()
         {
             TimeSpan TS = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0);
             return Convert.ToInt64(TS.TotalSeconds);
@@ -598,7 +613,7 @@ namespace Service
         /// 32位时间戳
         /// </summary>
         /// <returns></returns>
-        public int Time32()
+        public static int Time32()
         {
             TimeSpan TS = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0);
             return Convert.ToInt32(TS.TotalSeconds);
@@ -609,7 +624,7 @@ namespace Service
         /// </summary>
         /// <param name="TS"></param>
         /// <returns></returns>
-        public string TimeToStr(long TS)
+        public static string TimeToStr(long TS)
         {
             long unixTimeStamp = TS * 1000;
             DateTime start = new(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
@@ -622,7 +637,7 @@ namespace Service
         /// </summary>
         /// <param name="TS"></param>
         /// <returns></returns>
-        public long StrToTime(string TS)
+        public static long StrToTime(string TS)
         {
             DateTime DTime = DateTime.Parse(TS.Trim());
             DateTimeOffset DTO = new(DTime);
@@ -635,7 +650,7 @@ namespace Service
         /// <param name="ActTime"></param>
         /// <param name="Year"></param>
         /// <returns></returns>
-        public long GetTimeStampYear(string ActTime, int Year)
+        public static long GetTimeStampYear(string ActTime, int Year)
         {
             var Time = Convert.ToDateTime(ActTime).AddYears(Year);
             //var Time = DateTime.Now.AddYears(Year);
@@ -648,7 +663,7 @@ namespace Service
         /// <param name="ActTime"></param>
         /// <param name="Day"></param>
         /// <returns></returns>
-        public long GetTimeStampDay(string ActTime, int Day)
+        public static long GetTimeStampDay(string ActTime, int Day)
         {
             var Time = Convert.ToDateTime(ActTime).AddDays(Day);
             //var Time = DateTime.Now.AddYears(Year);
@@ -660,7 +675,7 @@ namespace Service
         /// </summary>
         /// <param name="ActTime"></param>
         /// <returns></returns>
-        public DateTime TimeStampToDateTime(long ActTime)
+        public static DateTime TimeStampToDateTime(long ActTime)
         {
             DateTime dtStart = TimeZoneInfo.ConvertTimeFromUtc(new DateTime(1970, 1, 1, 0, 0, 0), TimeZoneInfo.Local);
             TimeSpan toNow = new TimeSpan(ActTime);
@@ -673,7 +688,7 @@ namespace Service
         /// </summary>
         /// <param name="DT"></param>
         /// <returns></returns>
-        public long DateTimeToTimeStamp(DateTime DT)
+        public static long DateTimeToTimeStamp(DateTime DT)
         {
             DateTime dt1970 = new DateTime(1970, 1, 1, 0, 0, 0, 0);
             return (DT.Ticks - dt1970.Ticks) / 10000000;
@@ -684,7 +699,7 @@ namespace Service
         /// </summary>
         /// <param name="EncypStr"></param>
         /// <returns></returns>
-        public string MD5(string EncypStr)
+        public static string MD5(string EncypStr)
         {
             System.Security.Cryptography.MD5CryptoServiceProvider md5 = new();
             byte[] emailBytes = Encoding.UTF8.GetBytes(EncypStr.ToLower());
@@ -698,9 +713,9 @@ namespace Service
             return EncypStr;
         }
 
-        public string UserToken(string UserID, string UserName)
+        public static string UserToken(string UserID, string UserName)
         {
-            return this.MD5(UserID + this.TimeToStr(this.Time()).Remove(0, 5) + UserName);
+            return MD5(UserID + TimeToStr(Time()).Remove(0, 5) + UserName);
         }
 
         /// <summary>
@@ -709,9 +724,9 @@ namespace Service
         /// <param name="PWD"></param>
         /// <param name="Secret"></param>
         /// <returns></returns>
-        public string UserPWD(string PWD, string Secret)
+        public static string UserPWD(string PWD, string Secret)
         {
-            return this.MD5(this.MD5(PWD + Secret) + Secret);
+            return MD5(MD5(PWD + Secret) + Secret);
         }
 
         /// <summary>
@@ -719,7 +734,7 @@ namespace Service
         /// </summary>
         /// <param name="n"></param>
         /// <returns></returns>
-        public int Random(int n = 4)
+        public static int Random(int n = 4)
         {
             byte[] buffer = Guid.NewGuid().ToByteArray();
             int iSeed = BitConverter.ToInt32(buffer, 0);
@@ -741,7 +756,7 @@ namespace Service
         ///<param name="useSpe">是否包含特殊字符，1=包含，默认为不包含</param>
         ///<param name="custom">要包含的自定义字符，直接输入要包含的字符列表</param>
         ///<returns>指定长度的随机字符串</returns>
-        public string RandomString(int length, bool useNum = true, bool useLow = true, bool useUpp = true, bool useSpe = false, string custom = null)
+        public static string RandomString(int length, bool useNum = true, bool useLow = true, bool useUpp = true, bool useSpe = false, string custom = null)
         {
             byte[] b = new byte[4];
             new System.Security.Cryptography.RNGCryptoServiceProvider().GetBytes(b);
@@ -782,7 +797,7 @@ namespace Service
         /// <typeparam name="T"></typeparam>
         /// <param name="Sources"></param>
         /// <returns></returns>
-        public List<T> ListRandom<T>(List<T> Sources)
+        public static List<T> ListRandom<T>(List<T> Sources)
         {
             var Random = new Random();
             var ResultList = new List<T>();
@@ -798,7 +813,7 @@ namespace Service
         /// </summary>
         /// <param name="L"></param>
         /// <returns></returns>
-        public int GetRandomNumber(int[] L)
+        public static int GetRandomNumber(int[] L)
         {
             Random rnd = new Random();
             int index = rnd.Next(L.Length);
@@ -811,7 +826,7 @@ namespace Service
         /// <param name="L"></param>
         /// <param name="Num"></param>
         /// <returns></returns>
-        public int[] GetRandomNumberRange(int[] L, int Num)
+        public static int[] GetRandomNumberRange(int[] L, int Num)
         {
             var s = new List<string>();
             foreach (var Item in L)
@@ -833,7 +848,7 @@ namespace Service
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public bool RegCheck(string Param)
+        public static bool RegCheck(string Param)
         {
             Regex Reg = new(@"^[A-Za-z0-9]+$");
             return Reg.IsMatch(Param);
@@ -844,7 +859,7 @@ namespace Service
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public bool RegCheckPro(string Param)
+        public static bool RegCheckPro(string Param)
         {
             Regex Reg = new(@"^[\u4E00-\u9FA5A-Za-z0-9_.]+$");
             return Reg.IsMatch(Param);
@@ -855,7 +870,7 @@ namespace Service
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public bool RegNum(string Param)
+        public static bool RegNum(string Param)
         {
             Regex Reg = new(@"^[0-9]*$");
             return Reg.IsMatch(Param);
@@ -866,7 +881,7 @@ namespace Service
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public bool RegChinese(string Param)
+        public static bool RegChinese(string Param)
         {
             Regex Reg = new(@"^[\u4e00-\u9fa5]{0,}$");
             return Reg.IsMatch(Param);
@@ -877,7 +892,7 @@ namespace Service
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public int StrToInt32(string Param)
+        public static int StrToInt32(string Param)
         {
             return Convert.ToInt32(Param);
         }
@@ -887,7 +902,7 @@ namespace Service
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public long StrToInt(string Param)
+        public static long StrToInt(string Param)
         {
             return Convert.ToInt64(Param);
         }
@@ -897,7 +912,7 @@ namespace Service
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public string ByteToBase64(byte[] Param)
+        public static string ByteToBase64(byte[] Param)
         {
             //if (Param == null || Param == "")
             //{
@@ -912,7 +927,7 @@ namespace Service
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public string Base64ToByte(byte[] Param)
+        public static string Base64ToByte(byte[] Param)
         {
             //if (Param == null || Param == "")
             //{
@@ -926,7 +941,7 @@ namespace Service
         /// 获取所有进程
         /// </summary>
         /// <returns></returns>
-        public Process[] GetProcesses()
+        public static Process[] GetProcesses()
         {
             Process[] Pro = Process.GetProcesses();
             return Pro;
@@ -936,7 +951,7 @@ namespace Service
         /// 获取当前进程
         /// </summary>
         /// <returns></returns>
-        public Process GetCurrentProcess()
+        public static Process GetCurrentProcess()
         {
             Process Pro = Process.GetCurrentProcess();
             return Pro;
@@ -946,7 +961,7 @@ namespace Service
         /// 获取系统类型
         /// </summary>
         /// <returns></returns>
-        public string OSType()
+        public static string OSType()
         {
             var OSTypeData = "Unknown";
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
@@ -969,7 +984,7 @@ namespace Service
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public string SysShell(string Param1, string Param2)
+        public static string SysShell(string Param1, string Param2)
         {
             var Result = "";
             if (Param1 != "" && Param2 != "")
@@ -999,7 +1014,7 @@ namespace Service
         /// <param name="EncryptStr"></param>
         /// <param name="AESType"></param>
         /// <returns></returns>
-        public string AES_Encrypt(string EncryptStr, int AESType = 1)
+        public static string AES_Encrypt(string EncryptStr, int AESType = 1)
         {
             var AES_key = "";
             if (AESType == 1)
@@ -1046,7 +1061,7 @@ namespace Service
         /// <param name="DecryptStr"></param>
         /// <param name="AESType"></param>
         /// <returns></returns>
-        public string AES_Decrypt(string DecryptStr, int AESType = 1)
+        public static string AES_Decrypt(string DecryptStr, int AESType = 1)
         {
             var AES_key = "";
             if (AESType == 1)
@@ -1092,7 +1107,7 @@ namespace Service
         /// </summary>
         /// <param name="CommandLine"></param>
         /// <returns></returns>
-        public string CMD(string CommandLine)
+        public static string CMD(string CommandLine)
         {
             CommandLine = CommandLine.Trim().TrimStart('&') + "&exit";//&执行两条命令的标识，这里第二条命令的目的是当调用ReadToEnd()方法是，不会出现假死状态
             string outputMsg = "";
@@ -1119,7 +1134,7 @@ namespace Service
         /// 获取本地IP地址
         /// </summary>
         /// <returns></returns>
-        public string LocalIP()
+        public static string LocalIP()
         {
             string HostName = Dns.GetHostName();
             var IPAddrList = Dns.GetHostAddresses(HostName);

@@ -8,12 +8,67 @@ namespace Init
     public class SysInit : Base
     {
         /// <summary>
+        /// 检查配置文件
+        /// </summary>
+        /// <returns></returns>
+        public bool CheckConfigFile()
+        {
+            if (!ConfigHelper.AppSettingsHelper.AppSettingsState())
+            {
+                Console.WriteLine("The configuration file does not exist !!!");
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// 设置数据库环境变量(以管理员身份运行系统)
+        /// </summary>
+        public bool SetDatabase()
+        {
+            if (Tools.OSType() == "Windows")
+            {
+                var DatabasePath = Tools.RootPath() + "/sqlite3";
+                if (!Tools.DirIsExists(DatabasePath))
+                {
+                    Console.WriteLine("Database not found !!!");
+                    return false;
+                }
+                else
+                {
+                    var PathValue = Environment.GetEnvironmentVariable("Path"); // 获取系统变量Path的值
+                    if (PathValue == null || PathValue == "")
+                    {
+                        Console.WriteLine("Sys environment error !!!");
+                        return false;
+                    }
+                    if (!PathValue.Contains(DatabasePath))
+                    {
+                        var PathData = PathValue + ";" + DatabasePath;
+                        try
+                        {
+                            Environment.SetEnvironmentVariable("Path", PathData, EnvironmentVariableTarget.Machine);
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.Message);
+                            Console.WriteLine("Please run the system as an administrator !!!");
+                            return false;
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
         /// 项目启动
         /// </summary>
         /// <returns></returns>
         public bool Run()
         {
-            if (Convert.ToBoolean(ConfigHelper.AppSettingsHelper.GetSettings("SystemInit").ToLower()) == true) // 初始化判断
+            if (!ConfigHelper.AppSettingsHelper.InitState()) // 初始化判断
             {
                 #region Step1 初始化项目文件
                 BakInitFile(); // 设置为起始状态
@@ -106,9 +161,9 @@ namespace Init
                     DelInitFile(); // 回到起始状态
                     return false;
                 }
-                if (!ConfigHelper.AppSettingsHelper.WriteSettings("SystemInit", "false")) // 修改配置文件
+                if (!ConfigHelper.AppSettingsHelper.SetInit()) // 修改配置文件
                 {
-                    Console.WriteLine("ERROR: Failed to modify configuration file!");
+                    Console.WriteLine("ERROR: System initialization failed!");
                     DelInitFile(); // 回到起始状态
                     return false;
                 }
@@ -323,46 +378,6 @@ namespace Init
                 ");";
 
             return SQLParam;
-        }
-
-        /// <summary>
-        /// 设置数据库环境变量(以管理员身份运行系统)
-        /// </summary>
-        public bool SetDatabase()
-        {
-            if (Tools.OSType() == "Windows")
-            {
-                var DatabasePath = Tools.RootPath() + "/sqlite3";
-                if (!Tools.DirIsExists(DatabasePath))
-                {
-                    Console.WriteLine("Database not found !!!");
-                    return false;
-                }
-                else
-                {
-                    var PathValue = Environment.GetEnvironmentVariable("Path"); // 获取系统变量Path的值
-                    if (PathValue == null || PathValue == "")
-                    {
-                        Console.WriteLine("Sys environment error !!!");
-                        return false;
-                    }
-                    if (!PathValue.Contains(DatabasePath))
-                    {
-                        var PathData = PathValue + ";" + DatabasePath;
-                        try
-                        {
-                            Environment.SetEnvironmentVariable("Path", PathData, EnvironmentVariableTarget.Machine);
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine(e.Message);
-                            Console.WriteLine("Please run the system as an administrator !!!");
-                            return false;
-                        }
-                    }
-                }
-            }
-            return true;
         }
     }
 }

@@ -17,7 +17,9 @@ namespace ServerBox
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
             var Init = new SysInit();
+            if (!Init.CheckConfigFile()) { Environment.Exit(0); }
             if (!Init.SetDatabase()) { Environment.Exit(0); }
             if (!Init.Run()) { Environment.Exit(0); }
             UDPTool.RunTask();
