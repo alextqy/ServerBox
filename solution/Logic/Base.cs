@@ -62,7 +62,7 @@ namespace Logic
             return this.DbContent.Database.BeginTransaction();
         }
 
-        public DirEntity RootPath(int UserID)
+        public DirEntity UserRootPath(int UserID)
         {
             DirEntity DirInfo = new();
             var UserInfo = this.UserModel.Find(UserID);

@@ -427,7 +427,7 @@ namespace Logic
                     ResultList.Info = Data.ParentID;
                     if (Data.ParentID == 0)
                     {
-                        var RootDir = this.RootPath(UserID);
+                        var RootDir = this.UserRootPath(UserID);
                         Data.ParentID = RootDir.ID;
                         ResultList.Info = RootDir.ID;
                     }
@@ -2193,7 +2193,7 @@ namespace Logic
                             }
                             else
                             {
-                                var UserRootDir = this.RootPath(UserInfo.ID);
+                                var UserRootDir = this.UserRootPath(UserInfo.ID);
                                 if (UserRootDir.ID == 0)
                                 {
                                     this.Result.Memo = "Sharing failed";
