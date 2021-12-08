@@ -48,9 +48,9 @@ namespace UDP
                 {
                     UDP.Send(Data, Data.Length);
                 }
-                catch (Exception ex)
+                catch (Exception e)
                 {
-                    Console.WriteLine(ex.Message);
+                    Console.WriteLine(e.Message);
                 }
                 Thread.Sleep(1500);
             }
