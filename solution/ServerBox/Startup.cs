@@ -29,7 +29,7 @@ namespace ServerBox
         {
             services.AddControllers().AddJsonOptions(options => { options.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All); });
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddDbContext<Models.DbContentCore>(optionsAction => optionsAction.UseSqlite(ConfigHelper.AppSettingsHelper.GetSettings("DataBase")));
+            services.AddDbContext<Models.DbContentCore>(OptionsAction => OptionsAction.UseSqlite(ConfigHelper.AppSettingsHelper.GetSettings("DataBase")));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
