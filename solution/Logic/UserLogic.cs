@@ -57,9 +57,9 @@ namespace Logic
                                 this.WTL("User " + Info.Name + " sign in, (Account:" + Account + ", ID:" + Info.ID + ")", 1);
                                 this.DbContent.SaveChanges();
 
-                                if (!Tools.DirIsExists(Tools.BaseDir() + Account))
+                                if (!Tools.DirIsExists(Tools.UserBaseDir() + Account))
                                 {
-                                    if (Tools.CreateDir(Tools.BaseDir() + Account))
+                                    if (Tools.CreateDir(Tools.UserBaseDir() + Account))
                                     {
                                         Result.ResultStatus = true;
                                         Result.Memo = "success";
@@ -525,7 +525,7 @@ namespace Logic
                                     this.DirModel.Insert(DirData);
                                     this.DbContent.SaveChanges();
 
-                                    if (Tools.MKDir(Tools.BaseDir(), Data.Account))
+                                    if (Tools.MKDir(Tools.UserBaseDir(), Data.Account))
                                     {
                                         TA.Commit();
                                         this.Result.Memo = "Success";
@@ -605,7 +605,7 @@ namespace Logic
                                 this.TokenModel.DeleteByUserID(UserInfo.ID, 0);
                                 this.DepartmentFileModel.DeleteByUserID(UserInfo.ID);
                                 this.DbContent.SaveChanges();
-                                if (Tools.DelDir(Tools.BaseDir() + UserInfo.Account, true))
+                                if (Tools.DelDir(Tools.UserBaseDir() + UserInfo.Account, true))
                                 {
                                     TA.Commit();
                                     this.Result.ResultStatus = true;

@@ -77,9 +77,9 @@ namespace Service
         /// 用户根目录
         /// </summary>
         /// <returns></returns>
-        public static string BaseDir()
+        public static string UserBaseDir()
         {
-            return (Directory.GetCurrentDirectory() + "/Matrix/").Replace("\\", "/");
+            return (Directory.GetParent("../") + "/Matrix/").Replace("\\", "/");
         }
 
         /// <summary>

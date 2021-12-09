@@ -808,7 +808,7 @@ namespace Logic
                         }
 
                         var CreateTimeMS = Tools.TimeMS();
-                        var FileDir = Tools.BaseDir() + UserData.Account + "/" + Data.FileName + "." + CreateTimeMS.ToString() + "/";
+                        var FileDir = Tools.UserBaseDir() + UserData.Account + "/" + Data.FileName + "." + CreateTimeMS.ToString() + "/";
 
                         var TA = this.BeginTransaction();
 
@@ -1107,7 +1107,7 @@ namespace Logic
                                 return this.Result;
                             }
 
-                            var FileDir = Tools.BaseDir() + UserInfo.Account + "/" + FileInfo.FileName + "." + FileInfo.Createtime;
+                            var FileDir = Tools.UserBaseDir() + UserInfo.Account + "/" + FileInfo.FileName + "." + FileInfo.Createtime;
                             if (Tools.DirIsExists(FileDir))
                             {
                                 if (!Tools.DelDir(FileDir, true))
@@ -1236,7 +1236,7 @@ namespace Logic
                             //    var OldName = Tools.Implode(".", OldNameArr.Take(OldNameArr.Length - 1).ToArray());
                             //    if (OldName != Data.FileName)
                             //    {
-                            //        var FileDir = Tools.BaseDir() + UserInfo.Account + "/" + FileInfo.FileName;
+                            //        var FileDir = Tools.UserBaseDir() + UserInfo.Account + "/" + FileInfo.FileName;
                             //        var NewName = Data.FileName + "." + OldNameArr[OldNameArr.Length - 1];
                             //        if (!Tools.DirIsExists(FileDir))
                             //        {
@@ -1279,7 +1279,7 @@ namespace Logic
 
                             if (OldFileName != Data.FileName)
                             {
-                                var FileOldDir = Tools.BaseDir() + UserInfo.Account + "/" + OldFileName + "." + FileInfo.Createtime;
+                                var FileOldDir = Tools.UserBaseDir() + UserInfo.Account + "/" + OldFileName + "." + FileInfo.Createtime;
                                 var FileNewDir = Data.FileName + "." + FileInfo.Createtime;
                                 if (!Tools.RenameDir(FileOldDir, FileNewDir))
                                 {
@@ -1716,7 +1716,7 @@ namespace Logic
                             {
                                 var UserData = this.UserModel.Find(UserID);
                                 var CreateTimeMS = Tools.TimeMS();
-                                var FileDir = Tools.BaseDir() + UserData.Account + "/" + FileInfo.FileName + "." + CreateTimeMS.ToString() + "/";
+                                var FileDir = Tools.UserBaseDir() + UserData.Account + "/" + FileInfo.FileName + "." + CreateTimeMS.ToString() + "/";
 
                                 var TA = this.BeginTransaction();
 
@@ -1930,7 +1930,7 @@ namespace Logic
                         }
                         else
                         {
-                            var SyncDir = Tools.BaseDir() + UserData.Account + "/" + FileInfo.FileName + "." + FileInfo.Createtime.ToString() + "_Sync";
+                            var SyncDir = Tools.UserBaseDir() + UserData.Account + "/" + FileInfo.FileName + "." + FileInfo.Createtime.ToString() + "_Sync";
                             if (Tools.DirIsExists(SyncDir))
                             {
                                 if (!Tools.DelDir(SyncDir, true))
@@ -2202,7 +2202,7 @@ namespace Logic
                                 {
                                     var CreateTimeMS = Tools.TimeMS();
                                     var FileName = FileInfo.FileName + "_AT" + CreateTimeMS.ToString();
-                                    var FileDir = Tools.BaseDir() + UserInfo.Account + "/" + FileName + "." + CreateTimeMS.ToString() + "/";
+                                    var FileDir = Tools.UserBaseDir() + UserInfo.Account + "/" + FileName + "." + CreateTimeMS.ToString() + "/";
 
                                     Entity.FileEntity NewFile = new();
                                     NewFile.FileName = FileName;
@@ -2479,7 +2479,7 @@ namespace Logic
                         }
 
                         // 新建用户根目录
-                        if (!Tools.MKDir(Tools.BaseDir(), UserObject.Account))
+                        if (!Tools.MKDir(Tools.UserBaseDir(), UserObject.Account))
                         {
                             TA.Rollback();
                             this.Result.Memo = "";
