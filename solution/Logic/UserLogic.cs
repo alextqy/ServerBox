@@ -410,10 +410,10 @@ namespace Logic
                             this.Result.Memo = "Status error";
                         }
 
-                        else if (Data.Permission == "")
-                        {
-                            this.Result.Memo = "Permission error";
-                        }
+                        //else if (Data.Permission == "")
+                        //{
+                        //    this.Result.Memo = "Permission error";
+                        //}
 
                         else if (Data.Master <= 0)
                         {
@@ -505,7 +505,7 @@ namespace Logic
                                 UserData.Wallpaper = Data.Wallpaper;
                                 UserData.Admin = Data.Admin;
                                 UserData.Status = Data.Status;
-                                UserData.Permission = Data.Permission;
+                                UserData.Permission = Data.Permission == "" ? "1,2,3,4,5,6,7,8,9" : Data.Permission;
                                 UserData.Master = Data.Master;
                                 UserData.Createtime = Tools.Time32();
                                 UserData.Secret = Secret;

@@ -118,13 +118,13 @@ namespace Entity
             this.Name = "";
             this.Password = "";
             this.Secret = 0;
-            this.Status = 0;
+            this.Status = 1;
             this.Createtime = 0;
-            this.Admin = 0;
+            this.Admin = 1;
             this.Avatar = "";
             this.Wallpaper = "";
             this.Permission = "1,2,3,4,5,6,7,8"; // 1新建 2读取 3修改(名称及内容) 4删除 5下载 6上传 7复制 8移动(剪切)
-            this.Master = 0;
+            this.Master = 1;
             this.DepartmentID = 0;
         }
     }
