@@ -1,8 +1,7 @@
-﻿using System;
-
-namespace SysLog
+﻿namespace SysLog
 {
     public class Base
     {
+        public Base() { }
     }
 }

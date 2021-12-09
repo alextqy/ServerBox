@@ -26,6 +26,5 @@ namespace SysLog
             //Tools.CreateDir(LogDir);
             Console.WriteLine(LogDir);
         }
-
     }
 }

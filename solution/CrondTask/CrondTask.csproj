@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Log\SysLog.csproj" />
     <ProjectReference Include="..\SysLog\SysLog.csproj" />
     <ProjectReference Include="..\UDP\UDP.csproj" />
   </ItemGroup>
