@@ -5,7 +5,7 @@ using UDP;
 
 namespace CrondTask
 {
-    public class CrondTool
+    public class CrondTool : Base
     {
         /// <summary>
         /// 定时任务
