@@ -90,7 +90,7 @@ namespace Models
             {
                 Info.BlockSize = Data.BlockSize;
             }
-            if (Data.UploadBlockSize >= 0 && Data.UploadBlockSize != Info.UploadBlockSize)
+            if (Data.UploadBlockSize > 0 && Data.UploadBlockSize != Info.UploadBlockSize)
             {
                 Info.UploadBlockSize = Data.UploadBlockSize;
             }

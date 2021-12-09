@@ -70,7 +70,7 @@ namespace Models
                     Info.ConfigDesc = Data.ConfigDesc;
                 }
             }
-            if (Data.ConfigType >= 0 && Data.ConfigType != Info.ConfigType)
+            if (Data.ConfigType > 0 && Data.ConfigType != Info.ConfigType)
             {
                 Info.ConfigType = Data.ConfigType;
             }

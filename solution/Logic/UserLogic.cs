@@ -227,7 +227,7 @@ namespace Logic
                 }
                 else
                 {
-                    Entity.UserEntity UserData = new();
+                    Entity.UserEntity UserData;
                     if (ID == 0 || ID == UserID)
                     {
                         UserData = this.UserModel.Find(UserID);

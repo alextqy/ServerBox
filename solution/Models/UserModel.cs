@@ -87,7 +87,7 @@ namespace Models
             {
                 Info.Status = Data.Status;
             }
-            if (Data.Admin >= 0 && Data.Admin != Info.Admin)
+            if (Data.Admin > 0 && Data.Admin != Info.Admin)
             {
                 Info.Admin = Data.Admin;
             }
@@ -112,11 +112,11 @@ namespace Models
                     Info.Permission = Data.Password;
                 }
             }
-            if (Data.Master >= 0 && Data.Master != Info.Master)
+            if (Data.Master > 0 && Data.Master != Info.Master)
             {
                 Info.Master = Data.Master;
             }
-            if (Data.DepartmentID >= 0 && Data.DepartmentID != Info.DepartmentID)
+            if (Data.DepartmentID > 0 && Data.DepartmentID != Info.DepartmentID)
             {
                 Info.DepartmentID = Data.DepartmentID;
             }
@@ -169,7 +169,7 @@ namespace Models
                 List = List.Where(p => p.Master == Data.Master);
             }
 
-            if (Data.DepartmentID >= 0)
+            if (Data.DepartmentID > 0)
             {
                 List = List.Where(p => p.DepartmentID == Data.DepartmentID);
             }
