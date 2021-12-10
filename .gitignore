@@ -8,7 +8,6 @@ solution/old_*
 solution/DaoRoom.db
 solution/Init.conf
 solution/ActivationFile.conf
-solution/appsettings.json
 
 solution/Service/.vscode
 solution/Service/.vs
