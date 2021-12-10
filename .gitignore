@@ -8,6 +8,7 @@ solution/old_*
 solution/DaoRoom.db
 solution/Init.conf
 solution/ActivationFile.conf
+solution/appsettings.json
 
 solution/Service/.vscode
 solution/Service/.vs
@@ -128,3 +129,13 @@ solution/CrondTask/bin
 solution/CrondTask/Log
 solution/CrondTask/output
 solution/CrondTask/app
+
+solution/ConfInit/.vscode
+solution/ConfInit/.vs
+solution/ConfInit/.config
+solution/ConfInit/v16
+solution/ConfInit/obj
+solution/ConfInit/bin
+solution/ConfInit/Log
+solution/ConfInit/output
+solution/ConfInit/app

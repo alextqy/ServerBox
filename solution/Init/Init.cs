@@ -13,23 +13,7 @@ namespace Init
         /// <returns></returns>
         public bool CheckConfigFile()
         {
-            // {
-            //    "URL": "http://*:6000",
-            //    "UDPPort": 6002,
-            //    "DataBase": "Data Source = ../DaoRoom.db;",
-            //    "TokenPeriod": 8
-            // }
-
-            var FilePath = Tools.RootPath() + "appsettings.json";
-            if (!ConfigHelper.AppSettingsHelper.AppSettingsState(FilePath))
-            {
-                if (!Tools.CreateFile(FilePath))
-                {
-                    Console.WriteLine("Failed to create configuration file !!!");
-                    return false;
-                }
-            }
-            return ConfigHelper.AppSettingsHelper.InitSettings(FilePath);
+            return ConfigHelper.AppSettingsHelper.AppSettingsState(Tools.RootPath() + "appsettings.json");
         }
 
         /// <summary>

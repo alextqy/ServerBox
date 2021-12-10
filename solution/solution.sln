@@ -25,7 +25,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Init", "Init\Init.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrondTask", "CrondTask\CrondTask.csproj", "{2714D48B-DE57-4A10-8B1B-C1BC70EDB504}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SysLog", "SysLog\SysLog.csproj", "{8F829FF5-B65E-44E6-831C-262F9ADBFFAF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SysLog", "SysLog\SysLog.csproj", "{8F829FF5-B65E-44E6-831C-262F9ADBFFAF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfInit", "ConfInit\ConfInit.csproj", "{F23D151A-5C88-4C3C-A24C-2868E515E630}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +83,10 @@ Global
 		{8F829FF5-B65E-44E6-831C-262F9ADBFFAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F829FF5-B65E-44E6-831C-262F9ADBFFAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F829FF5-B65E-44E6-831C-262F9ADBFFAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F23D151A-5C88-4C3C-A24C-2868E515E630}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F23D151A-5C88-4C3C-A24C-2868E515E630}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F23D151A-5C88-4C3C-A24C-2868E515E630}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F23D151A-5C88-4C3C-A24C-2868E515E630}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
