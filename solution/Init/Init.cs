@@ -13,13 +13,23 @@ namespace Init
         /// <returns></returns>
         public bool CheckConfigFile()
         {
-            if (!ConfigHelper.AppSettingsHelper.AppSettingsState())
-            {
-                Console.WriteLine("The configuration file does not exist !!!");
-                return false;
-            }
+            // {
+            //    "URL": "http://*:6000",
+            //    "UDPPort": 6002,
+            //    "DataBase": "Data Source = ../DaoRoom.db;",
+            //    "TokenPeriod": 8
+            // }
 
-            return true;
+            var FilePath = Tools.RootPath() + "appsettings.json";
+            if (!ConfigHelper.AppSettingsHelper.AppSettingsState(FilePath))
+            {
+                if (!Tools.CreateFile(FilePath))
+                {
+                    Console.WriteLine("Failed to create configuration file !!!");
+                    return false;
+                }
+            }
+            return ConfigHelper.AppSettingsHelper.InitSettings(FilePath);
         }
 
         /// <summary>

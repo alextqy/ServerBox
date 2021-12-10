@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using Service;
 using System;
 using System.IO;
+using System.Text.Json;
 
 namespace ConfigHelper
 {
@@ -39,7 +40,7 @@ namespace ConfigHelper
         /// 配置文件状态
         /// </summary>
         /// <returns></returns>
-        public static bool AppSettingsState() { return Tools.FileIsExists(Tools.RootPath() + "appsettings.json"); }
+        public static bool AppSettingsState(string FilePath) { return Tools.FileIsExists(FilePath); }
 
         /// <summary>
         /// 获取配置信息
@@ -58,28 +59,57 @@ namespace ConfigHelper
             //return (string)JsonObject[key];
         }
 
-        //public static bool WriteSettings(string k, string v)
-        //{
-        //    var FilePath = Tools.RootPath() + "appsettings.json";
-        //    JObject JsonObject;
-        //    StreamReader JsonFile = new(FilePath);
-        //    JsonTextReader Reader = new(JsonFile);
-        //    JsonObject = (JObject)JToken.ReadFrom(Reader);
-        //    JsonObject[k] = v;
-        //    try
-        //    {
-        //        using StreamWriter Writer = new(FilePath, false);
-        //        JsonTextWriter Jsonwriter = new(Writer);
-        //        JsonObject.WriteTo(Jsonwriter);
-        //        Writer.Close();
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Console.WriteLine(e.Message);
-        //        return false;
-        //    }
-        //    return true;
-        //}
+        /// <summary>
+        /// 新建配置文件
+        /// </summary>
+        /// <param name="FilePath"></param>
+        /// <returns></returns>
+        public static bool InitSettings(string FilePath)
+        {
+            if (!Tools.FileIsExists(FilePath)) { return false; }
+
+            AppSettingsObject SettingsObject = new();
+            SettingsObject.URL = "http://*:6000";
+            SettingsObject.UDPPort = 6002;
+            SettingsObject.DataBase = "Data Source = ../DaoRoom.db;";
+            SettingsObject.TokenPeriod = 8;
+            JsonSerializerOptions Options = new() { WriteIndented = true, };
+
+            try
+            {
+                File.WriteAllText(FilePath, System.Text.Json.JsonSerializer.Serialize(SettingsObject, Options));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+
+            return true;
+        }
+
+        public static bool WriteSettings(string k, string v)
+        {
+            var FilePath = Tools.RootPath() + "appsettings.json";
+            JObject JsonObject;
+            StreamReader JsonFile = new(FilePath);
+            JsonTextReader Reader = new(JsonFile);
+            JsonObject = (JObject)JToken.ReadFrom(Reader);
+            JsonObject[k] = v;
+            try
+            {
+                using StreamWriter Writer = new(FilePath, false);
+                JsonTextWriter Jsonwriter = new(Writer);
+                JsonObject.WriteTo(Jsonwriter);
+                Writer.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+            return true;
+        }
 
         /// <summary>
         /// 激活码
