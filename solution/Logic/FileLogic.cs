@@ -2502,5 +2502,35 @@ namespace Logic
             return this.Result;
         }
 
+        public Entity.CommonResultEntity CreateTag(string Token, int TokenType, string TagName, string TagMemo)
+        {
+            if (Token == "")
+            {
+                this.Result.Memo = "Token error";
+            }
+            else if (TokenType <= 0)
+            {
+                this.Result.Memo = "TokenType error";
+            }
+            else if (String.IsNullOrEmpty(TagName))
+            {
+                this.Result.Memo = "TagName error";
+            }
+            else if (!Tools.RegCheck(TagName))
+            {
+                this.Result.Memo = "The tagName format is incorrect";
+            }
+            else if (!String.IsNullOrEmpty(TagMemo) && !Tools.RegCheck(TagName))
+            {
+                this.Result.Memo = "The tagMemo format is incorrect";
+            }
+            else
+            {
+
+            }
+
+            return this.Result;
+        }
+
     }
 }
