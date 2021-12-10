@@ -265,6 +265,12 @@ namespace Logic
 
                                 try
                                 {
+                                    if (UserID == 1)
+                                    {
+                                        Data.Admin = 2;
+                                        Data.Master = 2;
+                                        Data.Permission = "1,2,3,4,5,6,7,8,9";
+                                    }
                                     this.UserModel.Modify(UserID, Data);
                                     this.DbContent.SaveChanges();
                                     this.Result.ResultStatus = true;
