@@ -66,7 +66,7 @@ namespace ConfigHelper
         /// <returns></returns>
         public static bool InitSettings(string FilePath)
         {
-            if (!Tools.FileIsExists(FilePath)) { return false; }
+            if (Tools.FileIsExists(FilePath)) { return true; }
 
             AppSettingsObject SettingsObject = new();
             SettingsObject.URL = "http://*:6000";
