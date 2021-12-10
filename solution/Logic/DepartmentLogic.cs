@@ -10,7 +10,7 @@ namespace Logic
 
         public Entity.CommonResultEntity CreateDepartment(string Token, int TokenType, Entity.DepartmentEntity Data)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -93,7 +93,7 @@ namespace Logic
 
         public Entity.CommonResultEntity DeleteDepartment(string Token, int TokenType, int ID)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -221,7 +221,7 @@ namespace Logic
 
         public Entity.CommonResultEntity ToggleDepartment(string Token, int TokenType, int ID)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -277,7 +277,7 @@ namespace Logic
 
         public Entity.CommonResultEntity ModifyDepartment(string Token, int TokenType, int ID, Entity.DepartmentEntity Data)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -359,7 +359,7 @@ namespace Logic
         public Entity.CommonResultEntity DepartmentInfo(string Token, int TokenType, int ID)
         {
             Entity.DepartmentEntity Data = new();
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 Result.Memo = "Token error";
             }
@@ -394,7 +394,7 @@ namespace Logic
 
         public Entity.CommonResultEntity SelectDepartment(string Token, int TokenType, Entity.DepartmentSelectParamEntity Data)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 Result.Memo = "Token error";
             }
@@ -425,7 +425,7 @@ namespace Logic
 
         public Entity.CommonResultEntity CreateDepartmentExtra(string Token, int TokenType, Entity.DepartmentExtraEntity Data)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -494,7 +494,7 @@ namespace Logic
 
         public Entity.CommonResultEntity DeleteDepartmentExtra(string Token, int TokenType, int ID)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -546,7 +546,7 @@ namespace Logic
 
         public Entity.CommonResultEntity SelectDepartmentExtra(string Token, int TokenType, Entity.DepartmentExtraSelectParamEntity Data)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 Result.Memo = "Token error";
             }

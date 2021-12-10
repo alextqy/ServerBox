@@ -132,7 +132,7 @@ namespace Logic
             {
                 return 0;
             }
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 return 0;
             }

@@ -12,7 +12,7 @@ namespace Logic
 
         public Entity.CommonResultEntity CreateDir(string Token, int TokenType, Entity.DirEntity Data)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -101,7 +101,7 @@ namespace Logic
 
         public Entity.CommonResultEntity DirInfo(string Token, int TokenType, int ID)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 Result.Memo = "Token error";
             }
@@ -140,7 +140,7 @@ namespace Logic
 
         public Entity.CommonResultEntity DeleteDir(string Token, int TokenType, int ID)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -269,7 +269,7 @@ namespace Logic
 
         public Entity.CommonResultEntity ModifyDir(string Token, int TokenType, int ID, Entity.DirEntity Data)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -374,7 +374,7 @@ namespace Logic
 
         public Entity.CommonResultEntity SelectDir(string Token, int TokenType, Entity.DirSelectParamEntity Data)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -441,7 +441,7 @@ namespace Logic
 
         public Entity.CommonResultEntity CreateDirExtra(string Token, int TokenType, Entity.DirExtraEntity Data)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -522,7 +522,7 @@ namespace Logic
 
         public Entity.CommonResultEntity DeleteDirExtra(string Token, int TokenType, int ID)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -584,7 +584,7 @@ namespace Logic
 
         public Entity.CommonResultEntity SelectDirExtra(string Token, int TokenType, Entity.DirExtraSelectParamEntity Data)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -631,7 +631,7 @@ namespace Logic
 
         public Entity.CommonResultEntity FileList(string Token, int TokenType, int DirID, int State, int UID)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -713,7 +713,7 @@ namespace Logic
 
         public Entity.CommonResultEntity CreateFile(string Token, int TokenType, Entity.FileEntity Data)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -862,7 +862,7 @@ namespace Logic
 
         public Entity.CommonResultEntity UploadFileEntity(string Token, int TokenType, int ID, string FileSectionName, IFormFile FileEntity)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -967,7 +967,7 @@ namespace Logic
 
         public Entity.CommonResultEntity DownloadFileEntity(string Token, int TokenType, int ID, int POS)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 Result.Memo = "Token error";
             }
@@ -1052,7 +1052,7 @@ namespace Logic
 
         public Entity.CommonResultEntity DeleteFile(string Token, int TokenType, int ID)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -1131,7 +1131,7 @@ namespace Logic
 
         public Entity.CommonResultEntity ModifyFile(string Token, int TokenType, int ID, Entity.FileEntity Data)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -1303,7 +1303,7 @@ namespace Logic
 
         public Entity.CommonResultEntity MoveFile(string Token, int TokenType, int ID, int DirID)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -1406,7 +1406,7 @@ namespace Logic
 
         public Entity.CommonResultEntity CheckFile(string Token, int TokenType, int FileID)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 Result.Memo = "Token error";
             }
@@ -1473,7 +1473,7 @@ namespace Logic
 
         public Entity.CommonResultEntity CreateFileExtra(string Token, int TokenType, Entity.FileExtraEntity Data)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -1554,7 +1554,7 @@ namespace Logic
 
         public Entity.CommonResultEntity DeleteFileExtra(string Token, int TokenType, int ID)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -1619,7 +1619,7 @@ namespace Logic
 
         public Entity.CommonResultEntity SelectFileExtra(string Token, int TokenType, Entity.FileExtraSelectParamEntity Data)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -1658,7 +1658,7 @@ namespace Logic
 
         public Entity.CommonResultEntity CopyFile(string Token, int TokenType, int DirID, int FileID)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -1781,7 +1781,7 @@ namespace Logic
 
         public Entity.CommonResultEntity FileLockSwitch(string Token, int TokenType, int FileID)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -1855,7 +1855,7 @@ namespace Logic
 
         public Entity.CommonResultEntity FileLockList(string Token, int TokenType)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -1893,7 +1893,7 @@ namespace Logic
 
         public Entity.CommonResultEntity FileEntitySyncPrefix(string Token, int TokenType, int FileID)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -1956,7 +1956,7 @@ namespace Logic
 
         public Entity.CommonResultEntity FileEntitySync(string Token, int TokenType, int FileID, string FileSectionName, IFormFile FileEntity)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -2038,7 +2038,7 @@ namespace Logic
 
         public Entity.CommonResultEntity FileEntitySyncDefer(string Token, int TokenType, int FileID)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -2100,7 +2100,7 @@ namespace Logic
 
         public Entity.CommonResultEntity FileEntitySyncFail(string Token, int TokenType, int FileID)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -2146,7 +2146,7 @@ namespace Logic
 
         public Entity.CommonResultEntity SendFileToUser(string Token, int TokenType, int FileID, int UID)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -2278,7 +2278,7 @@ namespace Logic
 
         public Entity.CommonResultEntity DownloadDemo(string Token, int TokenType, string LangType)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 Result.Memo = "Token error";
             }
@@ -2333,7 +2333,7 @@ namespace Logic
 
         public Entity.CommonResultEntity ImportUser(string Token, int TokenType, IFormFile FileEntity)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -2504,7 +2504,7 @@ namespace Logic
 
         public Entity.CommonResultEntity CreateTag(string Token, int TokenType, string TagName, string TagMemo)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }

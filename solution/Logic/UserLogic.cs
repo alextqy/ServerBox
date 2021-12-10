@@ -104,7 +104,7 @@ namespace Logic
 
         public Entity.CommonResultEntity SignOut(string Token, int TokenType)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 Result.Memo = "Token lost";
             }
@@ -141,7 +141,7 @@ namespace Logic
 
         public Entity.CommonResultEntity TokenRunningState(string Token, int TokenType)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -167,7 +167,7 @@ namespace Logic
 
         public Entity.CommonResultEntity CheckSelf(string Token, int TokenType)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 Result.Memo = "Token error";
             }
@@ -194,7 +194,7 @@ namespace Logic
 
         public Entity.CommonResultEntity UserModify(string Token, int TokenType, int ID, Entity.UserEntity Data)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -300,7 +300,7 @@ namespace Logic
 
         public Entity.CommonResultEntity IsMaster(string Token, int TokenType)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -334,7 +334,7 @@ namespace Logic
 
         public Entity.CommonResultEntity CreateUser(string Token, int TokenType, Entity.UserEntity Data)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -552,7 +552,7 @@ namespace Logic
 
         public Entity.CommonResultEntity RemoveUser(string Token, int TokenType, int ID)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -630,7 +630,7 @@ namespace Logic
 
         public Entity.CommonResultEntity UserInfo(string Token, int TokenType, int UID)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 Result.Memo = "Token error";
             }
@@ -670,7 +670,7 @@ namespace Logic
 
         public Entity.CommonResultEntity SelectUser(string Token, int TokenType, Entity.UserSelectParamEntity Data)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 Result.Memo = "Token error";
             }
@@ -703,7 +703,7 @@ namespace Logic
 
         public Entity.CommonResultEntity CreateUserExtra(string Token, int TokenType, Entity.UserExtraEntity Data)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -787,7 +787,7 @@ namespace Logic
 
         public Entity.CommonResultEntity DeleteUserExtra(string Token, int TokenType, int ID)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -839,7 +839,7 @@ namespace Logic
 
         public Entity.CommonResultEntity SelectUserExtra(string Token, int TokenType, Entity.UserExtraSelectParamEntity Data)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -894,7 +894,7 @@ namespace Logic
 
         public Entity.CommonResultEntity SelectLog(string Token, int TokenType, int YMD = 0)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -913,7 +913,7 @@ namespace Logic
 
         public Entity.CommonResultEntity ClearLog(string Token, int TokenType)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -932,7 +932,7 @@ namespace Logic
 
         public Entity.CommonResultEntity CreateOuterToken(string Token, int TokenType, Entity.OuterTokenEntity Data)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -940,7 +940,7 @@ namespace Logic
             {
                 this.Result.Memo = "TokenType error";
             }
-            else if (Data.OuterToken == "")
+            else if (String.IsNullOrEmpty(Data.OuterToken))
             {
                 this.Result.Memo = "OuterToken error";
             }
@@ -1004,7 +1004,7 @@ namespace Logic
 
         public Entity.CommonResultEntity CreateMessage(string Token, int TokenType, Entity.MessageEntity Data)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -1079,7 +1079,7 @@ namespace Logic
 
         public Entity.CommonResultEntity CheckMessage(string Token, int TokenType, int ID)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 Result.Memo = "Token error";
             }
@@ -1137,7 +1137,7 @@ namespace Logic
 
         public Entity.CommonResultEntity MessageList(string Token, int TokenType, int MessageType, int UID, int State, int StartPoint = 0, int EndPoint = 0)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -1200,7 +1200,7 @@ namespace Logic
 
         public Entity.CommonResultEntity DeleteMessage(string Token, int TokenType, int ID)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -1252,7 +1252,7 @@ namespace Logic
 
         public Entity.CommonResultEntity SetMessage(string Token, int TokenType, int ID)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -1322,7 +1322,7 @@ namespace Logic
 
         public Entity.CommonResultEntity ShareFilesToDepartment(string Token, int TokenType, int FileID)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -1421,7 +1421,7 @@ namespace Logic
 
         public Entity.CommonResultEntity DeleteDepartmentFile(string Token, int TokenType, int ID)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -1485,7 +1485,7 @@ namespace Logic
 
         public Entity.CommonResultEntity SelectDepartmentFile(string Token, int TokenType, Entity.DepartmentFileSelectParamEntity Data)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }

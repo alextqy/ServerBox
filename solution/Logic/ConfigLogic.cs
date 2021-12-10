@@ -11,7 +11,7 @@ namespace Logic
 
         public Entity.CommonResultEntity CheckConfig(string Token, int TokenType, int ID)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 Result.Memo = "Token error";
             }
@@ -47,7 +47,7 @@ namespace Logic
 
         public Entity.CommonResultEntity ModifyConfig(string Token, int TokenType, int ID, Entity.ConfigEntity Data)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -96,7 +96,7 @@ namespace Logic
 
         public Entity.CommonResultEntity GetHardDiskSpaceInfo(string Token, int TokenType)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 Result.Memo = "Token error";
             }
@@ -136,7 +136,7 @@ namespace Logic
 
         public Entity.CommonResultEntity DecryptProInspection(string Token, int TokenType, string Data, int CodeType = 1)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 Result.Memo = "Token error";
             }
@@ -171,7 +171,7 @@ namespace Logic
 
         public Entity.CommonResultEntity GenerateActivationCodeInspection(string Token, int TokenType, string EncryptedCode, int NumberOfAccounts = 5)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 Result.Memo = "Token error";
             }
@@ -206,7 +206,7 @@ namespace Logic
 
         public Entity.CommonResultEntity GetHardwareCode(string Token, int TokenType)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 Result.Memo = "Token error";
             }
@@ -260,7 +260,7 @@ namespace Logic
 
         public Entity.CommonResultEntity ProductActivation(string Token, int TokenType, string EncryptedCode)
         {
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 this.Result.Memo = "Token error";
             }
@@ -352,7 +352,7 @@ namespace Logic
         public Entity.CommonResultEntity AccountNumberStatistics(string Token, int TokenType)
         {
 
-            if (Token == "")
+            if (String.IsNullOrEmpty(Token))
             {
                 Result.Memo = "Token error";
             }
