@@ -74,7 +74,7 @@ namespace ConfigHelper
             SettingsObject.DataBase = "Data Source = ../DaoRoom.db;";
             SettingsObject.TokenPeriod = 8;
             JsonSerializerOptions Options = new() { WriteIndented = true, };
-            Console.WriteLine("");
+            Console.WriteLine("Initializing configuration file please wait !!!");
             return Tools.WriteFile(FilePath, System.Text.Json.JsonSerializer.Serialize(SettingsObject, Options));
         }
 
