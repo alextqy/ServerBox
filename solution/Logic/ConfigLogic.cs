@@ -17,7 +17,7 @@ namespace Logic
             }
             else if (TokenType <= 0)
             {
-                Result.Memo = "Type error";
+                Result.Memo = "TokenType error";
             }
             else if (ID <= 0)
             {
@@ -53,7 +53,7 @@ namespace Logic
             }
             else if (TokenType <= 0)
             {
-                this.Result.Memo = "Type error";
+                this.Result.Memo = "TokenType error";
             }
             else if (ID <= 0)
             {
@@ -102,7 +102,7 @@ namespace Logic
             }
             else if (TokenType <= 0)
             {
-                Result.Memo = "Type error";
+                Result.Memo = "TokenType error";
             }
             else
             {
@@ -142,7 +142,7 @@ namespace Logic
             }
             else if (TokenType <= 0)
             {
-                Result.Memo = "Type error";
+                Result.Memo = "TokenType error";
             }
             else if (Data == "")
             {
@@ -177,7 +177,7 @@ namespace Logic
             }
             else if (TokenType <= 0)
             {
-                Result.Memo = "Type error";
+                Result.Memo = "TokenType error";
             }
             else if (EncryptedCode == "")
             {
@@ -212,7 +212,7 @@ namespace Logic
             }
             else if (TokenType <= 0)
             {
-                Result.Memo = "Type error";
+                Result.Memo = "TokenType error";
             }
             else
             {
@@ -266,7 +266,7 @@ namespace Logic
             }
             else if (TokenType <= 0)
             {
-                this.Result.Memo = "Type error";
+                this.Result.Memo = "TokenType error";
             }
             else if (EncryptedCode == "")
             {
@@ -358,7 +358,7 @@ namespace Logic
             }
             else if (TokenType <= 0)
             {
-                Result.Memo = "Type error";
+                Result.Memo = "TokenType error";
             }
             else
             {

@@ -22,7 +22,7 @@ namespace Logic
             }
             else if (TokenType <= 0)
             {
-                Result.Memo = "Type error";
+                Result.Memo = "TokenType error";
             }
             else
             {
@@ -110,7 +110,7 @@ namespace Logic
             }
             else if (TokenType <= 0)
             {
-                Result.Memo = "Type error";
+                Result.Memo = "TokenType error";
             }
             else
             {
@@ -147,7 +147,7 @@ namespace Logic
             }
             else if (TokenType <= 0)
             {
-                this.Result.Memo = "Type error";
+                this.Result.Memo = "TokenType error";
             }
             else
             {
@@ -173,7 +173,7 @@ namespace Logic
             }
             else if (TokenType <= 0)
             {
-                Result.Memo = "Type error";
+                Result.Memo = "TokenType error";
             }
             else
             {
@@ -200,7 +200,7 @@ namespace Logic
             }
             else if (TokenType <= 0)
             {
-                this.Result.Memo = "Type error";
+                this.Result.Memo = "TokenType error";
             }
             else if (ID < 0)
             {
@@ -306,7 +306,7 @@ namespace Logic
             }
             else if (TokenType <= 0)
             {
-                this.Result.Memo = "Type error";
+                this.Result.Memo = "TokenType error";
             }
             else
             {
@@ -340,7 +340,7 @@ namespace Logic
             }
             else if (TokenType <= 0)
             {
-                this.Result.Memo = "Type error";
+                this.Result.Memo = "TokenType error";
             }
             else
             {
@@ -558,7 +558,7 @@ namespace Logic
             }
             else if (TokenType <= 0)
             {
-                this.Result.Memo = "Type error";
+                this.Result.Memo = "TokenType error";
             }
             else if (ID <= 0 || ID == 1)
             {
@@ -636,7 +636,7 @@ namespace Logic
             }
             else if (TokenType <= 0)
             {
-                Result.Memo = "Type error";
+                Result.Memo = "TokenType error";
             }
             else if (UID <= 0)
             {
@@ -676,7 +676,7 @@ namespace Logic
             }
             else if (TokenType <= 0)
             {
-                Result.Memo = "Type error";
+                Result.Memo = "TokenType error";
             }
             else
             {
@@ -709,7 +709,7 @@ namespace Logic
             }
             else if (TokenType <= 0)
             {
-                this.Result.Memo = "Type error";
+                this.Result.Memo = "TokenType error";
             }
             else if (Data.UserID < 0)
             {
@@ -793,7 +793,7 @@ namespace Logic
             }
             else if (TokenType <= 0)
             {
-                this.Result.Memo = "Type error";
+                this.Result.Memo = "TokenType error";
             }
             else if (ID <= 0)
             {
@@ -845,7 +845,7 @@ namespace Logic
             }
             else if (TokenType <= 0)
             {
-                this.Result.Memo = "Type error";
+                this.Result.Memo = "TokenType error";
             }
             else if (Data.UserID < 0)
             {
@@ -892,13 +892,41 @@ namespace Logic
             return this.Result;
         }
 
-        public Entity.CommonResultEntity SelectLog(string Token, int TokenType, int YMD)
+        public Entity.CommonResultEntity SelectLog(string Token, int TokenType, int YMD = 0)
         {
+            if (Token == "")
+            {
+                this.Result.Memo = "Token error";
+            }
+            else if (TokenType <= 0)
+            {
+                this.Result.Memo = "TokenType error";
+            }
+            else
+            {
+                this.Result.ResultStatus = true;
+                this.Result.Memo = "Success";
+                this.Result.Data = this.RL(YMD);
+            }
             return this.Result;
         }
 
-        public Entity.CommonResultEntity DeleteLog(string Token, int TokenType, int YMD)
+        public Entity.CommonResultEntity DeleteLog(string Token, int TokenType)
         {
+            if (Token == "")
+            {
+                this.Result.Memo = "Token error";
+            }
+            else if (TokenType <= 0)
+            {
+                this.Result.Memo = "TokenType error";
+            }
+            else
+            {
+                this.Result.ResultStatus = true;
+                this.Result.Memo = "Success";
+                this.Result.Data = this.CL();
+            }
             return this.Result;
         }
 
@@ -910,7 +938,7 @@ namespace Logic
             }
             else if (TokenType <= 0)
             {
-                this.Result.Memo = "Type error";
+                this.Result.Memo = "TokenType error";
             }
             else if (Data.OuterToken == "")
             {
@@ -982,7 +1010,7 @@ namespace Logic
             }
             else if (TokenType <= 0)
             {
-                this.Result.Memo = "Type error";
+                this.Result.Memo = "TokenType error";
             }
             else if (Data.Title == "")
             {
@@ -1057,7 +1085,7 @@ namespace Logic
             }
             else if (TokenType <= 0)
             {
-                Result.Memo = "Type error";
+                Result.Memo = "TokenType error";
             }
             else if (ID <= 0)
             {
@@ -1115,7 +1143,7 @@ namespace Logic
             }
             else if (TokenType <= 0)
             {
-                this.Result.Memo = "Type error";
+                this.Result.Memo = "TokenType error";
             }
             else if (MessageType <= 0)
             {
@@ -1178,7 +1206,7 @@ namespace Logic
             }
             else if (TokenType <= 0)
             {
-                this.Result.Memo = "Type error";
+                this.Result.Memo = "TokenType error";
             }
             else if (ID <= 0)
             {
@@ -1230,7 +1258,7 @@ namespace Logic
             }
             else if (TokenType <= 0)
             {
-                this.Result.Memo = "Type error";
+                this.Result.Memo = "TokenType error";
             }
             else if (ID <= 0)
             {
@@ -1300,7 +1328,7 @@ namespace Logic
             }
             else if (TokenType <= 0)
             {
-                this.Result.Memo = "Type error";
+                this.Result.Memo = "TokenType error";
             }
             else if (FileID <= 0)
             {
@@ -1399,7 +1427,7 @@ namespace Logic
             }
             else if (TokenType <= 0)
             {
-                this.Result.Memo = "Type error";
+                this.Result.Memo = "TokenType error";
             }
             else if (ID <= 0)
             {
@@ -1463,7 +1491,7 @@ namespace Logic
             }
             else if (TokenType <= 0)
             {
-                this.Result.Memo = "Type error";
+                this.Result.Memo = "TokenType error";
             }
             else if (Data.DepartmentID < 0)
             {

@@ -5,6 +5,7 @@ using Npoi.Mapper;
 using Service;
 using System;
 using System.Collections.Generic;
+using SysLog;
 
 namespace Logic
 {
@@ -243,15 +244,28 @@ namespace Logic
         /// 日志记录
         /// </summary>
         /// <param name="Content"></param>
-        /// <param name="ActionType"></param>
+        /// <param name="ActionType">1 登录 2 操作</param>
         /// <param name="IP"></param>
-        public bool WTL(string Content, int ActionType, string IP = "")
+        public bool WTL(string Content, int ActionType = 1, string IP = "")
         {
-            if (String.IsNullOrEmpty(IP))
-            {
-                IP = this.IP;
-            }
-            return true;
+            if (String.IsNullOrEmpty(IP)) IP = this.IP;
+            string Operation = ActionType switch { 1 => "Login", 2 => "Action", _ => "", };
+            var LogStr = "IP: " + IP + " Operation: " + Operation + " Content: " + Content;
+            return LogTool.WriteLog(LogStr);
+        }
+
+        public string RL(int TimeStamp = 0)
+        {
+            return LogTool.ReadLog(TimeStamp);
+        }
+
+        /// <summary>
+        /// 清理日志文件
+        /// </summary>
+        /// <returns></returns>
+        public bool CL()
+        {
+            return LogTool.ClearLog();
         }
     }
 

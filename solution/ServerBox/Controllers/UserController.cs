@@ -336,7 +336,7 @@ namespace ServerBox.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("/Select/Log")]
-        public IActionResult SelectLog(string Token, int TokenType, int YMD)
+        public IActionResult SelectLog(string Token, int TokenType, int YMD = 0)
         {
             Token = Token == null ? "" : Token.Trim().ToLower();
             var Result = this.UserLogic.SelectLog(Token, TokenType, YMD);
@@ -355,7 +355,7 @@ namespace ServerBox.Controllers
         public IActionResult DeleteLog(string Token, int TokenType, int YMD)
         {
             Token = Token == null ? "" : Token.Trim().ToLower();
-            var Result = this.UserLogic.DeleteLog(Token, TokenType, YMD);
+            var Result = this.UserLogic.DeleteLog(Token, TokenType);
             return Json(Result);
         }
 
