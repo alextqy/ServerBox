@@ -372,38 +372,38 @@ namespace Logic
             return this.Result;
         }
 
-        public Entity.CommonListResultEntity SelectDir(string Token, int TokenType, Entity.DirSelectParamEntity Data)
+        public Entity.CommonResultEntity SelectDir(string Token, int TokenType, Entity.DirSelectParamEntity Data)
         {
             if (Token == "")
             {
-                ResultList.Memo = "Token error";
+                this.Result.Memo = "Token error";
             }
             else if (TokenType <= 0)
             {
-                ResultList.Memo = "TokenType error";
+                this.Result.Memo = "TokenType error";
             }
             else if (Data.DirName != "" && !Tools.RegCheckPro(Data.DirName))
             {
-                ResultList.Memo = "Dir name error";
+                this.Result.Memo = "Dir name error";
             }
             else if (Data.ParentID < 0)
             {
-                ResultList.Memo = "ParentID error";
+                this.Result.Memo = "ParentID error";
             }
             else if (Data.UserID < 0)
             {
-                ResultList.Memo = "UserID";
+                this.Result.Memo = "UserID";
             }
             else
             {
                 var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
-                    ResultList.Memo = "Token lost";
+                    this.Result.Memo = "Token lost";
                 }
                 else if (!this.PermissionVerify(UserID, 2))
                 {
-                    ResultList.Memo = "Permission denied";
+                    this.Result.Memo = "Permission denied";
                 }
                 else
                 {
@@ -411,8 +411,8 @@ namespace Logic
                     {
                         if (!this.MasterVerify(UserID))
                         {
-                            ResultList.Memo = "Permission denied";
-                            return ResultList;
+                            this.Result.Memo = "Permission denied";
+                            return this.Result;
                         }
                     }
                     if (Data.ParentID > 0)
@@ -420,23 +420,23 @@ namespace Logic
                         var ParentDirInfo = this.DirModel.Find(Data.ParentID);
                         if (ParentDirInfo.UserID != UserID && !this.MasterVerify(UserID))
                         {
-                            ResultList.Memo = "Permission denied";
-                            return ResultList;
+                            this.Result.Memo = "Permission denied";
+                            return this.Result;
                         }
                     }
-                    ResultList.Info = Data.ParentID;
+                    this.Result.ID = Data.ParentID;
                     if (Data.ParentID == 0)
                     {
                         var RootDir = this.UserRootPath(UserID);
                         Data.ParentID = RootDir.ID;
-                        ResultList.Info = RootDir.ID;
+                        this.Result.ID = RootDir.ID;
                     }
-                    ResultList.ResultStatus = true;
-                    ResultList.Memo = "Success";
-                    ResultList.DataList = this.DirModel.Select(Data);
+                    this.Result.ResultStatus = true;
+                    this.Result.Memo = "Success";
+                    this.Result.Data = this.DirModel.Select(Data);
                 }
             }
-            return this.ResultList;
+            return this.Result;
         }
 
         public Entity.CommonResultEntity CreateDirExtra(string Token, int TokenType, Entity.DirExtraEntity Data)
@@ -582,62 +582,62 @@ namespace Logic
             return this.Result;
         }
 
-        public Entity.CommonListResultEntity SelectDirExtra(string Token, int TokenType, Entity.DirExtraSelectParamEntity Data)
+        public Entity.CommonResultEntity SelectDirExtra(string Token, int TokenType, Entity.DirExtraSelectParamEntity Data)
         {
             if (Token == "")
             {
-                ResultList.Memo = "Token error";
+                this.Result.Memo = "Token error";
             }
             else if (TokenType <= 0)
             {
-                ResultList.Memo = "TokenType error";
+                this.Result.Memo = "TokenType error";
             }
             else if (Data.DirID <= 0)
             {
-                this.ResultList.Memo = "DirID error";
+                this.Result.Memo = "DirID error";
             }
             else
             {
                 var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
-                    ResultList.Memo = "Token lost";
+                    this.Result.Memo = "Token lost";
                 }
                 else if (!this.PermissionVerify(UserID, 2))
                 {
-                    ResultList.Memo = "Permission denied";
+                    this.Result.Memo = "Permission denied";
                 }
                 else
                 {
                     var DirInfo = this.DirModel.Find(Data.DirID);
                     if (DirInfo.ID == 0)
                     {
-                        ResultList.Memo = "Data error";
-                        return ResultList;
+                        this.Result.Memo = "Data error";
+                        return this.Result;
                     }
                     if (DirInfo.UserID != UserID && !this.MasterVerify(UserID))
                     {
-                        ResultList.Memo = "Permission denied";
-                        return ResultList;
+                        this.Result.Memo = "Permission denied";
+                        return this.Result;
                     }
 
-                    ResultList.ResultStatus = true;
-                    ResultList.Memo = "Success";
-                    ResultList.DataList = this.DirExtraModel.Select(Data);
+                    this.Result.ResultStatus = true;
+                    this.Result.Memo = "Success";
+                    this.Result.Data = this.DirExtraModel.Select(Data);
                 }
             }
-            return ResultList;
+            return this.Result;
         }
 
-        public Entity.CommonListResultEntity FileList(string Token, int TokenType, int DirID, int State, int UID)
+        public Entity.CommonResultEntity FileList(string Token, int TokenType, int DirID, int State, int UID)
         {
             if (Token == "")
             {
-                ResultList.Memo = "Token error";
+                this.Result.Memo = "Token error";
             }
             else if (TokenType <= 0)
             {
-                ResultList.Memo = "TokenType error";
+                this.Result.Memo = "TokenType error";
             }
             else if (DirID < 0)
             {
@@ -668,8 +668,8 @@ namespace Logic
                     {
                         if (!this.MasterVerify(UserID))
                         {
-                            ResultList.Memo = "Permission denied";
-                            return ResultList;
+                            this.Result.Memo = "Permission denied";
+                            return this.Result;
                         }
                     }
                     if (DirID > 0)
@@ -677,15 +677,15 @@ namespace Logic
                         var DirInfo = this.DirModel.Find(DirID);
                         if (DirInfo.ID == 0)
                         {
-                            ResultList.Memo = "Dir is not exist";
-                            return ResultList;
+                            this.Result.Memo = "Dir is not exist";
+                            return this.Result;
                         }
                         if (DirInfo.UserID != UserID)
                         {
                             if (!this.MasterVerify(UserID))
                             {
-                                ResultList.Memo = "Permission denied";
-                                return ResultList;
+                                this.Result.Memo = "Permission denied";
+                                return this.Result;
                             }
                         }
                     }
@@ -696,19 +696,19 @@ namespace Logic
                         Data.DirID = DirID;
                         Data.State = State;
                         Data.UserID = UID;
-                        ResultList.DataList = this.FileModel.Select(Data);
-                        ResultList.ResultStatus = true;
-                        ResultList.Memo = "Success";
+                        this.Result.Data = this.FileModel.Select(Data);
+                        this.Result.ResultStatus = true;
+                        this.Result.Memo = "Success";
                     }
                     catch (Exception e)
                     {
                         Console.WriteLine(e.Message);
-                        ResultList.Memo = "Error";
+                        this.Result.Memo = "Error";
                     }
                 }
             }
 
-            return ResultList;
+            return this.Result;
         }
 
         public Entity.CommonResultEntity CreateFile(string Token, int TokenType, Entity.FileEntity Data)
@@ -965,9 +965,8 @@ namespace Logic
             return this.Result;
         }
 
-        public Entity.DownloadFileEntity DownloadFileEntity(string Token, int TokenType, int ID, int POS)
+        public Entity.CommonResultEntity DownloadFileEntity(string Token, int TokenType, int ID, int POS)
         {
-            Entity.DownloadFileEntity Result = new();
             if (Token == "")
             {
                 Result.Memo = "Token error";
@@ -1019,6 +1018,7 @@ namespace Logic
                         }
                         else
                         {
+                            Entity.DownloadFileEntity FileData = new();
                             var FileEntity = FileEntityList[POS - 1];
                             var FileEntityInfo = Tools.FileInfo(FileEntity);
                             var FileSize = FileEntityInfo.Length;
@@ -1030,8 +1030,10 @@ namespace Logic
                                     var Data = new byte[FileSize];
                                     FS.Read(Data, 0, Data.Length);
                                     var FileEntityPathList = Tools.Explode("/", FileEntity);
-                                    Result.FileEntityName = FileEntityPathList[FileEntityPathList.Length - 1];
-                                    Result.Data = Tools.ByteToBase64(Data);
+                                    FileData.FileEntityName = FileEntityPathList[FileEntityPathList.Length - 1];
+                                    FileData.Data = Tools.ByteToBase64(Data);
+
+                                    Result.Data = FileData;
                                     Result.ResultStatus = true;
                                     Result.Memo = "Success";
                                 }
@@ -1615,43 +1617,43 @@ namespace Logic
             return this.Result;
         }
 
-        public Entity.CommonListResultEntity SelectFileExtra(string Token, int TokenType, Entity.FileExtraSelectParamEntity Data)
+        public Entity.CommonResultEntity SelectFileExtra(string Token, int TokenType, Entity.FileExtraSelectParamEntity Data)
         {
             if (Token == "")
             {
-                this.ResultList.Memo = "Token error";
+                this.Result.Memo = "Token error";
             }
             else if (TokenType <= 0)
             {
-                this.ResultList.Memo = "TokenType error";
+                this.Result.Memo = "TokenType error";
             }
             else if (Data.FileID <= 0)
             {
-                this.ResultList.Memo = "FileID error";
+                this.Result.Memo = "FileID error";
             }
             else if (Data.ExtraDesc != "" && !Tools.RegCheckPro(Data.ExtraDesc))
             {
-                this.ResultList.Memo = "ExtraDesc format error";
+                this.Result.Memo = "ExtraDesc format error";
             }
             else if (Data.ExtraValue != "" && !Tools.RegCheckPro(Data.ExtraValue))
             {
-                this.ResultList.Memo = "ExtraValue format error";
+                this.Result.Memo = "ExtraValue format error";
             }
             else
             {
                 var FileInfo = this.FileModel.Find(Data.FileID);
                 if (FileInfo.ID == 0)
                 {
-                    this.ResultList.Memo = "File not found";
+                    this.Result.Memo = "File not found";
                 }
                 else
                 {
-                    this.ResultList.ResultStatus = true;
-                    this.ResultList.Memo = "Success";
-                    this.ResultList.DataList = this.FileExtraModel.Select(Data);
+                    this.Result.ResultStatus = true;
+                    this.Result.Memo = "Success";
+                    this.Result.Data = this.FileExtraModel.Select(Data);
                 }
             }
-            return this.ResultList;
+            return this.Result;
         }
 
         public Entity.CommonResultEntity CopyFile(string Token, int TokenType, int DirID, int FileID)
@@ -1851,22 +1853,22 @@ namespace Logic
             return this.Result;
         }
 
-        public Entity.CommonListResultEntity FileLockList(string Token, int TokenType)
+        public Entity.CommonResultEntity FileLockList(string Token, int TokenType)
         {
             if (Token == "")
             {
-                this.ResultList.Memo = "Token error";
+                this.Result.Memo = "Token error";
             }
             else if (TokenType <= 0)
             {
-                this.ResultList.Memo = "TokenType error";
+                this.Result.Memo = "TokenType error";
             }
             else
             {
                 var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
-                    this.ResultList.Memo = "Token lost";
+                    this.Result.Memo = "Token lost";
                 }
                 else
                 {
@@ -1875,18 +1877,18 @@ namespace Logic
                         Entity.FileSelectParamEntity Data = new();
                         Data.State = 3;
                         Data.UserID = UserID;
-                        this.ResultList.DataList = this.FileModel.Select(Data);
-                        this.ResultList.ResultStatus = true;
-                        this.ResultList.Memo = "Success";
+                        this.Result.Data = this.FileModel.Select(Data);
+                        this.Result.ResultStatus = true;
+                        this.Result.Memo = "Success";
                     }
                     catch (Exception e)
                     {
                         Console.WriteLine(e.Message);
-                        this.ResultList.Memo = "Error";
+                        this.Result.Memo = "Error";
                     }
                 }
             }
-            return this.ResultList;
+            return this.Result;
         }
 
         public Entity.CommonResultEntity FileEntitySyncPrefix(string Token, int TokenType, int FileID)
@@ -2274,9 +2276,8 @@ namespace Logic
             return this.Result;
         }
 
-        public Entity.DownloadFileEntity DownloadDemo(string Token, int TokenType, string LangType)
+        public Entity.CommonResultEntity DownloadDemo(string Token, int TokenType, string LangType)
         {
-            Entity.DownloadFileEntity Result = new();
             if (Token == "")
             {
                 Result.Memo = "Token error";
@@ -2302,6 +2303,7 @@ namespace Logic
                 }
                 else
                 {
+                    Entity.DownloadFileEntity FileData = new();
                     var FileEntityInfo = Tools.FileInfo(FileEntity);
                     var FileSize = FileEntityInfo.Length;
                     try
@@ -2311,8 +2313,10 @@ namespace Logic
                             var Data = new byte[FileSize];
                             FS.Read(Data, 0, Data.Length);
                             var FileEntityPathList = Tools.Explode("/", FileEntity);
-                            Result.FileEntityName = FileEntityPathList[FileEntityPathList.Length - 1];
-                            Result.Data = Tools.ByteToBase64(Data);
+                            FileData.FileEntityName = FileEntityPathList[FileEntityPathList.Length - 1];
+                            FileData.Data = Tools.ByteToBase64(Data);
+
+                            Result.Data = FileData;
                             Result.ResultStatus = true;
                             Result.Memo = "Success";
                         }

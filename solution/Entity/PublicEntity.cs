@@ -8,6 +8,15 @@ namespace Entity
 
     public class CommonResultEntity : Base
     {
+        [JsonPropertyName("ResultStatus")]
+        public bool ResultStatus { get; set; }
+
+        [JsonPropertyName("StatusCode")]
+        public int StatusCode { get; set; }
+
+        [JsonPropertyName("Memo")]
+        public string Memo { get; set; }
+
         [JsonPropertyName("ID")]
         public int ID { get; set; }
 
@@ -16,33 +25,33 @@ namespace Entity
 
         public CommonResultEntity()
         {
+            this.ResultStatus = false;
+            this.StatusCode = 200;
+            this.Memo = "";
             this.ID = 0;
             this.Data = null;
         }
     }
 
-    public class CommonListResultEntity : Base
-    {
-        [JsonPropertyName("DataList")]
-        public dynamic DataList { get; set; }
-
-        [JsonPropertyName("Info")]
-        public dynamic Info { get; set; }
-
-        public CommonListResultEntity()
-        {
-            this.DataList = null;
-            this.Info = null;
-        }
-    }
-
     public class LoginResultEntity : Base
     {
+        [JsonPropertyName("ResultStatus")]
+        public bool ResultStatus { get; set; }
+
+        [JsonPropertyName("StatusCode")]
+        public int StatusCode { get; set; }
+
+        [JsonPropertyName("Memo")]
+        public string Memo { get; set; }
+
         [JsonPropertyName("Token")]
         public string Token { get; set; }
 
         public LoginResultEntity()
         {
+            this.ResultStatus = false;
+            this.StatusCode = 200;
+            this.Memo = "";
             this.Token = "";
         }
     }
@@ -57,8 +66,6 @@ namespace Entity
 
         public DownloadFileEntity()
         {
-            this.ResultStatus = false;
-            this.Memo = "";
             this.FileEntityName = "";
             this.Data = "";
         }

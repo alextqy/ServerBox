@@ -9,10 +9,8 @@ namespace Logic
     {
         public ConfigLogic(string IP, DbContentCore DbContent) : base(IP, DbContent) { }
 
-        public Entity.ConfigEntity CheckConfig(string Token, int TokenType, int ID)
+        public Entity.CommonResultEntity CheckConfig(string Token, int TokenType, int ID)
         {
-            Entity.ConfigEntity Result = new();
-
             if (Token == "")
             {
                 Result.Memo = "Token error";
@@ -38,12 +36,9 @@ namespace Logic
                 }
                 else
                 {
-                    Result = this.ConfigModel.Find(ID);
-                    if (Result.ID > 0)
-                    {
-                        Result.ResultStatus = true;
-                        Result.Memo = "Success";
-                    }
+                    Result.Data = this.ConfigModel.Find(ID);
+                    Result.ResultStatus = true;
+                    Result.Memo = "Success";
                 }
             }
 

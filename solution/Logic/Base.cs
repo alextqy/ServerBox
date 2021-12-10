@@ -13,7 +13,6 @@ namespace Logic
         public string IP { set; get; }
         public DbContentCore DbContent { set; get; }
         public CommonResultEntity Result { set; get; }
-        public CommonListResultEntity ResultList { set; get; }
 
         public ConfigModel ConfigModel { set; get; }
         public DepartmentExtraModel DepartmentExtraModel { set; get; }
@@ -38,7 +37,6 @@ namespace Logic
             this.IP = IP;
             this.DbContent = DbContent;
             this.Result = new CommonResultEntity();
-            this.ResultList = new CommonListResultEntity();
 
             this.ConfigModel = new ConfigModel(this.DbContent);
             this.DepartmentExtraModel = new DepartmentExtraModel(this.DbContent);

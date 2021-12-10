@@ -165,9 +165,8 @@ namespace Logic
             return this.Result;
         }
 
-        public Entity.UserEntity CheckSelf(string Token, int TokenType)
+        public Entity.CommonResultEntity CheckSelf(string Token, int TokenType)
         {
-            Entity.UserEntity Result = new();
             if (Token == "")
             {
                 Result.Memo = "Token error";
@@ -185,16 +184,9 @@ namespace Logic
                 }
                 else
                 {
-                    Result = this.UserModel.Find(UserID);
-                    if (Result.ID > 0)
-                    {
-                        Result.ResultStatus = true;
-                        Result.Memo = "Success";
-                    }
-                    else
-                    {
-                        Result.Memo = "Error";
-                    }
+                    Result.Data = this.UserModel.Find(UserID);
+                    Result.ResultStatus = true;
+                    Result.Memo = "Success";
                 }
             }
             return Result;
@@ -630,9 +622,8 @@ namespace Logic
             return this.Result;
         }
 
-        public Entity.UserEntity UserInfo(string Token, int TokenType, int UID)
+        public Entity.CommonResultEntity UserInfo(string Token, int TokenType, int UID)
         {
-            Entity.UserEntity Result = new();
             if (Token == "")
             {
                 Result.Memo = "Token error";
@@ -658,21 +649,20 @@ namespace Logic
                 //}
                 else
                 {
-                    Result = this.UserModel.Find(UID);
-                    if (Result.ID > 0)
-                    {
-                        Result.Password = "";
-                        Result.Secret = 0;
-                        Result.ResultStatus = true;
-                        Result.Memo = "Success";
-                    }
+                    var Data = this.UserModel.Find(UID);
+                    Data.Password = "";
+                    Data.Secret = 0;
+
+                    Result.Data = Data;
+                    Result.ResultStatus = true;
+                    Result.Memo = "Success";
                 }
             }
 
             return Result;
         }
 
-        public Entity.CommonListResultEntity SelectUser(string Token, int TokenType, Entity.UserSelectParamEntity Data)
+        public Entity.CommonResultEntity SelectUser(string Token, int TokenType, Entity.UserSelectParamEntity Data)
         {
             if (Token == "")
             {
@@ -702,7 +692,7 @@ namespace Logic
                     Result.Memo = "Success";
                 }
             }
-            return this.ResultList;
+            return this.Result;
         }
 
         public Entity.CommonResultEntity CreateUserExtra(string Token, int TokenType, Entity.UserExtraEntity Data)
@@ -835,38 +825,38 @@ namespace Logic
             return this.Result;
         }
 
-        public Entity.CommonListResultEntity SelectUserExtra(string Token, int TokenType, Entity.UserExtraSelectParamEntity Data)
+        public Entity.CommonResultEntity SelectUserExtra(string Token, int TokenType, Entity.UserExtraSelectParamEntity Data)
         {
             if (Token == "")
             {
-                ResultList.Memo = "Token error";
+                this.Result.Memo = "Token error";
             }
             else if (TokenType <= 0)
             {
-                ResultList.Memo = "Type error";
+                this.Result.Memo = "Type error";
             }
             else if (Data.UserID < 0)
             {
-                ResultList.Memo = "UserID error";
+                this.Result.Memo = "UserID error";
             }
             else if (Data.ExtraDesc != "" && !Tools.RegCheckPro(Data.ExtraDesc))
             {
-                ResultList.Memo = "ExtraDesc format error";
+                this.Result.Memo = "ExtraDesc format error";
             }
             else if (Data.ExtraType < 0)
             {
-                ResultList.Memo = "ExtraType error";
+                this.Result.Memo = "ExtraType error";
             }
             else if (Data.ExtraValue != "" && !Tools.RegCheckPro(Data.ExtraValue))
             {
-                ResultList.Memo = "ExtraValue format error";
+                this.Result.Memo = "ExtraValue format error";
             }
             else
             {
                 var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
-                    ResultList.Memo = "Token lost";
+                    this.Result.Memo = "Token lost";
                 }
                 else
                 {
@@ -874,25 +864,25 @@ namespace Logic
                     {
                         if (!this.MasterVerify(UserID))
                         {
-                            ResultList.Memo = "Permission denied";
-                            return ResultList;
+                            this.Result.Memo = "Permission denied";
+                            return this.Result;
                         }
                     }
                     if (Data.UserID == 0)
                     {
                         Data.UserID = UserID;
                     }
-                    ResultList.ResultStatus = true;
-                    ResultList.Memo = "Success";
-                    ResultList.DataList = this.UserExtraModel.Select(Data);
+                    this.Result.ResultStatus = true;
+                    this.Result.Memo = "Success";
+                    this.Result.Data = this.UserExtraModel.Select(Data);
                 }
             }
-            return ResultList;
+            return this.Result;
         }
 
-        public Entity.CommonListResultEntity SelectLog(string Token, int TokenType, int YMD)
+        public Entity.CommonResultEntity SelectLog(string Token, int TokenType, int YMD)
         {
-            return ResultList;
+            return this.Result;
         }
 
         public Entity.CommonResultEntity DeleteLog(string Token, int TokenType, int YMD)
@@ -964,11 +954,11 @@ namespace Logic
             return this.Result;
         }
 
-        public Entity.OuterTokenEntity CheckOuterToken(string OuterToken)
+        public Entity.CommonResultEntity CheckOuterToken(string OuterToken)
         {
-            Entity.OuterTokenEntity Result = new();
-            Result = this.OuterTokenModel.FindByToken(OuterToken);
+            Result.Data = this.OuterTokenModel.FindByToken(OuterToken);
             Result.ResultStatus = true;
+            Result.Memo = "";
             return Result;
         }
 
@@ -1047,9 +1037,8 @@ namespace Logic
             return this.Result;
         }
 
-        public Entity.MessageEntity CheckMessage(string Token, int TokenType, int ID)
+        public Entity.CommonResultEntity CheckMessage(string Token, int TokenType, int ID)
         {
-            Entity.MessageEntity Result = new();
             if (Token == "")
             {
                 Result.Memo = "Token error";
@@ -1097,31 +1086,28 @@ namespace Logic
                                 return Result;
                             }
                         }
-                        Result = Info;
-                        if (Result.ID > 0)
-                        {
-                            Result.ResultStatus = true;
-                            Result.Memo = "Success";
-                        }
+                        Result.Data = Info;
+                        Result.ResultStatus = true;
+                        Result.Memo = "Success";
                     }
                 }
             }
             return Result;
         }
 
-        public Entity.CommonListResultEntity MessageList(string Token, int TokenType, int MessageType, int UID, int State, int StartPoint = 0, int EndPoint = 0)
+        public Entity.CommonResultEntity MessageList(string Token, int TokenType, int MessageType, int UID, int State, int StartPoint = 0, int EndPoint = 0)
         {
             if (Token == "")
             {
-                ResultList.Memo = "Token error";
+                this.Result.Memo = "Token error";
             }
             else if (TokenType <= 0)
             {
-                ResultList.Memo = "Type error";
+                this.Result.Memo = "Type error";
             }
             else if (MessageType <= 0)
             {
-                ResultList.Memo = "MessageType error";
+                this.Result.Memo = "MessageType error";
             }
             //else if (UID <= 0)
             //{
@@ -1129,14 +1115,14 @@ namespace Logic
             //}
             else if (State < 0)
             {
-                ResultList.Memo = "State error";
+                this.Result.Memo = "State error";
             }
             else
             {
                 var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
-                    ResultList.Memo = "Token lost";
+                    this.Result.Memo = "Token lost";
                 }
                 else
                 {
@@ -1164,12 +1150,12 @@ namespace Logic
                         Data.EndPoint = EndPoint;
                     }
 
-                    ResultList.ResultStatus = true;
-                    ResultList.Memo = "Success";
-                    ResultList.DataList = this.MessageModel.Select(Data);
+                    this.Result.ResultStatus = true;
+                    this.Result.Memo = "Success";
+                    this.Result.Data = this.MessageModel.Select(Data);
                 }
             }
-            return ResultList;
+            return this.Result;
         }
 
         public Entity.CommonResultEntity DeleteMessage(string Token, int TokenType, int ID)
@@ -1457,45 +1443,45 @@ namespace Logic
             return this.Result;
         }
 
-        public Entity.CommonListResultEntity SelectDepartmentFile(string Token, int TokenType, Entity.DepartmentFileSelectParamEntity Data)
+        public Entity.CommonResultEntity SelectDepartmentFile(string Token, int TokenType, Entity.DepartmentFileSelectParamEntity Data)
         {
             if (Token == "")
             {
-                ResultList.Memo = "Token error";
+                this.Result.Memo = "Token error";
             }
             else if (TokenType <= 0)
             {
-                ResultList.Memo = "Type error";
+                this.Result.Memo = "Type error";
             }
             else if (Data.DepartmentID < 0)
             {
-                ResultList.Memo = "DepartmentID error";
+                this.Result.Memo = "DepartmentID error";
             }
             else if (Data.FileID < 0)
             {
-                ResultList.Memo = "FileID error";
+                this.Result.Memo = "FileID error";
             }
             else if (Data.UserID < 0)
             {
-                ResultList.Memo = "UserID error";
+                this.Result.Memo = "UserID error";
             }
             else
             {
                 var UserID = this.TokenVerify(Token, TokenType);
                 if (UserID == 0)
                 {
-                    ResultList.Memo = "Token lost";
+                    this.Result.Memo = "Token lost";
                 }
                 else
                 {
                     var UserInfo = this.UserModel.Find(UserID);
                     if (UserInfo.ID == 0)
                     {
-                        ResultList.Memo = "User not found";
+                        this.Result.Memo = "User not found";
                     }
                     else if (UserInfo.DepartmentID == 0)
                     {
-                        ResultList.Memo = "Department error";
+                        this.Result.Memo = "Department error";
                     }
                     else
                     {
@@ -1504,13 +1490,13 @@ namespace Logic
                             var CheckUser = this.UserModel.Find(Data.UserID);
                             if (CheckUser.ID == 0)
                             {
-                                ResultList.Memo = "User not found";
-                                return ResultList;
+                                this.Result.Memo = "User not found";
+                                return this.Result;
                             }
                             if (CheckUser.DepartmentID != Data.DepartmentID)
                             {
-                                ResultList.Memo = "Department error";
-                                return ResultList;
+                                this.Result.Memo = "Department error";
+                                return this.Result;
                             }
                         }
 
@@ -1521,22 +1507,22 @@ namespace Logic
                         var DepartmentInfo = this.DepartmentModel.Find(Data.DepartmentID);
                         if (DepartmentInfo.ID == 0)
                         {
-                            ResultList.Memo = "Department not found";
+                            this.Result.Memo = "Department not found";
                         }
                         else if (UserInfo.DepartmentID != DepartmentInfo.ID)
                         {
-                            ResultList.Memo = "Permission denied";
+                            this.Result.Memo = "Permission denied";
                         }
                         else
                         {
-                            ResultList.DataList = this.DepartmentFileModel.Select(Data);
-                            ResultList.ResultStatus = true;
-                            ResultList.Memo = "Success";
+                            this.Result.Data = this.DepartmentFileModel.Select(Data);
+                            this.Result.ResultStatus = true;
+                            this.Result.Memo = "Success";
                         }
                     }
                 }
             }
-            return ResultList;
+            return this.Result;
         }
 
         public Entity.CommonResultEntity ResetMaster()

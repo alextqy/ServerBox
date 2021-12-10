@@ -356,9 +356,9 @@ namespace Logic
             return this.Result;
         }
 
-        public Entity.DepartmentEntity DepartmentInfo(string Token, int TokenType, int ID)
+        public Entity.CommonResultEntity DepartmentInfo(string Token, int TokenType, int ID)
         {
-            Entity.DepartmentEntity Result = new();
+            Entity.DepartmentEntity Data = new();
             if (Token == "")
             {
                 Result.Memo = "Token error";
@@ -384,22 +384,15 @@ namespace Logic
                 }
                 else
                 {
-                    var Data = this.DepartmentModel.Find(ID);
-                    if (Data.ID > 0)
-                    {
-                        Result.ResultStatus = true;
-                        Result.Memo = "success";
-                    }
-                    else
-                    {
-                        Result.Memo = "Data not found";
-                    }
+                    Result.Data = this.DepartmentModel.Find(ID);
+                    Result.ResultStatus = true;
+                    Result.Memo = "success";
                 }
             }
             return Result;
         }
 
-        public Entity.CommonListResultEntity SelectDepartment(string Token, int TokenType, Entity.DepartmentSelectParamEntity Data)
+        public Entity.CommonResultEntity SelectDepartment(string Token, int TokenType, Entity.DepartmentSelectParamEntity Data)
         {
             if (Token == "")
             {
@@ -427,7 +420,7 @@ namespace Logic
                     this.Result.Data = this.DepartmentModel.Select(Data);
                 }
             }
-            return this.ResultList;
+            return this.Result;
         }
 
         public Entity.CommonResultEntity CreateDepartmentExtra(string Token, int TokenType, Entity.DepartmentExtraEntity Data)
@@ -551,7 +544,7 @@ namespace Logic
             return this.Result;
         }
 
-        public Entity.CommonListResultEntity SelectDepartmentExtra(string Token, int TokenType, Entity.DepartmentExtraSelectParamEntity Data)
+        public Entity.CommonResultEntity SelectDepartmentExtra(string Token, int TokenType, Entity.DepartmentExtraSelectParamEntity Data)
         {
             if (Token == "")
             {
@@ -587,7 +580,7 @@ namespace Logic
                     Result.Data = this.DepartmentExtraModel.Select(Data);
                 }
             }
-            return this.ResultList;
+            return this.Result;
         }
     }
 }
