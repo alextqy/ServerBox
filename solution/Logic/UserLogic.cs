@@ -911,7 +911,7 @@ namespace Logic
             return this.Result;
         }
 
-        public Entity.CommonResultEntity DeleteLog(string Token, int TokenType)
+        public Entity.CommonResultEntity ClearLog(string Token, int TokenType)
         {
             if (Token == "")
             {

@@ -351,11 +351,11 @@ namespace ServerBox.Controllers
         /// <param name="ID"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("/Delete/Log")]
-        public IActionResult DeleteLog(string Token, int TokenType, int YMD)
+        [Route("/Clear/Log")]
+        public IActionResult ClearLog(string Token, int TokenType, int YMD)
         {
             Token = Token == null ? "" : Token.Trim().ToLower();
-            var Result = this.UserLogic.DeleteLog(Token, TokenType);
+            var Result = this.UserLogic.ClearLog(Token, TokenType);
             return Json(Result);
         }
 
