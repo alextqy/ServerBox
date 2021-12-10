@@ -757,6 +757,12 @@ namespace Logic
                         }
                     }
 
+                    if (UserModel.Find(Data.UserID).ID == 0)
+                    {
+                        this.Result.Memo = "User data does not exist";
+                        return this.Result;
+                    }
+
                     Entity.UserExtraEntity ExtraData = new();
                     ExtraData.UserID = Data.UserID;
                     ExtraData.ExtraDesc = Data.ExtraDesc;
