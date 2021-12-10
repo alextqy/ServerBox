@@ -75,7 +75,8 @@ namespace ConfigHelper
             SettingsObject.TokenPeriod = 8;
             JsonSerializerOptions Options = new() { WriteIndented = true, };
             Console.WriteLine("Initializing configuration file please wait !!!");
-            return Tools.WriteFile(FilePath, System.Text.Json.JsonSerializer.Serialize(SettingsObject, Options));
+            Tools.WriteFile(FilePath, System.Text.Json.JsonSerializer.Serialize(SettingsObject, Options));
+            return false;
         }
 
         public static bool WriteSettings(string k, string v)
