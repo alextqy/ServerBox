@@ -9,7 +9,7 @@ namespace ConfInit
     {
         static void Main(string[] args)
         {
-
+            InitSettings(Tools.RootPath() + "appsettings.json");
         }
 
         /// <summary>
