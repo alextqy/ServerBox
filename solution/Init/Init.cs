@@ -13,7 +13,9 @@ namespace Init
         /// <returns></returns>
         public bool CheckConfigFile()
         {
-            return ConfigHelper.AppSettingsHelper.AppSettingsState(Tools.RootPath() + "appsettings.json");
+            var CheckState = ConfigHelper.AppSettingsHelper.AppSettingsState(Tools.RootPath() + "appsettings.json");
+            if (!CheckState) Console.WriteLine("Can't find configuration file !!!");
+            return CheckState;
         }
 
         /// <summary>
