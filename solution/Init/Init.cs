@@ -165,7 +165,7 @@ namespace Init
 
                 Console.WriteLine("System initialization completed!");
             }
-            Console.WriteLine("========== Ver 0.0.1 beta ==========");
+            Console.WriteLine("========== Ver 0.0.1 alpha ==========");
             Console.WriteLine("Bit Box is working!");
             return true;
         }
