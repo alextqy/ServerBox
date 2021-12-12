@@ -21,6 +21,7 @@ namespace ServerBox.Controllers
             this.DbContentCore = DbContent;
 
             this.UserLogic = new UserLogic(this.IP, this.DbContentCore);
+            this.DepartmentLogic = new DepartmentLogic(this.IP, this.DbContentCore);
             this.FileLogic = new FileLogic(this.IP, this.DbContentCore);
             this.ConfigLogic = new ConfigLogic(this.IP, this.DbContentCore);
         }
