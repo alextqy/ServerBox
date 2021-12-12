@@ -85,7 +85,7 @@ namespace Logic
                             this.DirModel.Insert(DirData);
                             this.DbContent.SaveChanges();
                             this.Result.ID = DirData.ID;
-                            this.Result.ResultStatus = true;
+                            this.Result.State = true;
                             this.Result.Memo = "Success";
                         }
                         catch (Exception e)
@@ -129,7 +129,7 @@ namespace Logic
                     }
                     else
                     {
-                        this.Result.ResultStatus = true;
+                        this.Result.State = true;
                         this.Result.Memo = "Success";
                         this.Result.Data = DirInfo;
                     }
@@ -196,7 +196,7 @@ namespace Logic
                             else
                             {
                                 TA.Commit();
-                                this.Result.ResultStatus = true;
+                                this.Result.State = true;
                                 this.Result.Memo = "Success";
                             }
                         }
@@ -358,7 +358,7 @@ namespace Logic
                             Info.ParentID = Data.ParentID;
                             this.DirModel.Modify(ID, Info);
                             this.DbContent.SaveChanges();
-                            this.Result.ResultStatus = true;
+                            this.Result.State = true;
                             this.Result.Memo = "Success";
                         }
                         catch (Exception e)
@@ -431,7 +431,7 @@ namespace Logic
                         Data.ParentID = RootDir.ID;
                         this.Result.ID = RootDir.ID;
                     }
-                    this.Result.ResultStatus = true;
+                    this.Result.State = true;
                     this.Result.Memo = "Success";
                     this.Result.Data = this.DirModel.Select(Data);
                 }
@@ -504,7 +504,7 @@ namespace Logic
                         ExtraData.ExtraValue = Data.ExtraValue;
                         try
                         {
-                            this.Result.ResultStatus = true;
+                            this.Result.State = true;
                             this.Result.Memo = "Success";
                             this.DirExtraModel.Insert(ExtraData);
                             this.DbContent.SaveChanges();
@@ -568,7 +568,7 @@ namespace Logic
                         {
                             this.DirExtraModel.Delete(ID);
                             this.DbContent.SaveChanges();
-                            this.Result.ResultStatus = true;
+                            this.Result.State = true;
                             this.Result.Memo = "Success";
                         }
                         catch (Exception e)
@@ -621,7 +621,7 @@ namespace Logic
                         return this.Result;
                     }
 
-                    this.Result.ResultStatus = true;
+                    this.Result.State = true;
                     this.Result.Memo = "Success";
                     this.Result.Data = this.DirExtraModel.Select(Data);
                 }
@@ -697,7 +697,7 @@ namespace Logic
                         Data.State = State;
                         Data.UserID = UID;
                         this.Result.Data = this.FileModel.Select(Data);
-                        this.Result.ResultStatus = true;
+                        this.Result.State = true;
                         this.Result.Memo = "Success";
                     }
                     catch (Exception e)
@@ -831,7 +831,7 @@ namespace Logic
                         {
                             this.FileModel.Insert(FileData);
                             this.DbContent.SaveChanges();
-                            this.Result.ResultStatus = true;
+                            this.Result.State = true;
                             this.Result.Memo = "Success";
                             this.Result.ID = FileData.ID;
                         }
@@ -914,7 +914,7 @@ namespace Logic
                     }
                     else if (FileInfo.State != 1)
                     {
-                        this.Result.ResultStatus = true;
+                        this.Result.State = true;
                         this.Result.Memo = "Upload complete";
                     }
                     else
@@ -952,7 +952,7 @@ namespace Logic
                             this.FileModel.Modify(FileInfo.ID, FileInfo);
                             this.DbContent.SaveChanges();
                             this.Result.Memo = "Success";
-                            this.Result.ResultStatus = true;
+                            this.Result.State = true;
                         }
                         catch (Exception e)
                         {
@@ -1034,7 +1034,7 @@ namespace Logic
                                     FileData.Data = Tools.ByteToBase64(Data);
 
                                     Result.Data = FileData;
-                                    Result.ResultStatus = true;
+                                    Result.State = true;
                                     Result.Memo = "Success";
                                 }
                             }
@@ -1120,7 +1120,7 @@ namespace Logic
                                 }
                             }
                             TA.Commit();
-                            this.Result.ResultStatus = true;
+                            this.Result.State = true;
                             this.Result.Memo = "Success";
                         }
                     }
@@ -1292,7 +1292,7 @@ namespace Logic
                             }
 
                             TA.Commit();
-                            this.Result.ResultStatus = true;
+                            this.Result.State = true;
                             this.Result.Memo = "Success";
                         }
                     }
@@ -1390,7 +1390,7 @@ namespace Logic
                         {
                             this.FileModel.Modify(ID, FileInfo);
                             this.DbContent.SaveChanges();
-                            this.Result.ResultStatus = true;
+                            this.Result.State = true;
                             this.Result.Memo = "Success";
                         }
                         catch (Exception e)
@@ -1461,7 +1461,7 @@ namespace Logic
                             }
                         }
 
-                        Result.ResultStatus = true;
+                        Result.State = true;
                         Result.Memo = "Success";
                         Result.Data = FileInfo;
                     }
@@ -1538,7 +1538,7 @@ namespace Logic
                         {
                             this.FileExtraModel.Insert(ExtraData);
                             this.DbContent.SaveChanges();
-                            this.Result.ResultStatus = true;
+                            this.Result.State = true;
                             this.Result.Memo = "Success";
                         }
                         catch (Exception e)
@@ -1601,7 +1601,7 @@ namespace Logic
                             {
                                 this.FileExtraModel.Delete(ID);
                                 this.DbContent.SaveChanges();
-                                this.Result.ResultStatus = true;
+                                this.Result.State = true;
                                 this.Result.Memo = "Success";
                             }
                             catch (Exception e)
@@ -1648,7 +1648,7 @@ namespace Logic
                 }
                 else
                 {
-                    this.Result.ResultStatus = true;
+                    this.Result.State = true;
                     this.Result.Memo = "Success";
                     this.Result.Data = this.FileExtraModel.Select(Data);
                 }
@@ -1769,7 +1769,7 @@ namespace Logic
 
                                 TA.Commit();
                                 this.Result.ID = FileData.ID;
-                                this.Result.ResultStatus = true;
+                                this.Result.State = true;
                                 this.Result.Memo = "Success";
                             }
                         }
@@ -1837,7 +1837,7 @@ namespace Logic
                                 FileInfo.State = Switch;
                                 this.FileModel.Modify(FileID, FileInfo);
                                 this.DbContent.SaveChanges();
-                                this.Result.ResultStatus = true;
+                                this.Result.State = true;
                                 this.Result.Memo = "Success";
                             }
                             catch (Exception e)
@@ -1878,7 +1878,7 @@ namespace Logic
                         Data.State = 3;
                         Data.UserID = UserID;
                         this.Result.Data = this.FileModel.Select(Data);
-                        this.Result.ResultStatus = true;
+                        this.Result.State = true;
                         this.Result.Memo = "Success";
                     }
                     catch (Exception e)
@@ -1943,7 +1943,7 @@ namespace Logic
                             }
                             if (Tools.CreateDir(SyncDir))
                             {
-                                this.Result.ResultStatus = true;
+                                this.Result.State = true;
                                 this.Result.Memo = "Success";
                             }
                         }
@@ -2021,7 +2021,7 @@ namespace Logic
                                     FileEntity.CopyTo(Stream);
                                     Stream.Flush();
                                 }
-                                this.Result.ResultStatus = true;
+                                this.Result.State = true;
                                 this.Result.Memo = "Success";
                             }
                             catch (Exception e)
@@ -2084,7 +2084,7 @@ namespace Logic
                             if (DoRename2)
                             {
                                 Tools.DelDir(OldPath + "_bak", true); // 删除备份文件夹
-                                this.Result.ResultStatus = true;
+                                this.Result.State = true;
                                 this.Result.Memo = "Success";
                             }
                             else
@@ -2135,7 +2135,7 @@ namespace Logic
                         }
                         else
                         {
-                            this.Result.ResultStatus = true;
+                            this.Result.State = true;
                             this.Result.Memo = "Success";
                         }
                     }
@@ -2263,7 +2263,7 @@ namespace Logic
                                         return this.Result;
                                     }
 
-                                    this.Result.ResultStatus = true;
+                                    this.Result.State = true;
                                     this.Result.Memo = "Success";
                                     this.Result.ID = NewFile.ID;
                                     TA.Commit();
@@ -2317,7 +2317,7 @@ namespace Logic
                             FileData.Data = Tools.ByteToBase64(Data);
 
                             Result.Data = FileData;
-                            Result.ResultStatus = true;
+                            Result.State = true;
                             Result.Memo = "Success";
                         }
                     }
@@ -2472,7 +2472,7 @@ namespace Logic
                         try
                         {
                             this.UserModel.Insert(UserObject);
-                            this.Result.ResultStatus = true;
+                            this.Result.State = true;
                             this.Result.Memo = "Success";
                         }
                         catch (Exception e)
@@ -2494,7 +2494,7 @@ namespace Logic
                     TA.Commit();
 
                     Tools.DelFile(FileData);
-                    this.Result.ResultStatus = true;
+                    this.Result.State = true;
                     this.Result.Memo = "Success";
                 }
             }

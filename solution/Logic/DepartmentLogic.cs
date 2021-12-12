@@ -77,7 +77,7 @@ namespace Logic
                                 this.DbContent.SaveChanges();
                                 this.Result.ID = DepartmentData.ID;
                                 this.Result.Memo = "Success";
-                                this.Result.ResultStatus = true;
+                                this.Result.State = true;
                             }
                             catch (Exception e)
                             {
@@ -143,7 +143,7 @@ namespace Logic
                         else
                         {
                             TA.Commit();
-                            this.Result.ResultStatus = true;
+                            this.Result.State = true;
                             this.Result.Memo = "Success";
                         }
                     }
@@ -261,7 +261,7 @@ namespace Logic
                         {
                             this.DepartmentModel.Modify(ID, Info);
                             this.DbContent.SaveChanges();
-                            this.Result.ResultStatus = true;
+                            this.Result.State = true;
                             this.Result.Memo = "Success";
                         }
                         catch (Exception e)
@@ -341,7 +341,7 @@ namespace Logic
                             {
                                 this.DepartmentModel.Modify(ID, Info);
                                 this.DbContent.SaveChanges();
-                                this.Result.ResultStatus = true;
+                                this.Result.State = true;
                                 this.Result.Memo = "Success";
                             }
                             catch (Exception e)
@@ -385,7 +385,7 @@ namespace Logic
                 else
                 {
                     Result.Data = this.DepartmentModel.Find(ID);
-                    Result.ResultStatus = true;
+                    Result.State = true;
                     Result.Memo = "success";
                 }
             }
@@ -415,7 +415,7 @@ namespace Logic
                 }
                 else
                 {
-                    this.Result.ResultStatus = true;
+                    this.Result.State = true;
                     this.Result.Memo = "Success";
                     this.Result.Data = this.DepartmentModel.Select(Data);
                 }
@@ -478,7 +478,7 @@ namespace Logic
                         {
                             this.DepartmentExtraModel.Insert(DepartmentExtraData);
                             this.DbContent.SaveChanges();
-                            this.Result.ResultStatus = true;
+                            this.Result.State = true;
                             this.Result.Memo = "Success";
                         }
                         catch (Exception e)
@@ -530,7 +530,7 @@ namespace Logic
                         {
                             this.DepartmentExtraModel.Delete(ID);
                             this.DbContent.SaveChanges();
-                            this.Result.ResultStatus = true;
+                            this.Result.State = true;
                             this.Result.Memo = "Success";
                         }
                         catch (Exception e)
@@ -575,7 +575,7 @@ namespace Logic
                 }
                 else
                 {
-                    Result.ResultStatus = true;
+                    Result.State = true;
                     Result.Memo = "Success";
                     Result.Data = this.DepartmentExtraModel.Select(Data);
                 }

@@ -12,7 +12,7 @@ namespace MasterReset
             var DB = new DBHelper();
             UserLogic UserLogic = new(Tools.LocalIP(), DB.EnvironmentDbContent);
             var Result = UserLogic.ResetMaster();
-            if (Result.ResultStatus) { Console.WriteLine("New Password: 000000"); }
+            if (Result.State) { Console.WriteLine("New Password: 000000"); }
             else { Console.WriteLine("Operation Failed!"); }
         }
     }

@@ -61,7 +61,7 @@ namespace Logic
                                 {
                                     if (Tools.CreateDir(Tools.UserBaseDir() + Account))
                                     {
-                                        Result.ResultStatus = true;
+                                        Result.State = true;
                                         Result.Memo = "success";
                                         Result.Token = Token;
                                         TA.Commit();
@@ -74,7 +74,7 @@ namespace Logic
                                 }
                                 else
                                 {
-                                    Result.ResultStatus = true;
+                                    Result.State = true;
                                     Result.Memo = "success";
                                     Result.Token = Token;
                                     TA.Commit();
@@ -126,7 +126,7 @@ namespace Logic
                         this.TokenModel.DeleteByUserID(UserID, TokenType);
                         this.DbContent.SaveChanges();
                         Result.Memo = "Success";
-                        Result.ResultStatus = true;
+                        Result.State = true;
                     }
                     catch (Exception e)
                     {
@@ -158,7 +158,7 @@ namespace Logic
                 }
                 else
                 {
-                    this.Result.ResultStatus = true;
+                    this.Result.State = true;
                     this.Result.Memo = "Success";
                 }
             }
@@ -185,7 +185,7 @@ namespace Logic
                 else
                 {
                     Result.Data = this.UserModel.Find(UserID);
-                    Result.ResultStatus = true;
+                    Result.State = true;
                     Result.Memo = "Success";
                 }
             }
@@ -273,7 +273,7 @@ namespace Logic
                                     }
                                     this.UserModel.Modify(UserID, Data);
                                     this.DbContent.SaveChanges();
-                                    this.Result.ResultStatus = true;
+                                    this.Result.State = true;
                                     this.Result.Memo = "Success";
                                 }
                                 catch (Exception e)
@@ -319,7 +319,7 @@ namespace Logic
                 {
                     if (this.MasterVerify(UserID))
                     {
-                        this.Result.ResultStatus = true;
+                        this.Result.State = true;
                         this.Result.Memo = "Master";
                     }
                     else
@@ -527,7 +527,7 @@ namespace Logic
                                     {
                                         TA.Commit();
                                         this.Result.Memo = "Success";
-                                        this.Result.ResultStatus = true;
+                                        this.Result.State = true;
                                         this.Result.ID = UserData.ID;
                                     }
                                     else
@@ -606,7 +606,7 @@ namespace Logic
                                 if (Tools.DelDir(Tools.UserBaseDir() + UserInfo.Account, true))
                                 {
                                     TA.Commit();
-                                    this.Result.ResultStatus = true;
+                                    this.Result.State = true;
                                     this.Result.Memo = "Success";
                                 }
                                 else
@@ -660,7 +660,7 @@ namespace Logic
                     Data.Secret = 0;
 
                     Result.Data = Data;
-                    Result.ResultStatus = true;
+                    Result.State = true;
                     Result.Memo = "Success";
                 }
             }
@@ -694,7 +694,7 @@ namespace Logic
                         Result.Data[i].Secret = 0;
                     }
 
-                    Result.ResultStatus = true;
+                    Result.State = true;
                     Result.Memo = "Success";
                 }
             }
@@ -770,7 +770,7 @@ namespace Logic
                     ExtraData.ExtraValue = Data.ExtraValue;
                     try
                     {
-                        this.Result.ResultStatus = true;
+                        this.Result.State = true;
                         this.Result.Memo = "Success";
                         this.UserExtraModel.Insert(ExtraData);
                         this.DbContent.SaveChanges();
@@ -823,7 +823,7 @@ namespace Logic
                         {
                             this.UserExtraModel.Delete(ID);
                             this.DbContent.SaveChanges();
-                            this.Result.ResultStatus = true;
+                            this.Result.State = true;
                             this.Result.Memo = "Success";
                         }
                         catch (Exception e)
@@ -884,7 +884,7 @@ namespace Logic
                     {
                         Data.UserID = UserID;
                     }
-                    this.Result.ResultStatus = true;
+                    this.Result.State = true;
                     this.Result.Memo = "Success";
                     this.Result.Data = this.UserExtraModel.Select(Data);
                 }
@@ -904,7 +904,7 @@ namespace Logic
             }
             else
             {
-                this.Result.ResultStatus = true;
+                this.Result.State = true;
                 this.Result.Memo = "Success";
                 this.Result.Data = this.RL(YMD);
             }
@@ -923,7 +923,7 @@ namespace Logic
             }
             else
             {
-                this.Result.ResultStatus = true;
+                this.Result.State = true;
                 this.Result.Memo = "Success";
                 this.Result.Data = this.CL();
             }
@@ -981,7 +981,7 @@ namespace Logic
                     {
                         this.OuterTokenModel.Insert(OuterTokenData);
                         this.DbContent.SaveChanges();
-                        this.Result.ResultStatus = true;
+                        this.Result.State = true;
                         this.Result.Memo = "Success";
                     }
                     catch (Exception e)
@@ -997,7 +997,7 @@ namespace Logic
         public Entity.CommonResultEntity CheckOuterToken(string OuterToken)
         {
             Result.Data = this.OuterTokenModel.FindByToken(OuterToken);
-            Result.ResultStatus = true;
+            Result.State = true;
             Result.Memo = "";
             return Result;
         }
@@ -1061,7 +1061,7 @@ namespace Logic
                         MessageData.Createtime = Tools.Time32();
                         try
                         {
-                            this.Result.ResultStatus = true;
+                            this.Result.State = true;
                             this.Result.Memo = "Success";
                             this.MessageModel.Insert(MessageData);
                             this.DbContent.SaveChanges();
@@ -1127,7 +1127,7 @@ namespace Logic
                             }
                         }
                         Result.Data = Info;
-                        Result.ResultStatus = true;
+                        Result.State = true;
                         Result.Memo = "Success";
                     }
                 }
@@ -1190,7 +1190,7 @@ namespace Logic
                         Data.EndPoint = EndPoint;
                     }
 
-                    this.Result.ResultStatus = true;
+                    this.Result.State = true;
                     this.Result.Memo = "Success";
                     this.Result.Data = this.MessageModel.Select(Data);
                 }
@@ -1236,7 +1236,7 @@ namespace Logic
                         {
                             this.MessageModel.Delete(ID);
                             this.DbContent.SaveChanges();
-                            this.Result.ResultStatus = true;
+                            this.Result.State = true;
                             this.Result.Memo = "Success";
                         }
                         catch (Exception e)
@@ -1306,7 +1306,7 @@ namespace Logic
                                 this.DbContent.SaveChanges();
                             }
 
-                            this.Result.ResultStatus = true;
+                            this.Result.State = true;
                             this.Result.Memo = "Success";
                         }
                         catch (Exception e)
@@ -1401,7 +1401,7 @@ namespace Logic
                                     {
                                         this.DepartmentFileModel.Insert(Data);
                                         this.DbContent.SaveChanges();
-                                        this.Result.ResultStatus = true;
+                                        this.Result.State = true;
                                         this.Result.Memo = "success";
                                         this.Result.ID = Data.ID;
                                     }
@@ -1469,7 +1469,7 @@ namespace Logic
                                 this.DepartmentFileModel.Delete(ID);
                                 this.DbContent.SaveChanges();
                                 this.Result.Memo = "Success";
-                                this.Result.ResultStatus = true;
+                                this.Result.State = true;
                             }
                             catch (Exception e)
                             {
@@ -1556,7 +1556,7 @@ namespace Logic
                         else
                         {
                             this.Result.Data = this.DepartmentFileModel.Select(Data);
-                            this.Result.ResultStatus = true;
+                            this.Result.State = true;
                             this.Result.Memo = "Success";
                         }
                     }
@@ -1589,7 +1589,7 @@ namespace Logic
             {
                 this.UserModel.Modify(1, Data);
                 this.DbContent.SaveChanges();
-                this.Result.ResultStatus = true;
+                this.Result.State = true;
                 this.Result.Memo = "Success";
             }
             catch (Exception e)

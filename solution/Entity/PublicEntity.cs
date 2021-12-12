@@ -8,8 +8,8 @@ namespace Entity
 
     public class CommonResultEntity : Base
     {
-        [JsonPropertyName("ResultStatus")]
-        public bool ResultStatus { get; set; }
+        [JsonPropertyName("State")]
+        public bool State { get; set; }
 
         [JsonPropertyName("StatusCode")]
         public int StatusCode { get; set; }
@@ -25,7 +25,7 @@ namespace Entity
 
         public CommonResultEntity()
         {
-            this.ResultStatus = false;
+            this.State = false;
             this.StatusCode = 200;
             this.Memo = "";
             this.ID = 0;
@@ -35,8 +35,8 @@ namespace Entity
 
     public class LoginResultEntity : Base
     {
-        [JsonPropertyName("ResultStatus")]
-        public bool ResultStatus { get; set; }
+        [JsonPropertyName("State")]
+        public bool State { get; set; }
 
         [JsonPropertyName("StatusCode")]
         public int StatusCode { get; set; }
@@ -49,7 +49,7 @@ namespace Entity
 
         public LoginResultEntity()
         {
-            this.ResultStatus = false;
+            this.State = false;
             this.StatusCode = 200;
             this.Memo = "";
             this.Token = "";

@@ -37,7 +37,7 @@ namespace Logic
                 else
                 {
                     Result.Data = this.ConfigModel.Find(ID);
-                    Result.ResultStatus = true;
+                    Result.State = true;
                     Result.Memo = "Success";
                 }
             }
@@ -79,7 +79,7 @@ namespace Logic
                     ConfigData.ConfigValue = Data.ConfigValue;
                     try
                     {
-                        this.Result.ResultStatus = true;
+                        this.Result.State = true;
                         this.Result.Memo = "Success";
                         this.ConfigModel.Modify(ID, ConfigData);
                         this.DbContent.SaveChanges();
@@ -125,7 +125,7 @@ namespace Logic
                             var LSUM = Drive.TotalSize / (1024 * 1024 * 1024); // 总空间(GB)
                             var LDR = Drive.TotalFreeSpace / (1024 * 1024 * 1024); // 剩余空间(GB)
                             Result.Data = LSUM.ToString() + "_" + LDR.ToString();
-                            Result.ResultStatus = true;
+                            Result.State = true;
                             Result.Memo = "Success";
                         }
                     }
@@ -161,7 +161,7 @@ namespace Logic
                 }
                 else
                 {
-                    Result.ResultStatus = true;
+                    Result.State = true;
                     Result.Memo = "Success";
                     Result.Data = Tools.AES_Decrypt(Data, CodeType);
                 }
@@ -198,7 +198,7 @@ namespace Logic
                 DeCodeArr[2] = (Tools.StrToInt(DeCodeArr[2]) + NumberOfAccounts).ToString(); // 计算总账号数
                 var EnCode = Tools.Implode("_", DeCodeArr);
                 Result.Data = Tools.AES_Encrypt(EnCode, 2);
-                Result.ResultStatus = true;
+                Result.State = true;
                 Result.Memo = "Success";
             }
             return Result;
@@ -223,7 +223,7 @@ namespace Logic
                 }
                 else
                 {
-                    Result.ResultStatus = true;
+                    Result.State = true;
                     Result.Memo = "Success";
                     var OSType = Tools.OSType();
                     string Motherboard;
@@ -334,7 +334,7 @@ namespace Logic
                         ActivationCode = Tools.AES_Encrypt(Tools.Implode("_", DeCodeArr), 3); // 解密
                         if (ConfigHelper.AppSettingsHelper.Activation(ActivationCode)) // 写入文件
                         {
-                            this.Result.ResultStatus = true;
+                            this.Result.State = true;
                             var NumberOfAccounts = Tools.StrToInt32(DeCodeArr[2]) + 5;
                             this.Result.Memo = "The system has opened " + NumberOfAccounts.ToString() + " accounts";
                             this.Result.ID = Tools.StrToInt32(NumberOfAccounts.ToString());
@@ -381,7 +381,7 @@ namespace Logic
                         var AccountNumber = (Tools.StrToInt32(Tools.Explode("_", ActivationCodeString)[2]) + 5).ToString();
                         Result.Data = UserCount.ToString() + "_" + AccountNumber;
                     }
-                    Result.ResultStatus = true;
+                    Result.State = true;
                     Result.Memo = "Success";
                 }
             }
