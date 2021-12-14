@@ -33,7 +33,7 @@ namespace UDP
             UdpClient UDP = new();
             UDP.Connect(UDPAddr, Convert.ToInt32(UDPPort));
             Byte[] Data = Encoding.Default.GetBytes(ConfigHelper.AppSettingsHelper.GetSettings("URL").Replace("*", Tools.LocalIP()));
-            Console.WriteLine("UDP server working on {0}", UDPAddr + ":" + Convert.ToInt32(UDPPort));
+            Tools.CorrectConsole("UDP server working on " + UDPAddr + ":" + Convert.ToInt32(UDPPort));
             while (true)
             {
                 try
@@ -42,7 +42,7 @@ namespace UDP
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    Tools.WarningConsole(e.Message);
                 }
                 Thread.Sleep(1500);
             }

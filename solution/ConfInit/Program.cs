@@ -22,7 +22,7 @@ namespace ConfInit
             Tools.DelFile(FilePath);
             if (!Tools.CreateFile(FilePath))
             {
-                Console.WriteLine("Failed to create configuration file !!!");
+                Console.WriteLine("Failed to create configuration file!");
                 return;
             }
 

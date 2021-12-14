@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Service;
+using System;
 
 namespace SystemUpdate
 {
@@ -6,7 +7,7 @@ namespace SystemUpdate
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Tools.WarningConsole("In development!");
         }
     }
 }

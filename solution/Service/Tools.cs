@@ -23,6 +23,20 @@ namespace Service
         private static string AES_key2 = "Fuck.Love&Peace!"; // 秘钥2
         private static string AES_key3 = "<HAKUNA.MATATA!>"; // 秘钥3
 
+        public static void WarningConsole(string Content)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(Content);
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        public static void CorrectConsole(string Content)
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine(Content);
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
         /// <summary>
         /// 按指定符号把字符串转为数组
         /// </summary>

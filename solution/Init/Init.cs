@@ -14,7 +14,7 @@ namespace Init
         public bool CheckConfigFile()
         {
             var CheckState = ConfigHelper.AppSettingsHelper.AppSettingsState(Tools.RootPath() + "appsettings.json");
-            if (!CheckState) Console.WriteLine("Can't find configuration file !!!");
+            if (!CheckState) Tools.WarningConsole("Can't find configuration file!");
             return CheckState;
         }
 
@@ -28,7 +28,7 @@ namespace Init
                 var DatabasePath = Tools.RootPath() + "sqlite3";
                 if (!Tools.DirIsExists(DatabasePath))
                 {
-                    Console.WriteLine("Database not found !!!");
+                    Tools.WarningConsole("Database not found!");
                     return false;
                 }
                 else
@@ -36,7 +36,7 @@ namespace Init
                     var PathValue = Environment.GetEnvironmentVariable("Path"); // 获取系统变量Path的值
                     if (PathValue == null || PathValue == "")
                     {
-                        Console.WriteLine("Sys environment error !!!");
+                        Tools.WarningConsole("Sys environment error!");
                         return false;
                     }
                     if (!PathValue.Contains(DatabasePath))
@@ -48,8 +48,8 @@ namespace Init
                         }
                         catch (Exception e)
                         {
-                            Console.WriteLine(e.Message);
-                            Console.WriteLine("Please run the system as an administrator !!!");
+                            Tools.WarningConsole(e.Message);
+                            Tools.WarningConsole("Please run the system as an administrator!");
                             return false;
                         }
                     }
@@ -71,14 +71,14 @@ namespace Init
                 string BaseDir = Tools.RootPath() + "Matrix"; // 新建基础目录
                 if (!Tools.CreateDir(BaseDir))
                 {
-                    Console.WriteLine("ERROR: Failed to make base dir!");
+                    Tools.WarningConsole("ERROR: Failed to make base dir!");
                     DelInitFile(); // 回到起始状态
                     return false;
                 }
                 string DaoRoom = Tools.RootPath() + "DaoRoom.db"; // 数据库文件路径
                 if (!Tools.CreateFile(DaoRoom))
                 {
-                    Console.WriteLine("ERROR: Failed to make database file!");
+                    Tools.WarningConsole("ERROR: Failed to make database file!");
                     DelInitFile(); // 回到起始状态
                     return false;
                 }
@@ -91,8 +91,8 @@ namespace Init
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
-                    Console.WriteLine("ERROR: Failed to connect database!");
+                    Tools.WarningConsole(e.Message);
+                    Tools.WarningConsole("ERROR: Failed to connect database!");
                     DelInitFile(); // 回到起始状态
                     return false;
                 }
@@ -142,8 +142,8 @@ namespace Init
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
-                    Console.WriteLine("ERROR: Failed to initialize admin data!");
+                    Tools.WarningConsole(e.Message);
+                    Tools.WarningConsole("ERROR: Failed to initialize admin data!");
                     DelInitFile(); // 回到起始状态
                     return false;
                 }
@@ -153,22 +153,22 @@ namespace Init
                 #region Step3 完成初始化
                 if (!Tools.CreateDir(BaseDir + "/root")) // 新建管理员目录
                 {
-                    Console.WriteLine("ERROR: Failed to make admin dir!");
+                    Tools.WarningConsole("ERROR: Failed to make admin dir!");
                     DelInitFile(); // 回到起始状态
                     return false;
                 }
                 if (!ConfigHelper.AppSettingsHelper.SetInit()) // 修改配置文件
                 {
-                    Console.WriteLine("ERROR: System initialization failed!");
+                    Tools.WarningConsole("ERROR: System initialization failed!");
                     DelInitFile(); // 回到起始状态
                     return false;
                 }
                 #endregion
 
-                Console.WriteLine("System initialization completed!");
+                Tools.CorrectConsole("System initialization completed!");
             }
-            Console.WriteLine("========== Ver 0.0.1 alpha ==========");
-            Console.WriteLine("Bit Box is working!");
+            Tools.CorrectConsole("========== Ver 0.0.1 alpha ==========");
+            Tools.CorrectConsole("Bit Box is working!");
             return true;
         }
 
