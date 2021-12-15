@@ -2546,6 +2546,8 @@ namespace Logic
                     {
                         this.TagModel.Insert(Data);
                         this.DbContent.SaveChanges();
+                        this.Result.State = true;
+                        this.Result.Memo = "Success";
                     }
                     catch (Exception e)
                     {
@@ -2553,8 +2555,6 @@ namespace Logic
                         this.Result.Memo = "Create error";
                     }
 
-                    this.Result.State = true;
-                    this.Result.Memo = "Success";
                     this.Result.ID = Data.ID;
                 }
             }
@@ -2562,7 +2562,117 @@ namespace Logic
             return this.Result;
         }
 
+        public Entity.CommonResultEntity ModifyTag(string Token, int TokenType, int ID, string TagName, string TagMemo)
+        {
+            if (String.IsNullOrEmpty(Token))
+            {
+                this.Result.Memo = "Token error";
+            }
+            else if (TokenType <= 0)
+            {
+                this.Result.Memo = "TokenType error";
+            }
+            else if (ID <= 0)
+            {
+                this.Result.Memo = "ID error";
+            }
+            else if (String.IsNullOrEmpty(TagName))
+            {
+                this.Result.Memo = "TagName error";
+            }
+            else if (!Tools.RegCheckPro(TagName))
+            {
+                this.Result.Memo = "The tagName format is incorrect";
+            }
+            else if (String.IsNullOrEmpty(TagMemo))
+            {
+                this.Result.Memo = "TagMemo error";
+            }
+            else if (!Tools.RegCheckPro(TagMemo))
+            {
+                this.Result.Memo = "The tagMemo format is incorrect";
+            }
+            else
+            {
+                var UserID = this.TokenVerify(Token, TokenType);
+                if (UserID == 0)
+                {
+                    this.Result.Memo = "Token lost";
+                }
+                else
+                {
+                    var Data = this.TagModel.Find(ID);
+                    if (Data.ID <= 0)
+                    {
+                        this.Result.Memo = "Data not found";
+                    }
+                    else
+                    {
+                        Data.TagName = TagName;
+                        Data.TagMemo = TagMemo;
 
+                        try
+                        {
+                            this.TagModel.Modify(ID, Data);
+                            this.DbContent.SaveChanges();
+                            this.Result.State = true;
+                            this.Result.Memo = "Success";
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.Message);
+                            this.Result.Memo = "Modify error";
+                        }
+                    }
+                }
+            }
 
+            return this.Result;
+        }
+
+        public Entity.CommonResultEntity TagInfo(string Token, int TokenType, int ID)
+        {
+            if (String.IsNullOrEmpty(Token))
+            {
+                this.Result.Memo = "Token error";
+            }
+            else if (TokenType <= 0)
+            {
+                this.Result.Memo = "TokenType error";
+            }
+            else if (ID <= 0)
+            {
+                this.Result.Memo = "ID error";
+            }
+            else
+            {
+                var UserID = this.TokenVerify(Token, TokenType);
+                if (UserID == 0)
+                {
+                    this.Result.Memo = "Token lost";
+                }
+                else
+                {
+                    var Data = this.TagModel.Find(ID);
+                    if (Data.UserID > 0 && Data.UserID != UserID)
+                    {
+                        this.Result.Memo = "Permission denied";
+                    }
+                    else
+                    {
+                        this.Result.State = true;
+                        this.Result.Memo = "Success";
+                        this.Result.Data = Data;
+                    }
+                }
+            }
+
+            return this.Result;
+        }
+
+        public Entity.CommonResultEntity TagList(string Token, int TokenType)
+        {
+            return this.Result;
+        }
     }
 }

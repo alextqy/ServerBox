@@ -522,23 +522,47 @@ namespace ServerBox.Controllers
         }
 
         /// <summary>
-        /// 添加文件标签
+        /// 添加/修改 文件标签
         /// </summary>
         /// <param name="Token"></param>
         /// <param name="TokenType"></param>
+        /// <param name="ID"></param>
         /// <param name="TagName"></param>
         /// <param name="TagMemo"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("/Create/Tag")]
-        public IActionResult CreateTag(string Token, int TokenType, string TagName, string TagMemo)
+        [Route("/Tag/Info")]
+        public IActionResult TagInfoPost(string Token, int TokenType, int ID, string TagName, string TagMemo)
         {
             Token = Token == null ? "" : Token.Trim();
             TagName = TagName == null ? "" : TagName.Trim();
             TagMemo = TagMemo == null ? "" : TagMemo.Trim();
-            var Result = this.FileLogic.CreateTag(Token, TokenType, TagName, TagMemo);
+
+            Entity.CommonResultEntity Result;
+            if (ID > 0)
+            {
+                Result = this.FileLogic.ModifyTag(Token, TokenType, ID, TagName, TagMemo);
+            }
+            else
+            {
+                Result = this.FileLogic.CreateTag(Token, TokenType, TagName, TagMemo);
+            }
             return Json(Result);
         }
 
+        /// <summary>
+        /// 文件标签信息
+        /// </summary>
+        /// <param name="Token"></param>
+        /// <param name="TokenType"></param>
+        /// <param name="ID"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("/Tag/Info")]
+        public IActionResult TagInfoGet(string Token, int TokenType, int ID)
+        {
+            var Result = this.FileLogic.TagInfo(Token, TokenType, ID);
+            return Json(Result);
+        }
     }
 }
