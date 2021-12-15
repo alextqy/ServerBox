@@ -2744,6 +2744,8 @@ namespace Logic
                         {
                             TA.Rollback();
                             Console.WriteLine(e.Message);
+                            this.Result.Memo = "Delete error";
+                            return this.Result;
                         }
 
                         try
@@ -2754,12 +2756,201 @@ namespace Logic
                         {
                             TA.Rollback();
                             Console.WriteLine(e.Message);
+                            this.Result.Memo = "Delete error";
+                            return this.Result;
                         }
 
                         this.DbContent.SaveChanges();
                         TA.Commit();
                         this.Result.State = true;
                         this.Result.Memo = "Success";
+                    }
+                }
+            }
+
+            return this.Result;
+        }
+
+        public Entity.CommonResultEntity CreateFileTag(string Token, int TokenType, int TagID, int FileID)
+        {
+            if (String.IsNullOrEmpty(Token))
+            {
+                this.Result.Memo = "Token error";
+            }
+            else if (TokenType <= 0)
+            {
+                this.Result.Memo = "TokenType error";
+            }
+            else if (TagID <= 0)
+            {
+                this.Result.Memo = "TagID error";
+            }
+            else if (FileID <= 0)
+            {
+                this.Result.Memo = "TagID error";
+            }
+            else
+            {
+                var UserID = this.TokenVerify(Token, TokenType);
+                if (UserID == 0)
+                {
+                    this.Result.Memo = "Token lost";
+                }
+                else
+                {
+                    var TagInfo = this.TagModel.Find(TagID);
+                    if (TagInfo.ID <= 0)
+                    {
+                        this.Result.Memo = "Tag not found";
+                        return this.Result;
+                    }
+                    if (TagInfo.UserID != UserID)
+                    {
+                        this.Result.Memo = "Permission denied";
+                        return this.Result;
+                    }
+
+                    var FileInfo = this.FileModel.Find(FileID);
+                    if (FileInfo.ID <= 0)
+                    {
+                        this.Result.Memo = "File not found";
+                        return this.Result;
+                    }
+                    if (FileInfo.UserID != UserID)
+                    {
+                        this.Result.Memo = "Permission denied";
+                        return this.Result;
+                    }
+
+                    Entity.FileTagEntity Data = new();
+                    Data.FileID = FileID;
+                    Data.TagID = TagID;
+                    try
+                    {
+                        this.FileTagModel.Insert(Data);
+                        this.DbContent.SaveChanges();
+                        this.Result.State = true;
+                        this.Result.Memo = "Success";
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                        this.Result.Memo = "Create error";
+                    }
+                }
+            }
+            return this.Result;
+        }
+
+        public Entity.CommonResultEntity FileTagList(string Token, int TokenType, int TagID)
+        {
+            if (String.IsNullOrEmpty(Token))
+            {
+                this.Result.Memo = "Token error";
+            }
+            else if (TokenType <= 0)
+            {
+                this.Result.Memo = "TokenType error";
+            }
+            else if (TagID <= 0)
+            {
+                this.Result.Memo = "TagID error";
+            }
+            else
+            {
+                var UserID = this.TokenVerify(Token, TokenType);
+                if (UserID == 0)
+                {
+                    this.Result.Memo = "Token lost";
+                }
+                else
+                {
+                    var TagInfo = this.TagModel.Find(TagID);
+                    if (TagInfo.ID <= 0)
+                    {
+                        this.Result.Memo = "Tag not found";
+                        return this.Result;
+                    }
+                    else if (TagInfo.UserID != UserID)
+                    {
+                        this.Result.Memo = "Permission denied";
+                        return this.Result;
+                    }
+                    else
+                    {
+                        Entity.FileTagSelectParamEntity Param = new();
+                        Param.TagID = TagID;
+                        var DataList = this.FileTagModel.Select(Param);
+                        if (DataList.Count > 0)
+                        {
+                            foreach (var Item in DataList)
+                            {
+                                Item.FileData = this.FileModel.Find(Item.FileID);
+                            }
+                        }
+                        this.Result.Data = DataList;
+                        this.Result.State = true;
+                        this.Result.Memo = "Success";
+                    }
+                }
+            }
+            return this.Result;
+        }
+
+        public Entity.CommonResultEntity DelFileTag(string Token, int TokenType, int ID)
+        {
+            if (String.IsNullOrEmpty(Token))
+            {
+                this.Result.Memo = "Token error";
+            }
+            else if (TokenType <= 0)
+            {
+                this.Result.Memo = "TokenType error";
+            }
+            else if (ID <= 0)
+            {
+                this.Result.Memo = "ID error";
+            }
+            else
+            {
+                var UserID = this.TokenVerify(Token, TokenType);
+                if (UserID == 0)
+                {
+                    this.Result.Memo = "Token lost";
+                }
+                else
+                {
+                    var FileTagInfo = this.FileTagModel.Find(ID);
+                    if (FileTagInfo.ID == 0)
+                    {
+                        this.Result.Memo = "Data not found";
+                    }
+                    else
+                    {
+                        var TagInfo = this.TagModel.Find(FileTagInfo.TagID);
+                        if (TagInfo.ID == 0)
+                        {
+                            this.Result.Memo = "Tag not found";
+                        }
+                        else if (TagInfo.UserID != UserID)
+                        {
+                            this.Result.Memo = "Permission denied";
+                        }
+                        else
+                        {
+                            try
+                            {
+                                this.FileTagModel.Delete(ID);
+                                this.DbContent.SaveChanges();
+                                this.Result.State = true;
+                                this.Result.Memo = "Success";
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine(e.Message);
+                                this.Result.Memo = "Delete error";
+                            }
+                        }
                     }
                 }
             }

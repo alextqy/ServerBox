@@ -522,7 +522,7 @@ namespace ServerBox.Controllers
         }
 
         /// <summary>
-        /// 添加文件标签
+        /// 添加标签
         /// </summary>
         /// <param name="Token"></param>
         /// <param name="TokenType"></param>
@@ -541,7 +541,7 @@ namespace ServerBox.Controllers
         }
 
         /// <summary>
-        /// 修改文件标签
+        /// 修改标签
         /// </summary>
         /// <param name="Token"></param>
         /// <param name="TokenType"></param>
@@ -561,7 +561,7 @@ namespace ServerBox.Controllers
         }
 
         /// <summary>
-        /// 文件标签信息
+        /// 标签信息
         /// </summary>
         /// <param name="Token"></param>
         /// <param name="TokenType"></param>
@@ -577,7 +577,7 @@ namespace ServerBox.Controllers
         }
 
         /// <summary>
-        /// 文件标签列表
+        /// 标签列表
         /// </summary>
         /// <param name="Token"></param>
         /// <param name="TokenType"></param>
@@ -592,7 +592,7 @@ namespace ServerBox.Controllers
         }
 
         /// <summary>
-        /// 删除文件标签
+        /// 删除标签
         /// </summary>
         /// <param name="Token"></param>
         /// <param name="TokenType"></param>
@@ -607,6 +607,53 @@ namespace ServerBox.Controllers
             return Json(Result);
         }
 
+        /// <summary>
+        /// 添加文件标签
+        /// </summary>
+        /// <param name="Token"></param>
+        /// <param name="TokenType"></param>
+        /// <param name="TagID"></param>
+        /// <param name="FileID"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("/Create/File/Tag")]
+        public IActionResult CreateFileTag(string Token, int TokenType, int TagID, int FileID)
+        {
+            Token = Token == null ? "" : Token.Trim();
+            var Result = this.FileLogic.CreateFileTag(Token, TokenType, TagID, FileID);
+            return Json(Result);
+        }
 
+        /// <summary>
+        /// 文件标签列表
+        /// </summary>
+        /// <param name="Token"></param>
+        /// <param name="TokenType"></param>
+        /// <param name="TagID"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("/File/Tag/List")]
+        public IActionResult FileTagList(string Token, int TokenType, int TagID)
+        {
+            Token = Token == null ? "" : Token.Trim();
+            var Result = this.FileLogic.FileTagList(Token, TokenType, TagID);
+            return Json(Result);
+        }
+
+        /// <summary>
+        /// 删除文件标签
+        /// </summary>
+        /// <param name="Token"></param>
+        /// <param name="TokenType"></param>
+        /// <param name="ID"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("/Del/File/Tag")]
+        public IActionResult DelFileTag(string Token, int TokenType, int ID)
+        {
+            Token = Token == null ? "" : Token.Trim();
+            var Result = this.FileLogic.DelFileTag(Token, TokenType, ID);
+            return Json(Result);
+        }
     }
 }

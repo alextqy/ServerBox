@@ -29,11 +29,19 @@ namespace Entity
         [JsonPropertyName("TagID")]
         public int TagID { get; set; }
 
+        /// <summary>
+        /// 文件数据
+        /// </summary>
+        [NotMapped]
+        [JsonPropertyName("FileData")]
+        public Entity.FileEntity FileData { set; get; }
+
         public FileTagEntity()
         {
             this.ID = 0;
             this.FileID = 0;
             this.TagID = 0;
+            this.FileData = null;
         }
     }
 }
