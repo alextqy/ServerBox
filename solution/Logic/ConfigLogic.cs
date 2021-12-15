@@ -134,7 +134,7 @@ namespace Logic
             return Result;
         }
 
-        public Entity.CommonResultEntity DecryptProInspection(string Token, int TokenType, string Data, int CodeType = 1)
+        public Entity.CommonResultEntity DecryptProInspection(string Token, int TokenType, string Code, int CodeType = 1)
         {
             if (String.IsNullOrEmpty(Token))
             {
@@ -144,7 +144,7 @@ namespace Logic
             {
                 Result.Memo = "TokenType error";
             }
-            else if (Data == "")
+            else if (Code == "")
             {
                 Result.Memo = "Param error";
             }
@@ -163,7 +163,7 @@ namespace Logic
                 {
                     Result.State = true;
                     Result.Memo = "Success";
-                    Result.Data = Tools.AES_Decrypt(Data, CodeType);
+                    Result.Data = Tools.AES_Decrypt(Code, CodeType);
                 }
             }
             return Result;

@@ -70,16 +70,16 @@ namespace ServerBox.Controllers
         /// </summary>
         /// <param name="Token"></param>
         /// <param name="TokenType"></param>
-        /// <param name="Param"></param>
+        /// <param name="Code"></param>
         /// <param name="CodeType"></param>
         /// <returns></returns>
         [HttpPost]
         [Route("/Decrypt/Pro/Inspection")]
-        public IActionResult DecryptProInspection(string Token, int TokenType, string Param, int CodeType = 1)
+        public IActionResult DecryptProInspection(string Token, int TokenType, string Code, int CodeType = 1)
         {
             Token = Token == null ? "" : Token.Trim();
-            Param = Param == null ? "" : Param.Trim();
-            var Result = this.ConfigLogic.DecryptProInspection(Token, TokenType, Param, CodeType);
+            Code = Code == null ? "" : Code.Trim();
+            var Result = this.ConfigLogic.DecryptProInspection(Token, TokenType, Code, CodeType);
             return Json(Result);
         }
 
