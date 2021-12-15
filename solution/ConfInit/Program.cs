@@ -22,7 +22,7 @@ namespace ConfInit
             Tools.DelFile(FilePath);
             if (!Tools.CreateFile(FilePath))
             {
-                Console.WriteLine("Failed to create configuration file!");
+                Tools.WarningConsole("Failed to create configuration file!");
                 return;
             }
 
@@ -33,7 +33,7 @@ namespace ConfInit
             SettingsObject.TokenPeriod = 8;
             JsonSerializerOptions Options = new() { WriteIndented = true, };
             Tools.WriteFile(FilePath, JsonSerializer.Serialize(SettingsObject, Options));
-            Console.WriteLine("The configuration file is initialized.");
+            Tools.CorrectConsole("The configuration file is initialized.");
         }
     }
 }
