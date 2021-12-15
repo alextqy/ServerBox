@@ -134,75 +134,75 @@ namespace Logic
             return Result;
         }
 
-        public Entity.CommonResultEntity DecryptProInspection(string Token, int TokenType, string Code, int CodeType = 1)
-        {
-            if (String.IsNullOrEmpty(Token))
-            {
-                Result.Memo = "Token error";
-            }
-            else if (TokenType <= 0)
-            {
-                Result.Memo = "TokenType error";
-            }
-            else if (Code == "")
-            {
-                Result.Memo = "Param error";
-            }
-            else if (CodeType <= 0)
-            {
-                Result.Memo = "CodeType error";
-            }
-            else
-            {
-                var UserID = this.TokenVerify(Token, TokenType);
-                if (UserID == 0)
-                {
-                    Result.Memo = "Token lost";
-                }
-                else
-                {
-                    Result.State = true;
-                    Result.Memo = "Success";
-                    Result.Data = Tools.AES_Decrypt(Code, CodeType);
-                }
-            }
-            return Result;
-        }
+        //public Entity.CommonResultEntity DecryptProInspection(string Token, int TokenType, string Code, int CodeType = 1)
+        //{
+        //    if (String.IsNullOrEmpty(Token))
+        //    {
+        //        Result.Memo = "Token error";
+        //    }
+        //    else if (TokenType <= 0)
+        //    {
+        //        Result.Memo = "TokenType error";
+        //    }
+        //    else if (Code == "")
+        //    {
+        //        Result.Memo = "Param error";
+        //    }
+        //    else if (CodeType <= 0)
+        //    {
+        //        Result.Memo = "CodeType error";
+        //    }
+        //    else
+        //    {
+        //        var UserID = this.TokenVerify(Token, TokenType);
+        //        if (UserID == 0)
+        //        {
+        //            Result.Memo = "Token lost";
+        //        }
+        //        else
+        //        {
+        //            Result.State = true;
+        //            Result.Memo = "Success";
+        //            Result.Data = Tools.AES_Decrypt(Code, CodeType);
+        //        }
+        //    }
+        //    return Result;
+        //}
 
-        public Entity.CommonResultEntity GenerateActivationCodeInspection(string Token, int TokenType, string EncryptedCode, int NumberOfAccounts = 5)
-        {
-            if (String.IsNullOrEmpty(Token))
-            {
-                Result.Memo = "Token error";
-            }
-            else if (TokenType <= 0)
-            {
-                Result.Memo = "TokenType error";
-            }
-            else if (EncryptedCode == "")
-            {
-                Result.Memo = "EncryptedCode error";
-            }
-            else if (NumberOfAccounts <= 0)
-            {
-                Result.Memo = "NumberOfAccounts error";
-            }
-            else if (NumberOfAccounts % 5 != 0)
-            {
-                Result.Memo = "NumberOfAccounts error";
-            }
-            else
-            {
-                var DeCode = Tools.AES_Decrypt(EncryptedCode, 1); // 解密
-                var DeCodeArr = Tools.Explode("_", DeCode);
-                DeCodeArr[2] = (Tools.StrToInt(DeCodeArr[2]) + NumberOfAccounts).ToString(); // 计算总账号数
-                var EnCode = Tools.Implode("_", DeCodeArr);
-                Result.Data = Tools.AES_Encrypt(EnCode, 2);
-                Result.State = true;
-                Result.Memo = "Success";
-            }
-            return Result;
-        }
+        //public Entity.CommonResultEntity GenerateActivationCodeInspection(string Token, int TokenType, string EncryptedCode, int NumberOfAccounts = 5)
+        //{
+        //    if (String.IsNullOrEmpty(Token))
+        //    {
+        //        Result.Memo = "Token error";
+        //    }
+        //    else if (TokenType <= 0)
+        //    {
+        //        Result.Memo = "TokenType error";
+        //    }
+        //    else if (EncryptedCode == "")
+        //    {
+        //        Result.Memo = "EncryptedCode error";
+        //    }
+        //    else if (NumberOfAccounts <= 0)
+        //    {
+        //        Result.Memo = "NumberOfAccounts error";
+        //    }
+        //    else if (NumberOfAccounts % 5 != 0)
+        //    {
+        //        Result.Memo = "NumberOfAccounts error";
+        //    }
+        //    else
+        //    {
+        //        var DeCode = Tools.AES_Decrypt(EncryptedCode, 1); // 解密
+        //        var DeCodeArr = Tools.Explode("_", DeCode);
+        //        DeCodeArr[2] = (Tools.StrToInt(DeCodeArr[2]) + NumberOfAccounts).ToString(); // 计算总账号数
+        //        var EnCode = Tools.Implode("_", DeCodeArr);
+        //        Result.Data = Tools.AES_Encrypt(EnCode, 2);
+        //        Result.State = true;
+        //        Result.Memo = "Success";
+        //    }
+        //    return Result;
+        //}
 
         public Entity.CommonResultEntity GetHardwareCode(string Token, int TokenType)
         {
