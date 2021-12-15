@@ -50,7 +50,7 @@ namespace Logic
                         var UserData = this.UserModel.Find(UserID);
                         if (UserData.ID == 0)
                         {
-                            this.Result.Memo = "User info error";
+                            this.Result.Memo = "User data error";
                             return this.Result;
                         }
                         else
@@ -2347,12 +2347,12 @@ namespace Logic
             }
             else
             {
-                var User = this.TokenVerify(Token, TokenType);
-                if (User == 0)
+                var UserID = this.TokenVerify(Token, TokenType);
+                if (UserID == 0)
                 {
                     this.Result.Memo = "Token lost";
                 }
-                else if (!this.MasterVerify(User))
+                else if (!this.MasterVerify(UserID))
                 {
                     this.Result.Memo = "Permission denied";
                 }
@@ -2516,21 +2516,53 @@ namespace Logic
             {
                 this.Result.Memo = "TagName error";
             }
-            else if (!Tools.RegCheck(TagName))
+            else if (!Tools.RegCheckPro(TagName))
             {
                 this.Result.Memo = "The tagName format is incorrect";
             }
-            else if (!String.IsNullOrEmpty(TagMemo) && !Tools.RegCheck(TagName))
+            else if (String.IsNullOrEmpty(TagMemo))
+            {
+                this.Result.Memo = "TagMemo error";
+            }
+            else if (!Tools.RegCheckPro(TagMemo))
             {
                 this.Result.Memo = "The tagMemo format is incorrect";
             }
             else
             {
+                var UserID = this.TokenVerify(Token, TokenType);
+                if (UserID == 0)
+                {
+                    this.Result.Memo = "Token lost";
+                }
+                else
+                {
+                    Entity.TagEntity Data = new();
+                    Data.TagName = TagName;
+                    Data.TagMemo = TagMemo;
+                    Data.UserID = UserID;
 
+                    try
+                    {
+                        this.TagModel.Insert(Data);
+                        this.DbContent.SaveChanges();
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                        this.Result.Memo = "Create error";
+                    }
+
+                    this.Result.State = true;
+                    this.Result.Memo = "Success";
+                    this.Result.ID = Data.ID;
+                }
             }
 
             return this.Result;
         }
+
+
 
     }
 }

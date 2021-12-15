@@ -521,5 +521,24 @@ namespace ServerBox.Controllers
             return Json(Result);
         }
 
+        /// <summary>
+        /// 添加文件标签
+        /// </summary>
+        /// <param name="Token"></param>
+        /// <param name="TokenType"></param>
+        /// <param name="TagName"></param>
+        /// <param name="TagMemo"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("/Create/Tag")]
+        public IActionResult CreateTag(string Token, int TokenType, string TagName, string TagMemo)
+        {
+            Token = Token == null ? "" : Token.Trim();
+            TagName = TagName == null ? "" : TagName.Trim();
+            TagMemo = TagMemo == null ? "" : TagMemo.Trim();
+            var Result = this.FileLogic.CreateTag(Token, TokenType, TagName, TagMemo);
+            return Json(Result);
+        }
+
     }
 }

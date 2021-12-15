@@ -17,16 +17,6 @@ namespace UDP
         {
             await Task.Delay(0);
 
-            //var UDPPort = ConfigHelper.AppSettingsHelper.GetSettings("UDPPort");
-            //var URLS = ConfigHelper.AppSettingsHelper.GetSettings("urls").Split(";");
-            //var URL_HTTP = Tools.Explode(":", URLS[0])[2];
-            //var URL_HTTPS = "null";
-            //if (URLS[1].Length > 0) { URL_HTTPS = Tools.Explode(":", URLS[1])[2]; }
-            //var Message = Tools.LocalIP() + ":" + URL_HTTP + "_" + Tools.LocalIP() + ":" + URL_HTTPS; // 待发送的信息
-            //var IPSegment = Tools.Explode(".", Tools.LocalIP())[2]; // 获取服务器网段
-            // var UDPAddr = "192.168." + IPSegment + ".255"; // 构造UDP服务端地址
-            //var UDPAddr = IPAddress.Broadcast;
-
             var UDPAddr = IPAddress.Broadcast;
             var UDPPort = ConfigHelper.AppSettingsHelper.GetSettings("UDPPort");
 
