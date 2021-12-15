@@ -522,7 +522,26 @@ namespace ServerBox.Controllers
         }
 
         /// <summary>
-        /// 添加/修改 文件标签
+        /// 添加文件标签
+        /// </summary>
+        /// <param name="Token"></param>
+        /// <param name="TokenType"></param>
+        /// <param name="TagName"></param>
+        /// <param name="TagMemo"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("/Create/Tag")]
+        public IActionResult CreateTag(string Token, int TokenType, string TagName, string TagMemo)
+        {
+            Token = Token == null ? "" : Token.Trim();
+            TagName = TagName == null ? "" : TagName.Trim();
+            TagMemo = TagMemo == null ? "" : TagMemo.Trim();
+            var Result = this.FileLogic.CreateTag(Token, TokenType, TagName, TagMemo);
+            return Json(Result);
+        }
+
+        /// <summary>
+        /// 修改文件标签
         /// </summary>
         /// <param name="Token"></param>
         /// <param name="TokenType"></param>
@@ -531,22 +550,13 @@ namespace ServerBox.Controllers
         /// <param name="TagMemo"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("/Tag/Info")]
-        public IActionResult TagInfoPost(string Token, int TokenType, int ID, string TagName, string TagMemo)
+        [Route("/Modify/Tag")]
+        public IActionResult ModifyTag(string Token, int TokenType, int ID, string TagName, string TagMemo)
         {
             Token = Token == null ? "" : Token.Trim();
             TagName = TagName == null ? "" : TagName.Trim();
             TagMemo = TagMemo == null ? "" : TagMemo.Trim();
-
-            Entity.CommonResultEntity Result;
-            if (ID > 0)
-            {
-                Result = this.FileLogic.ModifyTag(Token, TokenType, ID, TagName, TagMemo);
-            }
-            else
-            {
-                Result = this.FileLogic.CreateTag(Token, TokenType, TagName, TagMemo);
-            }
+            var Result = this.FileLogic.ModifyTag(Token, TokenType, ID, TagName, TagMemo);
             return Json(Result);
         }
 
@@ -557,12 +567,30 @@ namespace ServerBox.Controllers
         /// <param name="TokenType"></param>
         /// <param name="ID"></param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpPost]
         [Route("/Tag/Info")]
-        public IActionResult TagInfoGet(string Token, int TokenType, int ID)
+        public IActionResult TagInfo(string Token, int TokenType, int ID)
         {
+            Token = Token == null ? "" : Token.Trim();
             var Result = this.FileLogic.TagInfo(Token, TokenType, ID);
             return Json(Result);
         }
+
+        /// <summary>
+        /// 文件标签列表
+        /// </summary>
+        /// <param name="Token"></param>
+        /// <param name="TokenType"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("/Tag/List")]
+        public IActionResult TagList(string Token, int TokenType)
+        {
+            Token = Token == null ? "" : Token.Trim();
+            var Result = this.FileLogic.TagList(Token, TokenType);
+            return Json(Result);
+        }
+    
+        
     }
 }

@@ -2672,6 +2672,31 @@ namespace Logic
 
         public Entity.CommonResultEntity TagList(string Token, int TokenType)
         {
+            if (String.IsNullOrEmpty(Token))
+            {
+                this.Result.Memo = "Token error";
+            }
+            else if (TokenType <= 0)
+            {
+                this.Result.Memo = "TokenType error";
+            }
+            else
+            {
+                var UserID = this.TokenVerify(Token, TokenType);
+                if (UserID == 0)
+                {
+                    this.Result.Memo = "Token lost";
+                }
+                else
+                {
+                    Entity.TagSelectParamEntity Param = new();
+                    Param.UserID = UserID;
+                    var Data = this.TagModel.Select(Param);
+                    this.Result.State = true;
+                    this.Result.Memo = "Success";
+                    this.Result.Data = Data;
+                }
+            }
             return this.Result;
         }
     }
