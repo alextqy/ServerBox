@@ -104,5 +104,29 @@ namespace Models
             }
             return Result;
         }
+
+        public void DeleteByTagID(int TagID)
+        {
+            Entity.FileTagEntity Data = new();
+            try
+            {
+                Data = this.DbContent.FileTagEntity.Where(p => p.TagID == TagID).First();
+                if (Data.ID > 0)
+                {
+                    try
+                    {
+                        this.DbContent.FileTagEntity.Remove(Data);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
     }
 }

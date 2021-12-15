@@ -590,7 +590,23 @@ namespace ServerBox.Controllers
             var Result = this.FileLogic.TagList(Token, TokenType);
             return Json(Result);
         }
-    
-        
+
+        /// <summary>
+        /// 删除文件标签
+        /// </summary>
+        /// <param name="Token"></param>
+        /// <param name="TokenType"></param>
+        /// <param name="ID"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("/Del/Tag")]
+        public IActionResult DelTag(string Token, int TokenType, int ID)
+        {
+            Token = Token == null ? "" : Token.Trim();
+            var Result = this.FileLogic.DelTag(Token, TokenType, ID);
+            return Json(Result);
+        }
+
+
     }
 }

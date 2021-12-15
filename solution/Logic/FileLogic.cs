@@ -2697,7 +2697,75 @@ namespace Logic
                     this.Result.Data = Data;
                 }
             }
+
             return this.Result;
         }
+
+        public Entity.CommonResultEntity DelTag(string Token, int TokenType, int ID)
+        {
+            if (String.IsNullOrEmpty(Token))
+            {
+                this.Result.Memo = "Token error";
+            }
+            else if (TokenType <= 0)
+            {
+                this.Result.Memo = "TokenType error";
+            }
+            else if (ID <= 0)
+            {
+                this.Result.Memo = "ID error";
+            }
+            else
+            {
+                var UserID = this.TokenVerify(Token, TokenType);
+                if (UserID == 0)
+                {
+                    this.Result.Memo = "Token lost";
+                }
+                else
+                {
+                    var TagInfo = this.TagModel.Find(ID);
+                    if (TagInfo.ID <= 0)
+                    {
+                        this.Result.Memo = "Data not found";
+                    }
+                    else if (TagInfo.ID > 0 && TagInfo.ID != UserID)
+                    {
+                        this.Result.Memo = "Permission denied";
+                    }
+                    else
+                    {
+                        var TA = this.BeginTransaction();
+                        try
+                        {
+                            this.FileTagModel.DeleteByTagID(TagInfo.ID);
+                        }
+                        catch (Exception e)
+                        {
+                            TA.Rollback();
+                            Console.WriteLine(e.Message);
+                        }
+
+                        try
+                        {
+                            this.TagModel.Delete(TagInfo.ID);
+                        }
+                        catch (Exception e)
+                        {
+                            TA.Rollback();
+                            Console.WriteLine(e.Message);
+                        }
+
+                        this.DbContent.SaveChanges();
+                        TA.Commit();
+                        this.Result.State = true;
+                        this.Result.Memo = "Success";
+                    }
+                }
+            }
+
+            return this.Result;
+        }
+
     }
 }
