@@ -24,18 +24,19 @@ namespace ConfInit
             {
                 Tools.WarningConsole("Failed to create configuration file!");
                 Console.ReadLine();
-                return;
             }
-
-            AppSettingsObject SettingsObject = new();
-            SettingsObject.URL = "http://*:6000";
-            SettingsObject.UDPPort = 6002;
-            SettingsObject.DataBase = "Data Source = ../DaoRoom.db;";
-            SettingsObject.TokenPeriod = 8;
-            JsonSerializerOptions Options = new() { WriteIndented = true, };
-            Tools.WriteFile(FilePath, JsonSerializer.Serialize(SettingsObject, Options));
-            Tools.CorrectConsole("The configuration file is initialized.");
-            Console.ReadLine();
+            else
+            {
+                AppSettingsObject SettingsObject = new();
+                SettingsObject.URL = "http://*:6000";
+                SettingsObject.UDPPort = 6002;
+                SettingsObject.DataBase = "Data Source = ../DaoRoom.db;";
+                SettingsObject.TokenPeriod = 8;
+                JsonSerializerOptions Options = new() { WriteIndented = true, };
+                Tools.WriteFile(FilePath, JsonSerializer.Serialize(SettingsObject, Options));
+                Tools.CorrectConsole("The configuration file is initialized.");
+                Console.ReadLine();
+            }
         }
     }
 }

@@ -15,7 +15,6 @@ namespace Init
         {
             var CheckState = ConfigHelper.AppSettingsHelper.AppSettingsState(Tools.RootPath() + "appsettings.json");
             if (!CheckState) Tools.WarningConsole("Can't find configuration file!");
-            Console.ReadLine();
             return CheckState;
         }
 
