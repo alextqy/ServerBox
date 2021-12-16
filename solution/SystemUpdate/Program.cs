@@ -8,6 +8,7 @@ namespace SystemUpdate
         static void Main(string[] args)
         {
             Tools.WarningConsole("In development!");
+            Console.ReadLine();
         }
     }
 }

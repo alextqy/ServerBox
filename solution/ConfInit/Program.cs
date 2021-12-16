@@ -23,6 +23,7 @@ namespace ConfInit
             if (!Tools.CreateFile(FilePath))
             {
                 Tools.WarningConsole("Failed to create configuration file!");
+                Console.ReadLine();
                 return;
             }
 
