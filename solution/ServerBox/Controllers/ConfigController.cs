@@ -66,42 +66,6 @@ namespace ServerBox.Controllers
         }
 
         /// <summary>
-        /// 解密检测
-        /// </summary>
-        /// <param name="Token"></param>
-        /// <param name="TokenType"></param>
-        /// <param name="Code"></param>
-        /// <param name="CodeType"></param>
-        /// <returns></returns>
-        //[HttpPost]
-        //[Route("/Decrypt/Pro/Inspection")]
-        //public IActionResult DecryptProInspection(string Token, int TokenType, string Code, int CodeType = 1)
-        //{
-        //    Token = Token == null ? "" : Token.Trim();
-        //    Code = Code == null ? "" : Code.Trim();
-        //    var Result = this.ConfigLogic.DecryptProInspection(Token, TokenType, Code, CodeType);
-        //    return Json(Result);
-        //}
-
-        /// <summary>
-        /// 生成激活码检测
-        /// </summary>
-        /// <param name="Token"></param>
-        /// <param name="TokenType"></param>
-        /// <param name="EncryptedCode"></param>
-        /// <param name="NumberOfAccounts"></param>
-        /// <returns></returns>
-        //[HttpPost]
-        //[Route("/Generate/Activation/Code/Inspection")]
-        //public IActionResult GenerateActivationCodeInspection(string Token, int TokenType, string EncryptedCode, int NumberOfAccounts = 5)
-        //{
-        //    Token = Token == null ? "" : Token.Trim();
-        //    EncryptedCode = EncryptedCode == null ? "" : EncryptedCode.Trim();
-        //    var Result = this.ConfigLogic.GenerateActivationCodeInspection(Token, TokenType, EncryptedCode, NumberOfAccounts);
-        //    return Json(Result);
-        //}
-
-        /// <summary>
         /// 获取验签码
         /// </summary>
         /// <param name="Token"></param>
