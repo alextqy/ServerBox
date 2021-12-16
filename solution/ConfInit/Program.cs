@@ -35,6 +35,7 @@ namespace ConfInit
             JsonSerializerOptions Options = new() { WriteIndented = true, };
             Tools.WriteFile(FilePath, JsonSerializer.Serialize(SettingsObject, Options));
             Tools.CorrectConsole("The configuration file is initialized.");
+            Console.ReadLine();
         }
     }
 }
