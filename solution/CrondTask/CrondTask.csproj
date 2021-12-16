@@ -1,12 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+		<DebugType>none</DebugType>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\SysLog\SysLog.csproj" />
-    <ProjectReference Include="..\UDP\UDP.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\SysLog\SysLog.csproj" />
+		<ProjectReference Include="..\UDP\UDP.csproj" />
+	</ItemGroup>
 
 </Project>
