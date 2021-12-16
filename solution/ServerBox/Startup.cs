@@ -19,9 +19,9 @@ namespace ServerBox
             Configuration = configuration;
 
             var Init = new SysInit();
-            if (!Init.CheckConfigFile()) { Environment.Exit(0); }
-            if (!Init.SetDatabase()) { Environment.Exit(0); }
-            if (!Init.Run()) { Environment.Exit(0); }
+            if (!Init.CheckConfigFile()) { Console.ReadLine(); Environment.Exit(0); }
+            if (!Init.SetDatabase()) { Console.ReadLine(); Environment.Exit(0); }
+            if (!Init.Run()) { Console.ReadLine(); Environment.Exit(0); }
             CrondTool.RunTask();
         }
         public IConfiguration Configuration { get; }

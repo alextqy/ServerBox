@@ -29,7 +29,6 @@ namespace Init
                 if (!Tools.DirIsExists(DatabasePath))
                 {
                     Tools.WarningConsole("Database not found!");
-                    Console.ReadLine();
                     return false;
                 }
                 else
@@ -38,7 +37,6 @@ namespace Init
                     if (PathValue == null || PathValue == "")
                     {
                         Tools.WarningConsole("Sys environment error!");
-                        Console.ReadLine();
                         return false;
                     }
                     if (!PathValue.Contains(DatabasePath))
@@ -52,7 +50,6 @@ namespace Init
                         {
                             Tools.WarningConsole(e.Message);
                             Tools.WarningConsole("Please run the system as an administrator!");
-                            Console.ReadLine();
                             return false;
                         }
                     }
@@ -76,7 +73,6 @@ namespace Init
                 {
                     Tools.WarningConsole("ERROR: Failed to make base dir!");
                     DelInitFile(); // 回到起始状态
-                    Console.ReadLine();
                     return false;
                 }
                 string DaoRoom = Tools.RootPath() + "DaoRoom.db"; // 数据库文件路径
@@ -84,7 +80,6 @@ namespace Init
                 {
                     Tools.WarningConsole("ERROR: Failed to make database file!");
                     DelInitFile(); // 回到起始状态
-                    Console.ReadLine();
                     return false;
                 }
                 SqliteConnection SqliteObject = new("Data Source = " + DaoRoom); // 连接数据库
@@ -99,7 +94,6 @@ namespace Init
                     Tools.WarningConsole(e.Message);
                     Tools.WarningConsole("ERROR: Failed to connect database!");
                     DelInitFile(); // 回到起始状态
-                    Console.ReadLine();
                     return false;
                 }
                 #endregion
@@ -151,7 +145,6 @@ namespace Init
                     Tools.WarningConsole(e.Message);
                     Tools.WarningConsole("ERROR: Failed to initialize admin data!");
                     DelInitFile(); // 回到起始状态
-                    Console.ReadLine();
                     return false;
                 }
                 SqliteObject.Close(); // 关闭链接
@@ -162,14 +155,12 @@ namespace Init
                 {
                     Tools.WarningConsole("ERROR: Failed to make admin dir!");
                     DelInitFile(); // 回到起始状态
-                    Console.ReadLine();
                     return false;
                 }
                 if (!ConfigHelper.AppSettingsHelper.SetInit()) // 修改配置文件
                 {
                     Tools.WarningConsole("ERROR: System initialization failed!");
                     DelInitFile(); // 回到起始状态
-                    Console.ReadLine();
                     return false;
                 }
                 #endregion
