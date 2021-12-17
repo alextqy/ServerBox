@@ -373,6 +373,16 @@ namespace Init
                 "TagID INT(10) NOT NULL" +
                 ");";
 
+            // offline_task
+            SQLParam += "DROP TABLE IF EXISTS offline_task;";
+            SQLParam += "CREATE TABLE offline_task(" +
+                "ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
+                "UserID INT(10) NOT NULL," +
+                "URL VARCHAR(65535) NOT NULL," +
+                "State INT(1) NOT NULL," +
+                "Createtime INT(10) NOT NULL" +
+                ");";
+
             return SQLParam;
         }
     }
