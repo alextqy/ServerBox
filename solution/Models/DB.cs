@@ -14,6 +14,7 @@ namespace Models
         public DbSet<Entity.FileExtraEntity> FileExtraEntity { get; set; }
         public DbSet<Entity.FileEntity> FileEntity { get; set; }
         public DbSet<Entity.MessageEntity> MessageEntity { get; set; }
+        public DbSet<Entity.OfflineTaskEntity> OfflineTaskEntity { get; set; }
         public DbSet<Entity.OuterTokenEntity> OuterTokenEntity { get; set; }
         public DbSet<Entity.TokenEntity> TokenEntity { get; set; }
         public DbSet<Entity.UserExtraEntity> UserExtraEntity { get; set; }
