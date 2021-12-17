@@ -380,6 +380,7 @@ namespace Init
                 "UserID INT(10) NOT NULL," +
                 "URL VARCHAR(65535) NOT NULL," +
                 "State INT(1) NOT NULL," +
+                "TaskMemo VARCHAR(128)," +
                 "Createtime INT(10) NOT NULL" +
                 ");";
 

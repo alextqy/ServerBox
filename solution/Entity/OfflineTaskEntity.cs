@@ -38,6 +38,14 @@ namespace Entity
         public int Status { get; set; }
 
         /// <summary>
+        /// 任务描述信息
+        /// </summary>
+        [Column(TypeName = "varchar(128)")]
+        [MaxLength(128)]
+        [JsonPropertyName("TaskMemo")]
+        public string TaskMemo { get; set; }
+
+        /// <summary>
         /// 创建时间
         /// </summary>
         [Column(TypeName = "int(10)")]
