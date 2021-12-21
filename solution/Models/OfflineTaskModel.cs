@@ -12,7 +12,7 @@ namespace Models
         {
             try
             {
-                this.DbContent.MessageEntity.Add(Data);
+                this.DbContent.OfflineTaskEntity.Add(Data);
             }
             catch (Exception e)
             {
@@ -22,15 +22,15 @@ namespace Models
 
         public void Delete(int ID)
         {
-            Entity.MessageEntity Data = new();
+            Entity.OfflineTaskEntity Data = new();
             try
             {
-                Data = this.DbContent.MessageEntity.Where(p => p.ID == ID).First();
+                Data = this.DbContent.OfflineTaskEntity.Where(p => p.ID == ID).First();
                 if (Data.ID > 0)
                 {
                     try
                     {
-                        this.DbContent.MessageEntity.Remove(Data);
+                        this.DbContent.OfflineTaskEntity.Remove(Data);
                     }
                     catch (Exception e)
                     {
@@ -44,52 +44,44 @@ namespace Models
             }
         }
 
-        public void Modify(int ID, Entity.MessageEntity Data)
+        public void Modify(int ID, Entity.OfflineTaskEntity Data)
         {
-            Entity.MessageEntity Info = new();
+            Entity.OfflineTaskEntity Info = new();
             try
             {
-                Info = this.DbContent.MessageEntity.Where(p => p.ID == ID).First();
+                Info = this.DbContent.OfflineTaskEntity.Where(p => p.ID == ID).First();
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
-
-            if (Data.Title != null)
+            if (Data.UserID > 0 && Data.UserID != Info.UserID)
             {
-                if (Data.Title != "" && Data.Title != Info.Title)
+                Info.UserID = Data.UserID;
+            }
+            if (Data.URL != null)
+            {
+                if (Data.URL != "" && Data.URL != Info.URL)
                 {
-                    Info.Title = Data.Title;
+                    Info.URL = Data.URL;
                 }
-            }
-            if (Data.Content != null)
-            {
-                if (Data.Content != "" && Data.Content != Info.Content)
-                {
-                    Info.Content = Data.Content;
-                }
-            }
-            if (Data.SenderID > 0 && Data.SenderID != Info.SenderID)
-            {
-                Info.SenderID = Data.SenderID;
-            }
-            if (Data.ReceiverID > 0 && Data.ReceiverID != Info.ReceiverID)
-            {
-                Info.ReceiverID = Data.ReceiverID;
             }
             if (Data.State > 0 && Data.State != Info.State)
             {
                 Info.State = Data.State;
             }
+            if (Data.Createtime > 0 && Data.Createtime != Info.Createtime)
+            {
+                Info.Createtime = Data.Createtime;
+            }
         }
 
-        public Entity.MessageEntity Find(int ID)
+        public Entity.OfflineTaskEntity Find(int ID)
         {
-            Entity.MessageEntity Data = new();
+            Entity.OfflineTaskEntity Data = new();
             try
             {
-                Data = this.DbContent.MessageEntity.Where(p => p.ID == ID).First();
+                Data = this.DbContent.OfflineTaskEntity.Where(p => p.ID == ID).First();
             }
             catch (Exception e)
             {
@@ -98,43 +90,17 @@ namespace Models
             return Data;
         }
 
-        public List<Entity.MessageEntity> Select(Entity.MessageSelectParamEntity Data)
+        public List<Entity.OfflineTaskEntity> Select(Entity.OfflineTaskSelectParamEntity Data)
         {
-            List<Entity.MessageEntity> Result = new();
-            var List = this.DbContent.MessageEntity.Where(p => p.ID > 0);
-            if (Data.Title != null)
+            List<Entity.OfflineTaskEntity> Result = new();
+            var List = this.DbContent.OfflineTaskEntity.Where(p => p.ID > 0);
+            if (Data.UserID > 0)
             {
-                if (Data.Title != "")
-                {
-                    List = List.Where(p => p.Title.Contains(Data.Title));
-                }
-            }
-            if (Data.Content != null)
-            {
-                if (Data.Content != "")
-                {
-                    List = List.Where(p => p.Content.Contains(Data.Content));
-                }
-            }
-            if (Data.SenderID > 0)
-            {
-                List = List.Where(p => p.SenderID == Data.SenderID);
-            }
-            if (Data.ReceiverID > 0)
-            {
-                List = List.Where(p => p.ReceiverID == Data.ReceiverID);
+                List = List.Where(p => p.UserID == Data.UserID);
             }
             if (Data.State > 0)
             {
                 List = List.Where(p => p.State == Data.State);
-            }
-            if (Data.StartPoint > 0)
-            {
-                List = List.Where(p => p.Createtime >= Data.StartPoint);
-            }
-            if (Data.EndPoint > 0)
-            {
-                List = List.Where(p => p.Createtime <= Data.EndPoint);
             }
 
             try

@@ -225,6 +225,18 @@ namespace Entity
         }
     }
 
+    public class OfflineTaskSelectParamEntity
+    {
+        public int UserID { get; set; }
+        public int State { get; set; }
+
+        public OfflineTaskSelectParamEntity()
+        {
+            this.UserID = 0;
+            this.State = 0;
+        }
+    }
+
     public class OuterTokenSelectParamEntity
     {
         public int UserID { get; set; }

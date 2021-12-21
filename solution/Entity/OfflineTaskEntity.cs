@@ -34,8 +34,8 @@ namespace Entity
         /// </summary>
         [Column(TypeName = "int(1)")]
         [MaxLength(1)]
-        [JsonPropertyName("Status")]
-        public int Status { get; set; }
+        [JsonPropertyName("State")]
+        public int State { get; set; }
 
         /// <summary>
         /// 任务描述信息
@@ -58,7 +58,8 @@ namespace Entity
             this.ID = 0;
             this.UserID = 0;
             this.URL = "";
-            this.Status = 0;
+            this.State = 0;
+            this.TaskMemo = "";
             this.Createtime = 0;
         }
     }
