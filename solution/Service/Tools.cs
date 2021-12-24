@@ -10,13 +10,14 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Primitives;
+using System.Collections;
 
 namespace Service
 {
-    /// <summary>
-    /// catch (Exception e)
-    /// Console.Error.WriteLine(e.Message);
-    /// </summary>
     public static class Tools
     {
         private static string AES_key1 = "Fuck.Peace&Love!"; // 秘钥1
@@ -604,6 +605,32 @@ namespace Service
         }
 
         /// <summary>
+        /// 上传到外网
+        /// </summary>
+        /// <param name="FilePath"></param>
+        /// <returns></returns>
+        public static IFormFile ToFormFileUpload(string FilePath)
+        {
+            using var FStream = new FileStream(FilePath, FileMode.Open);
+            var MStream = new MemoryStream();
+            FStream.CopyTo(MStream);
+            return new FormFile(MStream, 0, MStream.Length, null, FStream.Name) { Headers = new HeaderDictionary(), ContentType = "application/" + Path.GetExtension(FilePath), };
+        }
+
+        /// <summary>
+        /// 上传到服务器处理
+        /// </summary>
+        /// <param name="FilePath"></param>
+        /// <returns></returns>
+        public static IFormFile ToFormFileAnalysis(string FilePath)
+        {
+            var FileBytes = File.ReadAllBytes(FilePath);
+            var FileMS = new MemoryStream(FileBytes) { Position = 0 };
+            IFormFile _FormFile = new FormFile(FileMS, 0, FileMS.Length, Path.GetFileNameWithoutExtension(FilePath), Path.GetFileName(FilePath));
+            return _FormFile;
+        }
+
+        /// <summary>
         /// 获取毫秒时间戳
         /// </summary>
         /// <returns></returns>
@@ -1163,4 +1190,80 @@ namespace Service
             return Result;
         }
     }
+
+    public class FormFile : IFormFile
+    {
+        public string ContentDisposition { get { throw null; } set { } }
+        public string ContentType { get { throw null; } set { } }
+        public string FileName
+        {
+            [CompilerGenerated]
+            get { throw null; }
+        }
+        public IHeaderDictionary Headers
+        {
+            [CompilerGenerated]
+            get { throw null; }
+            [CompilerGenerated]
+            set { }
+        }
+        public long Length
+        {
+            [CompilerGenerated]
+            get { throw null; }
+        }
+        public string Name
+        {
+            [CompilerGenerated]
+            get { throw null; }
+        }
+        public FormFile(Stream baseStream, long baseStreamOffset, long length, string name, string fileName) { }
+        public void CopyTo(Stream target) { }
+        [DebuggerStepThrough]
+        public Task CopyToAsync(Stream target, CancellationToken cancellationToken = default(CancellationToken)) { throw null; }
+        public Stream OpenReadStream() { throw null; }
+    }
+
+    public class HeaderDictionary : IHeaderDictionary, ICollection<KeyValuePair<string, StringValues>>, IEnumerable<KeyValuePair<string, StringValues>>, IEnumerable, IDictionary<string, StringValues>
+    {
+        public struct Enumerator : IEnumerator<KeyValuePair<string, StringValues>>, IEnumerator, IDisposable
+        {
+            private object _dummy;
+            private int _dummyPrimitive;
+            public KeyValuePair<string, StringValues> Current { get { throw null; } }
+            object IEnumerator.Current { get { throw null; } }
+            public void Dispose() { }
+            public bool MoveNext() { throw null; }
+            void IEnumerator.Reset() { }
+        }
+        public long? ContentLength { get { throw null; } set { } }
+        public int Count { get { throw null; } }
+        public bool IsReadOnly
+        {
+            [CompilerGenerated]
+            get { throw null; }
+            [CompilerGenerated]
+            set { }
+        }
+        public StringValues this[string key] { get { throw null; } set { } }
+        public ICollection<string> Keys { get { throw null; } }
+        StringValues IDictionary<string, StringValues>.this[string key] { get { throw null; } set { } }
+        public ICollection<StringValues> Values { get { throw null; } }
+        public HeaderDictionary() { }
+        public HeaderDictionary(Dictionary<string, StringValues> store) { }
+        public HeaderDictionary(int capacity) { }
+        public void Add(KeyValuePair<string, StringValues> item) { }
+        public void Add(string key, StringValues value) { }
+        public void Clear() { }
+        public bool Contains(KeyValuePair<string, StringValues> item) { throw null; }
+        public bool ContainsKey(string key) { throw null; }
+        public void CopyTo(KeyValuePair<string, StringValues>[] array, int arrayIndex) { }
+        public Enumerator GetEnumerator() { throw null; }
+        public bool Remove(KeyValuePair<string, StringValues> item) { throw null; }
+        public bool Remove(string key) { throw null; }
+        IEnumerator<KeyValuePair<string, StringValues>> IEnumerable<KeyValuePair<string, StringValues>>.GetEnumerator() { throw null; }
+        IEnumerator IEnumerable.GetEnumerator() { throw null; }
+        public bool TryGetValue(string key, out StringValues value) { throw null; }
+    }
+
 }
