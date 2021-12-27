@@ -120,6 +120,16 @@ solution/SystemUpdate/Log
 solution/SystemUpdate/output
 solution/SystemUpdate/app
 
+solution/DataParallel/.vscode
+solution/DataParallel/.vs
+solution/DataParallel/.config
+solution/DataParallel/v16
+solution/DataParallel/obj
+solution/DataParallel/bin
+solution/DataParallel/Log
+solution/DataParallel/output
+solution/DataParallel/app
+
 solution/CrondTask/.vscode
 solution/CrondTask/.vs
 solution/CrondTask/.config

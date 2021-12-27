@@ -1,7 +1,7 @@
 ﻿using SysLog;
 using System.Threading.Tasks;
 using UDP;
-
+using DataParallel;
 
 namespace CrondTask
 {
@@ -14,6 +14,7 @@ namespace CrondTask
         {
             Task.Factory.StartNew(() => UDPTool.UDPServer(), TaskCreationOptions.LongRunning);
             Task.Factory.StartNew(() => LogTool.LogServer(), TaskCreationOptions.LongRunning);
+            Task.Factory.StartNew(() => DataThreadPool.ProcessServer(), TaskCreationOptions.LongRunning);
         }
     }
 }
