@@ -30,7 +30,7 @@ namespace Entity
         public string URL { get; set; }
 
         /// <summary>
-        /// 状态 1未处理 2处理中 3处理完成 4任务异常
+        /// 状态 1未处理 2处理中 3处理完成 4任务失败
         /// </summary>
         [Column(TypeName = "int(1)")]
         [MaxLength(1)]

@@ -23,6 +23,7 @@ namespace ConfInit
             if (!Tools.CreateFile(FilePath))
             {
                 Tools.WarningConsole("Failed to create configuration file!");
+                Tools.WarningConsole("Press enter to exit.");
                 Console.ReadLine();
             }
             else
@@ -35,6 +36,7 @@ namespace ConfInit
                 JsonSerializerOptions Options = new() { WriteIndented = true, };
                 Tools.WriteFile(FilePath, JsonSerializer.Serialize(SettingsObject, Options));
                 Tools.CorrectConsole("The configuration file is initialized.");
+                Tools.CorrectConsole("Press enter to exit.");
                 Console.ReadLine();
             }
         }

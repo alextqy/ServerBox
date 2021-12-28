@@ -25,6 +25,7 @@ namespace Logic
         public FileModel FileModel { set; get; }
         public FileTagModel FileTagModel { set; get; }
         public MessageModel MessageModel { set; get; }
+        public OfflineTaskModel OfflineTaskModel { set; get; }
         public OuterTokenModel OuterTokenModel { set; get; }
         public TagModel TagModel { set; get; }
         public TokenModel TokenModel { set; get; }
@@ -49,6 +50,7 @@ namespace Logic
             this.FileModel = new FileModel(this.DbContent);
             this.FileTagModel = new FileTagModel(this.DbContent);
             this.MessageModel = new MessageModel(this.DbContent);
+            this.OfflineTaskModel = new OfflineTaskModel(this.DbContent);
             this.OuterTokenModel = new OuterTokenModel(this.DbContent);
             this.TagModel = new TagModel(this.DbContent);
             this.TokenModel = new TokenModel(this.DbContent);

@@ -17,11 +17,10 @@ namespace ServerBox
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-
             var Init = new SysInit();
-            if (!Init.CheckConfigFile()) { Console.ReadLine(); Environment.Exit(0); }
-            if (!Init.SetDatabase()) { Console.ReadLine(); Environment.Exit(0); }
-            if (!Init.Run()) { Console.ReadLine(); Environment.Exit(0); }
+            if (!Init.CheckConfigFile()) { Service.Tools.WarningConsole("Press enter to exit."); Console.ReadLine(); Environment.Exit(0); }
+            if (!Init.SetDatabase()) { Service.Tools.WarningConsole("Press enter to exit."); Console.ReadLine(); Environment.Exit(0); }
+            if (!Init.Run()) { Service.Tools.WarningConsole("Press enter to exit."); Console.ReadLine(); Environment.Exit(0); }
             CrondTool.RunTask();
         }
         public IConfiguration Configuration { get; }

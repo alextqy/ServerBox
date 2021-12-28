@@ -114,5 +114,19 @@ namespace Models
             }
             return Result;
         }
+
+        public Entity.OfflineTaskEntity FindURL(int UserID, string URL)
+        {
+            Entity.OfflineTaskEntity Data = new();
+            try
+            {
+                Data = this.DbContent.OfflineTaskEntity.Where(p => p.UserID == UserID).Where(p => p.URL == URL).First();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return Data;
+        }
     }
 }

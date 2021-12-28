@@ -655,5 +655,56 @@ namespace ServerBox.Controllers
             var Result = this.FileLogic.DelFileTag(Token, TokenType, ID);
             return Json(Result);
         }
+
+        /// <summary>
+        /// 添加离线任务
+        /// </summary>
+        /// <param name="Token"></param>
+        /// <param name="TokenType"></param>
+        /// <param name="URL"></param>
+        /// <param name="TaskMemo"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("/Create/Offline/Task")]
+        public IActionResult CreateOfflineTask(string Token, int TokenType, string URL, string TaskMemo = "")
+        {
+            Token = Token == null ? "" : Token.Trim();
+            URL = URL == null ? "" : URL.Trim();
+            TaskMemo = TaskMemo == null ? "" : TaskMemo.Trim();
+            var Result = this.FileLogic.CreateOfflineTask(Token, TokenType, URL, TaskMemo);
+            return Json(Result);
+        }
+
+        /// <summary>
+        /// 离线任务列表
+        /// </summary>
+        /// <param name="Token"></param>
+        /// <param name="TokenType"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("/Offline/Task/List")]
+        public IActionResult OfflineTaskList(string Token, int TokenType)
+        {
+            Token = Token == null ? "" : Token.Trim();
+            var Result = this.FileLogic.OfflineTaskList(Token, TokenType);
+            return Json(Result);
+        }
+
+        /// <summary>
+        /// 删除离线任务
+        /// </summary>
+        /// <param name="Token"></param>
+        /// <param name="TokenType"></param>
+        /// <param name="ID"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("Del/Offline/Task")]
+        public IActionResult DelOfflineTask(string Token, int TokenType, int ID)
+        {
+            Token = Token == null ? "" : Token.Trim();
+            var Result = this.FileLogic.DelOfflineTask(Token, TokenType, ID);
+            return Json(Result);
+        }
+
     }
 }

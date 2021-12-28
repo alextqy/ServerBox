@@ -2958,5 +2958,133 @@ namespace Logic
             return this.Result;
         }
 
+        public Entity.CommonResultEntity CreateOfflineTask(string Token, int TokenType, string URL, string TaskMemo = "")
+        {
+            if (String.IsNullOrEmpty(Token))
+            {
+                this.Result.Memo = "Token error";
+            }
+            else if (TokenType <= 0)
+            {
+                this.Result.Memo = "TokenType error";
+            }
+            else if (String.IsNullOrEmpty(URL))
+            {
+                this.Result.Memo = "URL error";
+            }
+            else
+            {
+                var UserID = this.TokenVerify(Token, TokenType);
+                if (UserID == 0)
+                {
+                    this.Result.Memo = "Token lost";
+                }
+                else
+                {
+                    var Info = this.OfflineTaskModel.FindURL(UserID, URL);
+                    if (Info.ID > 0)
+                    {
+                        this.Result.Memo = "Data is exist";
+                    }
+                    else
+                    {
+                        Tools.UserBaseDir();
+                        Entity.OfflineTaskEntity Data = new();
+                        Data.UserID = UserID;
+                        Data.URL = URL;
+                        Data.State = 1;
+                        Data.TaskMemo = TaskMemo;
+                        Data.Createtime = Tools.Time32();
+                        try
+                        {
+                            this.OfflineTaskModel.Insert(Data);
+                            this.DbContent.SaveChanges();
+                            this.Result.State = true;
+                            this.Result.Memo = "Success";
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.Message);
+                            this.Result.Memo = "Create error";
+                        }
+                    }
+                }
+            }
+            return this.Result;
+        }
+
+        public Entity.CommonResultEntity OfflineTaskList(string Token, int TokenType)
+        {
+            if (String.IsNullOrEmpty(Token))
+            {
+                this.Result.Memo = "Token error";
+            }
+            else if (TokenType <= 0)
+            {
+                this.Result.Memo = "TokenType error";
+            }
+            else
+            {
+                var UserID = this.TokenVerify(Token, TokenType);
+                if (UserID == 0)
+                {
+                    this.Result.Memo = "Token lost";
+                }
+                else
+                {
+                    Entity.OfflineTaskSelectParamEntity Param = new();
+                    Param.UserID = UserID;
+                    var DataList = this.OfflineTaskModel.Select(Param);
+                    this.Result.Data = DataList;
+                    this.Result.State = true;
+                    this.Result.Memo = "Success";
+                }
+            }
+            return this.Result;
+        }
+
+        public Entity.CommonResultEntity DelOfflineTask(string Token, int TokenType, int ID)
+        {
+            if (String.IsNullOrEmpty(Token))
+            {
+                this.Result.Memo = "Token error";
+            }
+            else if (TokenType <= 0)
+            {
+                this.Result.Memo = "TokenType error";
+            }
+            else if (ID <= 0)
+            {
+                this.Result.Memo = "ID error";
+            }
+            else
+            {
+                var UserID = this.TokenVerify(Token, TokenType);
+                if (UserID == 0)
+                {
+                    this.Result.Memo = "Token lost";
+                }
+                else if (this.OfflineTaskModel.Find(ID).ID <= 0)
+                {
+                    this.Result.Memo = "Data not found";
+                }
+                else
+                {
+                    try
+                    {
+                        this.OfflineTaskModel.Delete(ID);
+                        this.DbContent.SaveChanges();
+                        this.Result.State = true;
+                        this.Result.Memo = "Success";
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                        this.Result.Memo = "Delete error";
+                    }
+                }
+            }
+            return this.Result;
+        }
     }
 }
