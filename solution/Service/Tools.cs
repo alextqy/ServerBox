@@ -543,12 +543,33 @@ namespace Service
             }
         }
 
+        /// <summary>
+        /// 写入文件
+        /// </summary>
+        /// <param name="FilePath"></param>
+        /// <param name="Content"></param>
+        /// <param name="AppendState"></param>
+        /// <returns></returns>
         public static bool WriteFile(string FilePath, string Content, bool AppendState = false)
         {
             try
             {
                 using StreamWriter FileWriter = new(FilePath, append: AppendState);
                 FileWriter.WriteLine(Content);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+            return true;
+        }
+
+        public static bool WriteFileUTF8(string FilePath, string Content)
+        {
+            try
+            {
+                File.WriteAllText(FilePath, Content, new UTF8Encoding(false));
             }
             catch (Exception e)
             {
