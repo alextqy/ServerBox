@@ -1151,7 +1151,7 @@ namespace Service
         public static string CMD(string CommandLine)
         {
             CommandLine = CommandLine.Trim().TrimStart('&') + "&exit";//&执行两条命令的标识，这里第二条命令的目的是当调用ReadToEnd()方法是，不会出现假死状态
-            string outputMsg = "";
+            string OutputMsg = "";
             Process pro = new();
             pro.StartInfo.FileName = "cmd.exe"; // 调用cmd.exe
             pro.StartInfo.UseShellExecute = false; // 是否启用shell启动进程
@@ -1162,13 +1162,38 @@ namespace Service
             pro.Start();
             pro.StandardInput.WriteLine(CommandLine); // 执行cmd语句
             pro.StandardInput.AutoFlush = true;
-
-            outputMsg += pro.StandardOutput.ReadToEnd(); //读取返回信息
-            //outputMsg=outputMsg.Substring(outputMsg.IndexOf(commandLine)+commandLine.Length);//返回发送命令之后的信息
-
+            OutputMsg += pro.StandardOutput.ReadToEnd(); //读取返回信息
+            //OutputMsg=OutputMsg.Substring(OutputMsg.IndexOf(commandLine)+commandLine.Length);//返回发送命令之后的信息
             pro.WaitForExit(); //等待程序执行完退出，不过感觉不用这条命令，也可以达到同样的效果
             pro.Close();
-            return outputMsg;
+            return OutputMsg;
+        }
+
+        /// <summary>
+        /// Linux命令行
+        /// </summary>
+        /// <param name="CommandLine"></param>
+        /// <returns></returns>
+        public static string Shell(string CommandLine, string Args = "")
+        {
+            var pro = new Process()
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = CommandLine,
+                    Arguments = Args,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                }
+            };
+            pro.Start();
+            string OutputMsg = pro.StandardOutput.ReadToEnd();
+            string ErrorMsg = pro.StandardError.ReadToEnd();
+            pro.WaitForExit();
+            if (String.IsNullOrEmpty(ErrorMsg)) { return OutputMsg; }
+            else { return ErrorMsg; }
         }
 
         /// <summary>
