@@ -698,7 +698,7 @@ namespace ServerBox.Controllers
         /// <param name="ID"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("Del/Offline/Task")]
+        [Route("/Del/Offline/Task")]
         public IActionResult DelOfflineTask(string Token, int TokenType, int ID)
         {
             Token = Token == null ? "" : Token.Trim();
