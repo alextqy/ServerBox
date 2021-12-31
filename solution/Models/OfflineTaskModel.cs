@@ -128,5 +128,19 @@ namespace Models
             }
             return Data;
         }
+
+        public Entity.OfflineTaskEntity FindAheadState(int State = 1)
+        {
+            Entity.OfflineTaskEntity Data = new();
+            try
+            {
+                Data = this.DbContent.OfflineTaskEntity.Where(p => p.State == State).First();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return Data;
+        }
     }
 }

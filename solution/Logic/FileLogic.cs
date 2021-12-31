@@ -3132,6 +3132,14 @@ namespace Logic
             return this.Result;
         }
 
+        public Entity.CommonResultEntity CheckOfflineTaskAhead(int State = 1)
+        {
+            this.Result.State = true;
+            this.Result.Memo = "Success";
+            this.Result.Data = this.OfflineTaskModel.FindAheadState(State);
+            return this.Result;
+        }
+
         public Entity.CommonResultEntity SetOfflineTaskState(int ID, int State)
         {
             if (ID <= 0)
