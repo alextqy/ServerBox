@@ -10,8 +10,12 @@ namespace DataParallel
         public static async void ProcessServer()
         {
             await Task.Delay(0);
-            Tools.CorrectConsole("Process service is running!");
+            //Tools.CorrectConsole("Process service is running!");
+            Run();
+        }
 
+        public static void Run()
+        {
             //ProcessQueue<int> _processQueue = new();
             //_processQueue.ProcessItemEvent += ProcessQueueProcessItemEvent;
             //_processQueue.ProcessExceptionEvent += ProcessQueueProcessExceptionEvent;
@@ -19,11 +23,17 @@ namespace DataParallel
             //{
             //Thread.Sleep(500);
             //Console.WriteLine(_processQueue._isProcessing);
+
             //_processQueue.Enqueue(3);
             //_processQueue.Enqueue(2);
             //_processQueue.Enqueue(1);
+
             //Thread.Sleep(500);
-            //Console.WriteLine(_processQueue._threadCollection.Count);
+            //_processQueue.Dequeue(3);
+            //_processQueue.Dequeue(2);
+            //_processQueue.Dequeue(1);
+
+            //Thread.Sleep(500);
             //Console.WriteLine(_processQueue._isProcessing);
             //}
         }

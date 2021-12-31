@@ -38,13 +38,26 @@ namespace DataParallel
         /// <summary>
         /// 入队列
         /// </summary>
-        /// <param name="Items"></param>
+        /// <param name="Item"></param>
         /// <exception cref="ArgumentException"></exception>
-        public void Enqueue(T Items)
+        public void Enqueue(T Item)
         {
-            if (Items == null) { throw new ArgumentException(null, nameof(Items)); }
-            _queue.Add(Items);
+            if (Item == null) { throw new ArgumentException(null, nameof(Item)); }
+            _queue.TryAdd(Item);
             DataAdded();
+        }
+
+        /// <summary>
+        /// 出队列
+        /// </summary>
+        /// <param name="Item"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        public T Dequeue(T Item)
+        {
+            if (Item == null) { throw new ArgumentException(null, nameof(Item)); }
+            _queue.TryTake(out Item);
+            return Item;
         }
 
         public void Flush()
