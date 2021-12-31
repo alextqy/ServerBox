@@ -31,6 +31,7 @@ namespace DataParallel
         }
 
         public ProcessQueue(int internalThreadCount) : this() { this._internalThreadCount = internalThreadCount; }
+
         public int GetInternalItemCount() { return _queue.Count; } // 队列内部元素的数量
 
         /// <summary>
