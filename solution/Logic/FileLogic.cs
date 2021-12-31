@@ -2988,24 +2988,40 @@ namespace Logic
                     }
                     else
                     {
-                        Tools.UserBaseDir();
-                        Entity.OfflineTaskEntity Data = new();
-                        Data.UserID = UserID;
-                        Data.URL = URL;
-                        Data.State = 1;
-                        Data.TaskMemo = TaskMemo;
-                        Data.Createtime = Tools.Time32();
-                        try
+                        var UserInfo = this.UserModel.Find(UserID);
+                        if (UserInfo.ID == 0)
                         {
-                            this.OfflineTaskModel.Insert(Data);
-                            this.DbContent.SaveChanges();
-                            this.Result.State = true;
-                            this.Result.Memo = "Success";
+                            this.Result.Memo = "User not found";
                         }
-                        catch (Exception e)
+                        else
                         {
-                            Console.WriteLine(e.Message);
-                            this.Result.Memo = "Create error";
+                            var TaskBase = Tools.UserBaseDir() + UserInfo.Account + "/RoboticArm" + Tools.MD5(UserInfo.Createtime.ToString()) + "/";
+                            var TaskDir = TaskBase + Tools.MD5(URL);
+                            if (!Tools.CreateDir(TaskDir))
+                            {
+                                this.Result.Memo = "Task initialization failed";
+                            }
+                            else
+                            {
+                                Entity.OfflineTaskEntity Data = new();
+                                Data.UserID = UserID;
+                                Data.URL = URL;
+                                Data.State = 1;
+                                Data.TaskMemo = TaskMemo;
+                                Data.Createtime = Tools.Time32();
+                                try
+                                {
+                                    this.OfflineTaskModel.Insert(Data);
+                                    this.DbContent.SaveChanges();
+                                    this.Result.State = true;
+                                    this.Result.Memo = "Success";
+                                }
+                                catch (Exception e)
+                                {
+                                    Console.WriteLine(e.Message);
+                                    this.Result.Memo = "Create error";
+                                }
+                            }
                         }
                     }
                 }
@@ -3064,23 +3080,44 @@ namespace Logic
                 {
                     this.Result.Memo = "Token lost";
                 }
-                else if (this.OfflineTaskModel.Find(ID).ID <= 0)
-                {
-                    this.Result.Memo = "Data not found";
-                }
                 else
                 {
-                    try
+                    var TaskInfo = this.OfflineTaskModel.Find(ID);
+                    if (TaskInfo.ID <= 0)
                     {
-                        this.OfflineTaskModel.Delete(ID);
-                        this.DbContent.SaveChanges();
-                        this.Result.State = true;
-                        this.Result.Memo = "Success";
+                        this.Result.Memo = "Data not found";
                     }
-                    catch (Exception e)
+                    else
                     {
-                        Console.WriteLine(e.Message);
-                        this.Result.Memo = "Delete error";
+                        var UserInfo = this.UserModel.Find(UserID);
+                        if (UserInfo.ID == 0)
+                        {
+                            this.Result.Memo = "User not found";
+                        }
+                        else
+                        {
+                            var TaskBase = Tools.UserBaseDir() + UserInfo.Account + "/RoboticArm" + Tools.MD5(UserInfo.Createtime.ToString()) + "/";
+                            var TaskDir = TaskBase + Tools.MD5(TaskInfo.URL);
+                            if (!Tools.DelDir(TaskDir))
+                            {
+                                this.Result.Memo = "Delete error";
+                            }
+                            else
+                            {
+                                try
+                                {
+                                    this.OfflineTaskModel.Delete(ID);
+                                    this.DbContent.SaveChanges();
+                                    this.Result.State = true;
+                                    this.Result.Memo = "Success";
+                                }
+                                catch (Exception e)
+                                {
+                                    Console.WriteLine(e.Message);
+                                    this.Result.Memo = "Delete error";
+                                }
+                            }
+                        }
                     }
                 }
             }
