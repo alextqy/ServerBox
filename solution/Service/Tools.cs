@@ -20,9 +20,9 @@ namespace Service
 {
     public static class Tools
     {
-        private static string AES_key1 = "Fuck.Peace&Love!"; // 秘钥1
-        private static string AES_key2 = "Fuck.Love&Peace!"; // 秘钥2
-        private static string AES_key3 = "<HAKUNA.MATATA!>"; // 秘钥3
+        private static readonly string AES_key1 = "Fuck.Peace&Love!"; // 秘钥1
+        private static readonly string AES_key2 = "Fuck.Love&Peace!"; // 秘钥2
+        private static readonly string AES_key3 = "<HAKUNA.MATATA!>"; // 秘钥3
 
         public static void WarningConsole(string Content)
         {
@@ -565,6 +565,12 @@ namespace Service
             return true;
         }
 
+        /// <summary>
+        /// 以UTF8编码写入文件
+        /// </summary>
+        /// <param name="FilePath"></param>
+        /// <param name="Content"></param>
+        /// <returns></returns>
         public static bool WriteFileUTF8(string FilePath, string Content)
         {
             try
@@ -1234,6 +1240,15 @@ namespace Service
                 }
             }
             return Result;
+        }
+
+        /// <summary>
+        /// 本机CPU核心数
+        /// </summary>
+        /// <returns></returns>
+        public static int EP()
+        {
+            return Environment.ProcessorCount;
         }
     }
 

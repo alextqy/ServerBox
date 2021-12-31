@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Service;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
@@ -9,15 +10,15 @@ namespace DataParallel
 
     public class ProcessQueue<T> : Base
     {
-        private BlockingCollection<T> _queue { set; get; }
-        private CancellationTokenSource _cancellationTokenSource { set; get; }
-        private CancellationToken _cancellToken { set; get; }
-        private List<Thread> _threadCollection { set; get; } // 内部线程池
-        private int _isProcessing; // 队列是否正在处理数据
-        private const int Processing = 1; // 有线程正在处理数据
-        private const int UnProcessing = 0; // 没有线程处理数据
-        private volatile bool _enabled = true; // 队列是否可用
-        private int _internalThreadCount; // 内部处理线程数量
+        public BlockingCollection<T> _queue { set; get; }
+        public CancellationTokenSource _cancellationTokenSource { set; get; }
+        public CancellationToken _cancellToken { set; get; }
+        public List<Thread> _threadCollection { set; get; } // 内部线程池
+        public int _isProcessing; // 队列是否正在处理数据
+        public const int Processing = 1; // 有线程正在处理数据
+        public const int UnProcessing = 0; // 没有线程处理数据
+        public volatile bool _enabled = true; // 队列是否可用
+        public int _internalThreadCount; // 内部处理线程数量
         public event Action<T> ProcessItemEvent;
         public event Action<dynamic, Exception, T> ProcessExceptionEvent; // 处理异常，需要三个参数，当前队列实例，异常，当时处理的数据
 
@@ -25,7 +26,7 @@ namespace DataParallel
         {
             _queue = new BlockingCollection<T>();
             _cancellationTokenSource = new CancellationTokenSource();
-            _internalThreadCount = 1;
+            _internalThreadCount = Tools.EP();
             _cancellToken = _cancellationTokenSource.Token;
             _threadCollection = new List<Thread>();
         }

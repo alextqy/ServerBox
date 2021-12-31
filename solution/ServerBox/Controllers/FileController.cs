@@ -706,5 +706,18 @@ namespace ServerBox.Controllers
             return Json(Result);
         }
 
+        /// <summary>
+        /// 设置离线任务状态 1未处理 2处理中 3处理完成 4任务失败
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <param name="State"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("/Set/Offline/Task/State")]
+        public IActionResult SetOfflineTaskState(int ID, int State)
+        {
+            var Result = this.FileLogic.SetOfflineTaskState(ID, State);
+            return Json(Result);
+        }
     }
 }

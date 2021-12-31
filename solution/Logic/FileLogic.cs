@@ -3123,5 +3123,50 @@ namespace Logic
             }
             return this.Result;
         }
+
+        public Entity.CommonResultEntity CheckOfflineTask(int ID)
+        {
+            this.Result.State = true;
+            this.Result.Memo = "Success";
+            this.Result.Data = this.OfflineTaskModel.Find(ID);
+            return this.Result;
+        }
+
+        public Entity.CommonResultEntity SetOfflineTaskState(int ID, int State)
+        {
+            if (ID <= 0)
+            {
+                this.Result.Memo = "ID error";
+            }
+            else if (State <= 0)
+            {
+                this.Result.Memo = "State error";
+            }
+            else
+            {
+                var TaskInfo = this.OfflineTaskModel.Find(ID);
+                if (TaskInfo.ID <= 0)
+                {
+                    this.Result.Memo = "Data not found";
+                }
+                else
+                {
+                    TaskInfo.State = State;
+                    try
+                    {
+                        this.OfflineTaskModel.Modify(ID, TaskInfo);
+                        this.DbContent.SaveChanges();
+                        this.Result.State = true;
+                        this.Result.Memo = "Success";
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                        this.Result.Memo = "Modify error";
+                    }
+                }
+            }
+            return this.Result;
+        }
     }
 }
