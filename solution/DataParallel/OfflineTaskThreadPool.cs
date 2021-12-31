@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace DataParallel
 {
-    public class DataThreadPool
+    public class OfflineTaskThreadPool
     {
         public static async void ProcessServer()
         {
