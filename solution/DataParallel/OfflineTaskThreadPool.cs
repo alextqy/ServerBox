@@ -68,7 +68,7 @@ namespace DataParallel
             {
                 Thread.Sleep(1500);
                 var ItemArr = this._queueHandler._queue.ToArray();
-                Console.WriteLine(ItemArr.Length);
+                //Console.WriteLine(ItemArr.Length);
                 foreach (var Item in ItemArr)
                 {
                     //Item.PerformTask();
