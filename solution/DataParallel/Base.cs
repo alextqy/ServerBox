@@ -1,4 +1,6 @@
-﻿using Service;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Service;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -14,14 +16,15 @@ namespace DataParallel
     /// <typeparam name="T"></typeparam>
     public class QueueHandler<T> : Base
     {
-        private Queue<T> _queue = new();
-        private int _queueSize { set; get; }
-        private bool _shutdown { set; get; }
-        public QueueHandler() { this._queueSize = Tools.EP(); }
+        public Queue<T> _queue = new();
+        public int _queueSize { set; get; }
+        public bool _shutdown { set; get; }
+        public QueueHandler() { this._queueSize = 2; } // Tools.EP() - 1
 
         public void Enqueue(T Item)
         {
             this._queue.TrimExcess();
+            if (Item == null) { return; }
             lock (this._queue)
             {
                 while (this._queue.Count >= this._queueSize)
@@ -56,7 +59,7 @@ namespace DataParallel
         }
 
         // 获取出列对象
-        public bool TryDequeue(out T Item)
+        public bool TryDequeue(T Item)
         {
             this._queue.TrimExcess();
             lock (this._queue)
@@ -71,6 +74,10 @@ namespace DataParallel
                     Monitor.Wait(this._queue);
                 }
                 Item = this._queue.Dequeue();
+                if (this._queue.Count == 0)
+                {
+                    return true;
+                }
                 if (this._queue.Count == this._queueSize - 1)
                 {
                     Monitor.PulseAll(this._queue);
@@ -88,25 +95,44 @@ namespace DataParallel
                 Monitor.PulseAll(this._queue);
             }
         }
+
+        // 刷新
+        public void Refresh()
+        {
+            this._queue.TrimExcess();
+        }
+
+        // 统计
+        public int Count()
+        {
+            return this._queue.Count;
+        }
     }
 
     /// <summary>
     /// 生产者
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class Producer<T> : QueueHandler<T>
+    public class Producer<T>
     {
-        public Producer(T Item) { this.Enqueue(Item); }
+        public QueueHandler<T> QueueContainer = new();
+
+        public Producer(QueueHandler<T> queue) { this.QueueContainer = queue; }
+
+        public void Produce(T Item) { this.QueueContainer.Enqueue(Item); }
     }
 
     /// <summary>
     /// 消费者
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class Consumer<T> : QueueHandler<T>
+    public class Consumer<T>
     {
-        public T Item { set; get; }
-        public Consumer() { this.Item = this.Dequeue(); }
+        public QueueHandler<T> QueueContainer = new();
+
+        public Consumer(QueueHandler<T> queue) { this.QueueContainer = queue; }
+
+        public T Consume() { return this.QueueContainer.Dequeue(); }
     }
 
 }
