@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Service;
 using System;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
@@ -18,9 +19,9 @@ namespace ServerBox
         {
             Configuration = configuration;
             var Init = new SysInit();
-            if (!Init.CheckConfigFile()) { Service.Tools.WarningConsole("Press enter to exit."); Console.ReadLine(); Environment.Exit(0); }
-            if (!Init.SetDatabase()) { Service.Tools.WarningConsole("Press enter to exit."); Console.ReadLine(); Environment.Exit(0); }
-            if (!Init.Run()) { Service.Tools.WarningConsole("Press enter to exit."); Console.ReadLine(); Environment.Exit(0); }
+            if (!Init.CheckConfigFile()) { Tools.WarningConsole("Press enter to exit."); Console.ReadLine(); Environment.Exit(0); }
+            Tools.CorrectConsole("========== Ver 0.0.1 alpha ==========");
+            Tools.CorrectConsole("Bit Box is working!");
             CrondTool.RunTask();
         }
         public IConfiguration Configuration { get; }

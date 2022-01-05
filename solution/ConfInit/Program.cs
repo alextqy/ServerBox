@@ -1,4 +1,5 @@
 ﻿using ConfigHelper;
+using Init;
 using Service;
 using System;
 using System.Text.Json;
@@ -9,6 +10,9 @@ namespace ConfInit
     {
         static void Main(string[] args)
         {
+            var Init = new SysInit();
+            if (!Init.SetDatabase()) { Tools.WarningConsole("Press enter to exit."); Console.ReadLine(); Environment.Exit(0); }
+            if (!Init.Run()) { Tools.WarningConsole("Press enter to exit."); Console.ReadLine(); Environment.Exit(0); }
             InitSettings(Tools.RootPath() + "appsettings.json");
         }
 

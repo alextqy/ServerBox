@@ -167,8 +167,6 @@ namespace Init
 
                 Tools.CorrectConsole("System initialization completed!");
             }
-            Tools.CorrectConsole("========== Ver 0.0.1 alpha ==========");
-            Tools.CorrectConsole("Bit Box is working!");
             return true;
         }
 
