@@ -14,7 +14,9 @@ namespace CrondTask
         {
             Task.Factory.StartNew(() => UDPTool.UDPServer(), TaskCreationOptions.LongRunning);
             Task.Factory.StartNew(() => LogTool.LogServer(), TaskCreationOptions.LongRunning);
-            Task.Factory.StartNew(() => OfflineTaskThreadPool.ProcessServer(), TaskCreationOptions.LongRunning);
+            Task.Factory.StartNew(() => OfflineTaskThreadPool.Test(), TaskCreationOptions.LongRunning);
+            Task.Factory.StartNew(() => OfflineTaskThreadPool.ProducerProcessServer(), TaskCreationOptions.LongRunning);
+            Task.Factory.StartNew(() => OfflineTaskThreadPool.ConsumerProcessServer(), TaskCreationOptions.LongRunning);
         }
     }
 }
