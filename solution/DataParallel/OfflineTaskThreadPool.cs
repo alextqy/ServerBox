@@ -30,7 +30,6 @@ namespace DataParallel
             var CheckData = _fileLogic.CheckOfflineTaskAhead();
             this._offlineTaskEntity = CheckData.State == true ? CheckData.Data : null;
             this.Mark = this._offlineTaskEntity == null ? "" : Tools.MD5(this._offlineTaskEntity.URL);
-            this.LockTask();
         }
 
         public void LockTask()
@@ -45,7 +44,7 @@ namespace DataParallel
 
     public class TaskHelper
     {
-        private readonly QueueHandler<OfflineTask> _queueHandler = new();
+        private readonly QueueHandler<OfflineTask> _queueHandler;
         public TaskHelper() { this._queueHandler = new(); }
 
         #region 生产者/消费者 模式
@@ -58,6 +57,7 @@ namespace DataParallel
                 if (_offlineTask._offlineTaskEntity == null) { continue; }
                 if (this.DataExists(_offlineTask)) { continue; }
                 this._queueHandler.Enqueue(_offlineTask);
+                _offlineTask.LockTask();
                 this._queueHandler.Refresh();
             }
         }
@@ -68,7 +68,7 @@ namespace DataParallel
         {
             while (true)
             {
-                Thread.Sleep(1500);
+                Thread.Sleep(500);
                 var ItemArr = this._queueHandler._queue.ToArray();
                 if (ItemArr.Length > 0)
                 {

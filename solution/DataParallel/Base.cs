@@ -19,7 +19,7 @@ namespace DataParallel
         public Queue<T> _queue = new();
         public int _queueSize { set; get; }
         public bool _shutdown { set; get; }
-        public QueueHandler() { this._queueSize = 2; } // Tools.EP() - 1
+        public QueueHandler(int QueueSize = 0) { this._queueSize = QueueSize > 0 ? QueueSize : Tools.EP(); }
 
         public void Enqueue(T Item)
         {
@@ -27,7 +27,7 @@ namespace DataParallel
             if (Item == null) { return; }
             lock (this._queue)
             {
-                while (this._queue.Count >= this._queueSize)
+                while (this._queue.Count == this._queueSize)
                 {
                     Monitor.Wait(this._queue);
                 }
@@ -50,7 +50,7 @@ namespace DataParallel
                     Monitor.Wait(this._queue);
                 }
                 T Item = this._queue.Dequeue();
-                if (this._queue.Count == this._queueSize - 1)
+                if (this._queue.Count >= this._queueSize)
                 {
                     Monitor.PulseAll(this._queue);
                 }
@@ -78,7 +78,7 @@ namespace DataParallel
                 {
                     return true;
                 }
-                if (this._queue.Count == this._queueSize - 1)
+                if (this._queue.Count >= this._queueSize)
                 {
                     Monitor.PulseAll(this._queue);
                 }
