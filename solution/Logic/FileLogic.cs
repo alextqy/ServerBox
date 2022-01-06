@@ -3176,5 +3176,14 @@ namespace Logic
             }
             return this.Result;
         }
+
+        public Entity.CommonResultEntity CheckTaskUserInfo(int UserID)
+        {
+            this.Result.State = true;
+            this.Result.Memo = "Success";
+            this.Result.Data = this.UserModel.Find(UserID);
+            return this.Result;
+        }
+
     }
 }

@@ -27,25 +27,33 @@ namespace DataParallel
             this.MissionComplete = false;
             var DbContent = new ConfigHelper.DBHelper();
             this._fileLogic = new(Tools.LocalIP(), DbContent.EnvironmentDbContent);
-            var CheckData = _fileLogic.CheckOfflineTaskAhead();
+            var CheckData = this._fileLogic.CheckOfflineTaskAhead();
             this._offlineTaskEntity = CheckData.State == true ? CheckData.Data : null;
             this.Mark = this._offlineTaskEntity == null ? "" : Tools.MD5(this._offlineTaskEntity.URL);
         }
 
         public void LockTask()
         {
-            _fileLogic.SetOfflineTaskState(this._offlineTaskEntity.ID, 2);
+            this._fileLogic.SetOfflineTaskState(this._offlineTaskEntity.ID, 2);
         }
 
-        public void PerformTask()
+        public void ProcessFile()
         {
+            if (this._offlineTaskEntity == null)
+            {
+                this.MissionComplete = true;
+            }
+            else
+            {
+
+            }
         }
     }
 
     public class TaskHelper
     {
         private readonly QueueHandler<OfflineTask> _queueHandler;
-        public TaskHelper() { this._queueHandler = new(); }
+        public TaskHelper() { this._queueHandler = new(2); }
 
         #region 生产者/消费者 模式
         public void ProducerRun()
@@ -62,7 +70,15 @@ namespace DataParallel
             }
         }
 
-        //Item.PerformTask();
+        public async void PerformTask()
+        {
+            var ItemArr = this._queueHandler._queue.ToArray();
+            foreach (var Item in ItemArr)
+            {
+                Thread.Sleep(500);
+                await Task.Factory.StartNew(() => Item.ProcessFile(), TaskCreationOptions.LongRunning);
+            }
+        }
 
         public void ConsumerRun()
         {
@@ -133,6 +149,19 @@ namespace DataParallel
             try
             {
                 _taskHelper.ProducerRun();
+            }
+            catch (Exception e)
+            {
+                Tools.WarningConsole(e.Message);
+            }
+        }
+
+        public static async void PerformTaskProcessServer()
+        {
+            await Task.Delay(0);
+            try
+            {
+                _taskHelper.PerformTask();
             }
             catch (Exception e)
             {
