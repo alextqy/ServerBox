@@ -25,7 +25,7 @@ namespace Models
             Entity.TokenEntity TokenData = new();
             try
             {
-                TokenData = this.DbContent.TokenEntity.Where(p => p.ID == ID).FirstOrDefault();
+                TokenData = this.DbContent.TokenEntity.Where(p => p.ID == ID).First();
                 if (TokenData.ID > 0)
                 {
                     try
@@ -49,7 +49,7 @@ namespace Models
             Entity.TokenEntity TokenInfo = new();
             try
             {
-                TokenInfo = this.DbContent.TokenEntity.Where(p => p.ID == ID).FirstOrDefault();
+                TokenInfo = this.DbContent.TokenEntity.Where(p => p.ID == ID).First();
             }
             catch (Exception e)
             {
@@ -78,7 +78,7 @@ namespace Models
             Entity.TokenEntity TokenData = new();
             try
             {
-                TokenData = this.DbContent.TokenEntity.Where(p => p.ID == ID).FirstOrDefault();
+                TokenData = this.DbContent.TokenEntity.Where(p => p.ID == ID).First();
             }
             catch (Exception e)
             {
@@ -92,7 +92,7 @@ namespace Models
             Entity.TokenEntity TokenInfo = new();
             try
             {
-                TokenInfo = this.DbContent.TokenEntity.Where(p => p.Token == Token && p.TokenType == TokenType).FirstOrDefault();
+                TokenInfo = this.DbContent.TokenEntity.Where(p => p.Token == Token && p.TokenType == TokenType).First();
             }
             catch (Exception e)
             {

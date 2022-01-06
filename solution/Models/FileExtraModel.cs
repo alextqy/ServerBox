@@ -25,7 +25,7 @@ namespace Models
             Entity.FileExtraEntity Data = new();
             try
             {
-                Data = this.DbContent.FileExtraEntity.Where(p => p.ID == ID).FirstOrDefault();
+                Data = this.DbContent.FileExtraEntity.Where(p => p.ID == ID).First();
                 if (Data.ID > 0)
                 {
                     try
@@ -49,7 +49,7 @@ namespace Models
             Entity.FileExtraEntity Info = new();
             try
             {
-                Info = this.DbContent.FileExtraEntity.Where(p => p.ID == ID).FirstOrDefault();
+                Info = this.DbContent.FileExtraEntity.Where(p => p.ID == ID).First();
             }
             catch (Exception e)
             {
@@ -79,7 +79,7 @@ namespace Models
             Entity.FileExtraEntity Data = new();
             try
             {
-                Data = this.DbContent.FileExtraEntity.Where(p => p.ID == ID).FirstOrDefault();
+                Data = this.DbContent.FileExtraEntity.Where(p => p.ID == ID).First();
             }
             catch (Exception e)
             {

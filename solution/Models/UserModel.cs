@@ -27,7 +27,7 @@ namespace Models
             Entity.UserEntity Data = new();
             try
             {
-                Data = this.DbContent.UserEntity.Where(p => p.ID == ID).FirstOrDefault();
+                Data = this.DbContent.UserEntity.Where(p => p.ID == ID).First();
                 if (Data.ID > 0)
                 {
                     try
@@ -51,7 +51,7 @@ namespace Models
             Entity.UserEntity Info = new();
             try
             {
-                Info = this.DbContent.UserEntity.Where(p => p.ID == ID).FirstOrDefault();
+                Info = this.DbContent.UserEntity.Where(p => p.ID == ID).First();
             }
             catch (Exception e)
             {
@@ -127,7 +127,7 @@ namespace Models
             Entity.UserEntity Data = new();
             try
             {
-                Data = this.DbContent.UserEntity.Where(p => p.ID == ID).FirstOrDefault();
+                Data = this.DbContent.UserEntity.Where(p => p.ID == ID).First();
             }
             catch (Exception e)
             {
@@ -197,7 +197,7 @@ namespace Models
             Entity.UserEntity Data = new();
             try
             {
-                Data = this.DbContent.UserEntity.Where(p => p.Account == Account).FirstOrDefault();
+                Data = this.DbContent.UserEntity.Where(p => p.Account == Account).First();
             }
             catch (Exception e)
             {
