@@ -25,7 +25,7 @@ namespace Models
             Entity.DepartmentEntity Data = new();
             try
             {
-                Data = this.DbContent.DepartmentEntity.Where(p => p.ID == ID).First();
+                Data = this.DbContent.DepartmentEntity.Where(p => p.ID == ID).FirstOrDefault();
                 if (Data.ID > 0)
                 {
                     try
@@ -49,7 +49,7 @@ namespace Models
             Entity.DepartmentEntity Info = new();
             try
             {
-                Info = this.DbContent.DepartmentEntity.Where(p => p.ID == ID).First();
+                Info = this.DbContent.DepartmentEntity.Where(p => p.ID == ID).FirstOrDefault();
             }
             catch (Exception e)
             {
@@ -82,7 +82,7 @@ namespace Models
             Entity.DepartmentEntity Data = new();
             try
             {
-                Data = this.DbContent.DepartmentEntity.Where(p => p.ID == ID).First();
+                Data = this.DbContent.DepartmentEntity.Where(p => p.ID == ID).FirstOrDefault();
             }
             catch (Exception e)
             {
@@ -129,7 +129,7 @@ namespace Models
             Entity.DepartmentEntity Data = new();
             try
             {
-                Data = this.DbContent.DepartmentEntity.Where(p => p.ParentID == ParentID && p.DepartmentName == DepartmentName).First();
+                Data = this.DbContent.DepartmentEntity.Where(p => p.ParentID == ParentID && p.DepartmentName == DepartmentName).FirstOrDefault();
             }
             catch (Exception e)
             {

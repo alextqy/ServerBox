@@ -25,7 +25,7 @@ namespace Models
             Entity.OuterTokenEntity Data = new();
             try
             {
-                Data = this.DbContent.OuterTokenEntity.Where(p => p.ID == ID).First();
+                Data = this.DbContent.OuterTokenEntity.Where(p => p.ID == ID).FirstOrDefault();
                 if (Data.ID > 0)
                 {
                     try
@@ -49,7 +49,7 @@ namespace Models
             Entity.OuterTokenEntity Info = new();
             try
             {
-                Info = this.DbContent.OuterTokenEntity.Where(p => p.ID == ID).First();
+                Info = this.DbContent.OuterTokenEntity.Where(p => p.ID == ID).FirstOrDefault();
             }
             catch (Exception e)
             {
@@ -81,7 +81,7 @@ namespace Models
             Entity.OuterTokenEntity Data = new();
             try
             {
-                Data = this.DbContent.OuterTokenEntity.Where(p => p.ID == ID).First();
+                Data = this.DbContent.OuterTokenEntity.Where(p => p.ID == ID).FirstOrDefault();
             }
             catch (Exception e)
             {
@@ -144,7 +144,7 @@ namespace Models
             Entity.OuterTokenEntity TokenInfo = new();
             try
             {
-                TokenInfo = this.DbContent.OuterTokenEntity.Where(p => p.OuterToken == OuterToken).First();
+                TokenInfo = this.DbContent.OuterTokenEntity.Where(p => p.OuterToken == OuterToken).FirstOrDefault();
             }
             catch (Exception e)
             {

@@ -25,7 +25,7 @@ namespace Models
             Entity.FileEntity Data = new();
             try
             {
-                Data = this.DbContent.FileEntity.Where(p => p.ID == ID).First();
+                Data = this.DbContent.FileEntity.Where(p => p.ID == ID).FirstOrDefault();
                 if (Data.ID > 0)
                 {
                     try
@@ -49,7 +49,7 @@ namespace Models
             Entity.FileEntity Info = new();
             try
             {
-                Info = this.DbContent.FileEntity.Where(p => p.ID == ID).First();
+                Info = this.DbContent.FileEntity.Where(p => p.ID == ID).FirstOrDefault();
             }
             catch (Exception e)
             {
@@ -126,7 +126,7 @@ namespace Models
             Entity.FileEntity Data = new();
             try
             {
-                Data = this.DbContent.FileEntity.Where(p => p.ID == ID).First();
+                Data = this.DbContent.FileEntity.Where(p => p.ID == ID).FirstOrDefault();
             }
             catch (Exception e)
             {
@@ -233,7 +233,7 @@ namespace Models
             Entity.FileEntity Data = new();
             try
             {
-                Data = this.DbContent.FileEntity.Where(p => p.DirID == DirID && p.FileName == FileName).First();
+                Data = this.DbContent.FileEntity.Where(p => p.DirID == DirID && p.FileName == FileName).FirstOrDefault();
             }
             catch (Exception e)
             {

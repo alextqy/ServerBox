@@ -25,7 +25,7 @@ namespace Models
             Entity.OfflineTaskEntity Data = new();
             try
             {
-                Data = this.DbContent.OfflineTaskEntity.Where(p => p.ID == ID).First();
+                Data = this.DbContent.OfflineTaskEntity.Where(p => p.ID == ID).FirstOrDefault();
                 if (Data.ID > 0)
                 {
                     try
@@ -49,7 +49,7 @@ namespace Models
             Entity.OfflineTaskEntity Info = new();
             try
             {
-                Info = this.DbContent.OfflineTaskEntity.Where(p => p.ID == ID).First();
+                Info = this.DbContent.OfflineTaskEntity.Where(p => p.ID == ID).FirstOrDefault();
             }
             catch (Exception e)
             {
@@ -81,7 +81,7 @@ namespace Models
             Entity.OfflineTaskEntity Data = new();
             try
             {
-                Data = this.DbContent.OfflineTaskEntity.Where(p => p.ID == ID).First();
+                Data = this.DbContent.OfflineTaskEntity.Where(p => p.ID == ID).FirstOrDefault();
             }
             catch (Exception e)
             {
@@ -120,7 +120,7 @@ namespace Models
             Entity.OfflineTaskEntity Data = new();
             try
             {
-                Data = this.DbContent.OfflineTaskEntity.Where(p => p.UserID == UserID).Where(p => p.URL == URL).First();
+                Data = this.DbContent.OfflineTaskEntity.Where(p => p.UserID == UserID).Where(p => p.URL == URL).FirstOrDefault();
             }
             catch (Exception e)
             {
@@ -134,7 +134,7 @@ namespace Models
             Entity.OfflineTaskEntity Data = new();
             try
             {
-                Data = this.DbContent.OfflineTaskEntity.Where(p => p.State == State).First();
+                Data = this.DbContent.OfflineTaskEntity.Where(p => p.State == State).FirstOrDefault();
             }
             catch (Exception e)
             {

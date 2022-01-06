@@ -25,7 +25,7 @@ namespace Models
             Entity.FileTagEntity Data = new();
             try
             {
-                Data = this.DbContent.FileTagEntity.Where(p => p.ID == ID).First();
+                Data = this.DbContent.FileTagEntity.Where(p => p.ID == ID).FirstOrDefault();
                 if (Data.ID > 0)
                 {
                     try
@@ -49,7 +49,7 @@ namespace Models
             Entity.FileTagEntity Info = new();
             try
             {
-                Info = this.DbContent.FileTagEntity.Where(p => p.ID == ID).First();
+                Info = this.DbContent.FileTagEntity.Where(p => p.ID == ID).FirstOrDefault();
             }
             catch (Exception e)
             {
@@ -71,7 +71,7 @@ namespace Models
             Entity.FileTagEntity Data = new();
             try
             {
-                Data = this.DbContent.FileTagEntity.Where(p => p.ID == ID).First();
+                Data = this.DbContent.FileTagEntity.Where(p => p.ID == ID).FirstOrDefault();
             }
             catch (Exception e)
             {
@@ -110,7 +110,7 @@ namespace Models
             Entity.FileTagEntity Data = new();
             try
             {
-                Data = this.DbContent.FileTagEntity.Where(p => p.TagID == TagID).First();
+                Data = this.DbContent.FileTagEntity.Where(p => p.TagID == TagID).FirstOrDefault();
                 if (Data.ID > 0)
                 {
                     try

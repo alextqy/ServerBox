@@ -25,7 +25,7 @@ namespace Models
             Entity.DirEntity Data = new();
             try
             {
-                Data = this.DbContent.DirEntity.Where(p => p.ID == ID).First();
+                Data = this.DbContent.DirEntity.Where(p => p.ID == ID).FirstOrDefault();
                 if (Data.ID > 0)
                 {
                     try
@@ -49,7 +49,7 @@ namespace Models
             Entity.DirEntity Info = new();
             try
             {
-                Info = this.DbContent.DirEntity.Where(p => p.ID == ID).First();
+                Info = this.DbContent.DirEntity.Where(p => p.ID == ID).FirstOrDefault();
             }
             catch (Exception e)
             {
@@ -82,7 +82,7 @@ namespace Models
             Entity.DirEntity Data = new();
             try
             {
-                Data = this.DbContent.DirEntity.Where(p => p.ID == ID).First();
+                Data = this.DbContent.DirEntity.Where(p => p.ID == ID).FirstOrDefault();
             }
             catch (Exception e)
             {
@@ -140,7 +140,7 @@ namespace Models
             Entity.DirEntity Data = new();
             try
             {
-                Data = this.DbContent.DirEntity.Where(p => p.ParentID == 0 && p.UserID == UserID).First();
+                Data = this.DbContent.DirEntity.Where(p => p.ParentID == 0 && p.UserID == UserID).FirstOrDefault();
             }
             catch (Exception e)
             {
@@ -154,7 +154,7 @@ namespace Models
             Entity.DirEntity Data = new();
             try
             {
-                Data = this.DbContent.DirEntity.Where(p => p.ParentID == ParentID && p.UserID == UserID && p.DirName == DirName).First();
+                Data = this.DbContent.DirEntity.Where(p => p.ParentID == ParentID && p.UserID == UserID && p.DirName == DirName).FirstOrDefault();
             }
             catch (Exception e)
             {

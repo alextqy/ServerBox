@@ -25,7 +25,7 @@ namespace Models
             Entity.MessageEntity Data = new();
             try
             {
-                Data = this.DbContent.MessageEntity.Where(p => p.ID == ID).First();
+                Data = this.DbContent.MessageEntity.Where(p => p.ID == ID).FirstOrDefault();
                 if (Data.ID > 0)
                 {
                     try
@@ -49,7 +49,7 @@ namespace Models
             Entity.MessageEntity Info = new();
             try
             {
-                Info = this.DbContent.MessageEntity.Where(p => p.ID == ID).First();
+                Info = this.DbContent.MessageEntity.Where(p => p.ID == ID).FirstOrDefault();
             }
             catch (Exception e)
             {
@@ -89,7 +89,7 @@ namespace Models
             Entity.MessageEntity Data = new();
             try
             {
-                Data = this.DbContent.MessageEntity.Where(p => p.ID == ID).First();
+                Data = this.DbContent.MessageEntity.Where(p => p.ID == ID).FirstOrDefault();
             }
             catch (Exception e)
             {

@@ -25,7 +25,7 @@ namespace Models
             Entity.TagEntity Data = new();
             try
             {
-                Data = this.DbContent.TagEntity.Where(p => p.ID == ID).First();
+                Data = this.DbContent.TagEntity.Where(p => p.ID == ID).FirstOrDefault();
                 if (Data.ID > 0)
                 {
                     try
@@ -49,7 +49,7 @@ namespace Models
             Entity.TagEntity Info = new();
             try
             {
-                Info = this.DbContent.TagEntity.Where(p => p.ID == ID).First();
+                Info = this.DbContent.TagEntity.Where(p => p.ID == ID).FirstOrDefault();
             }
             catch (Exception e)
             {
@@ -81,7 +81,7 @@ namespace Models
             Entity.TagEntity Data = new();
             try
             {
-                Data = this.DbContent.TagEntity.Where(p => p.ID == ID).First();
+                Data = this.DbContent.TagEntity.Where(p => p.ID == ID).FirstOrDefault();
             }
             catch (Exception e)
             {

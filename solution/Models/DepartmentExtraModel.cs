@@ -25,7 +25,7 @@ namespace Models
             Entity.DepartmentExtraEntity Data = new();
             try
             {
-                Data = this.DbContent.DepartmentExtraEntity.Where(p => p.ID == ID).First();
+                Data = this.DbContent.DepartmentExtraEntity.Where(p => p.ID == ID).FirstOrDefault();
                 if (Data.ID > 0)
                 {
                     try
@@ -49,7 +49,7 @@ namespace Models
             Entity.DepartmentExtraEntity Info = new();
             try
             {
-                Info = this.DbContent.DepartmentExtraEntity.Where(p => p.ID == ID).First();
+                Info = this.DbContent.DepartmentExtraEntity.Where(p => p.ID == ID).FirstOrDefault();
             }
             catch (Exception e)
             {
@@ -85,7 +85,7 @@ namespace Models
             Entity.DepartmentExtraEntity Data = new();
             try
             {
-                Data = this.DbContent.DepartmentExtraEntity.Where(p => p.ID == ID).First();
+                Data = this.DbContent.DepartmentExtraEntity.Where(p => p.ID == ID).FirstOrDefault();
             }
             catch (Exception e)
             {
