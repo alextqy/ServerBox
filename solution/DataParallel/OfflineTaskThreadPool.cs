@@ -20,7 +20,7 @@ namespace DataParallel
     {
         public bool MissionComplete { set; get; }
         public FileLogic _fileLogic { set; get; }
-        public Entity.OfflineTaskEntity _offlineTaskEntity { set; get; }
+        public Entity.OfflineTaskEntity _offlineTaskEntity = null;
         public string Mark { set; get; }
         public OfflineTask()
         {
@@ -62,20 +62,31 @@ namespace DataParallel
             }
         }
 
+        //Item.PerformTask();
+
         public void ConsumerRun()
         {
             while (true)
             {
                 Thread.Sleep(1500);
                 var ItemArr = this._queueHandler._queue.ToArray();
-                //Console.WriteLine(ItemArr.Length);
-                foreach (var Item in ItemArr)
+                if (ItemArr.Length > 0)
                 {
-                    //Item.PerformTask();
-                    //if (Item.MissionComplete)
-                    //{
-                    this._queueHandler.TryDequeue(Item);
-                    //}
+                    foreach (var Item in ItemArr)
+                    {
+                        if (Item.MissionComplete)
+                        {
+                            this._queueHandler.TryDequeue(Item);
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                }
+                else
+                {
+                    continue;
                 }
             }
         }
