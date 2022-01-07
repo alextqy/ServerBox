@@ -77,11 +77,20 @@ namespace DataParallel
                         }
                         else
                         {
-
+                            if (Download(this._offlineTaskEntity.URL)) { this.UnlockTask(); }
                         }
                     }
                 }
             }
+        }
+
+        internal static bool Download(string URL)
+        {
+            if (!String.IsNullOrEmpty(URL))
+            {
+
+            }
+            return true;
         }
     }
 
