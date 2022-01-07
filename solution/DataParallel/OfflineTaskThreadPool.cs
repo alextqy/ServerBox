@@ -2,6 +2,7 @@
 using Service;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -77,18 +78,27 @@ namespace DataParallel
                         }
                         else
                         {
-                            if (Download(this._offlineTaskEntity.URL)) { this.UnlockTask(); }
+                            if (Download(this._offlineTaskEntity.URL, TaskDir)) { this.UnlockTask(); }
                         }
                     }
                 }
             }
         }
 
-        internal static bool Download(string URL)
+        internal static bool Download(string URL, string SavePath)
         {
-            if (!String.IsNullOrEmpty(URL))
+            if (!String.IsNullOrEmpty(URL) && Tools.DirIsExists(SavePath))
             {
-
+                try
+                {
+                    using var _webClient = new WebClient();
+                    _webClient.DownloadFile(URL, SavePath);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    return false;
+                }
             }
             return true;
         }
