@@ -126,11 +126,15 @@ namespace DataParallel
 
         public async void PerformTask()
         {
-            var ItemArr = this._queueHandler._queue.ToArray();
-            foreach (var Item in ItemArr)
+            while (true)
             {
                 Thread.Sleep(500);
-                await Task.Factory.StartNew(() => Item.ProcessFile(), TaskCreationOptions.LongRunning);
+                var ItemArr = this._queueHandler._queue.ToArray();
+                foreach (var Item in ItemArr)
+                {
+                    Thread.Sleep(500);
+                    await Task.Factory.StartNew(() => Item.ProcessFile(), TaskCreationOptions.LongRunning);
+                }
             }
         }
 
