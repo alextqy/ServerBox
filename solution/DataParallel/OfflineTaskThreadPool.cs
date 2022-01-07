@@ -37,15 +37,50 @@ namespace DataParallel
             this._fileLogic.SetOfflineTaskState(this._offlineTaskEntity.ID, 2);
         }
 
+        public void UnlockTask()
+        {
+            this.MissionComplete = true;
+            this._fileLogic.SetOfflineTaskState(this._offlineTaskEntity.ID, 1);
+        }
+
         public void ProcessFile()
         {
             if (this._offlineTaskEntity == null)
             {
-                this.MissionComplete = true;
+                this.UnlockTask();
             }
             else
             {
+                Entity.UserEntity UserInfo = this._fileLogic.CheckTaskUserInfo(this._offlineTaskEntity.UserID).Data;
+                if (UserInfo.ID == 0)
+                {
+                    this.UnlockTask();
+                }
+                else
+                {
+                    var UserBasePath = Tools.UserBaseDir() + UserInfo.Account;
+                    if (!Tools.DirIsExists(UserBasePath))
+                    {
+                        this.UnlockTask();
+                    }
+                    else
+                    {
+                        var TaskBase = UserBasePath + "/RoboticArm" + Tools.MD5(UserInfo.Createtime.ToString()) + "/";
+                        var TaskDir = TaskBase + Tools.MD5(this._offlineTaskEntity.URL);
+                        if (!Tools.DirIsExists(TaskDir))
+                        {
+                            this.UnlockTask();
+                        }
+                        else if (!Tools.ClearDir(TaskDir))
+                        {
+                            this.UnlockTask();
+                        }
+                        else
+                        {
 
+                        }
+                    }
+                }
             }
         }
     }

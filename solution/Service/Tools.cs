@@ -363,6 +363,47 @@ namespace Service
         }
 
         /// <summary>
+        /// 清空文件夹
+        /// </summary>
+        /// <returns></returns>
+        public static bool ClearDir(string DirPath)
+        {
+            if (!Directory.Exists(DirPath)) { return false; }
+            DirectoryInfo Dir = new(DirPath);
+            FileSystemInfo[] SubDir = Dir.GetFileSystemInfos(); // 返回目录中所有文件和子目录
+            if (SubDir.Length == 0) { return true; }
+            foreach (var Item in SubDir)
+            {
+                if (Item is DirectoryInfo)
+                {
+                    DirectoryInfo _Item = new(Item.FullName);
+                    try
+                    {
+                        _Item.Delete(true);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                        return false;
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        File.Delete(Item.FullName);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
         /// 文件是否存在
         /// </summary>
         /// <param name="FilePath"></param>
@@ -1289,8 +1330,8 @@ namespace Service
     {
         public struct Enumerator : IEnumerator<KeyValuePair<string, StringValues>>, IEnumerator, IDisposable
         {
-            private object _dummy;
-            private int _dummyPrimitive;
+            //private object _dummy;
+            //private int _dummyPrimitive;
             public KeyValuePair<string, StringValues> Current { get { throw null; } }
             object IEnumerator.Current { get { throw null; } }
             public void Dispose() { }
