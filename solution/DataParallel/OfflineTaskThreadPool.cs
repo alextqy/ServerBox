@@ -108,7 +108,7 @@ namespace DataParallel
                 ResponseStream.Close();
                 var FileType = Response.ContentType.Split("/")[^1].Trim();
                 var FileSize = Response.ContentLength;
-                var FileNewName = Tools.CheckHttpFileName(Response);
+                var FileNewName = Tools.CheckHttpFileName(Response) + "_" + Tools.Time32().ToString();
                 if (String.IsNullOrEmpty(FileNewName))
                 {
                     FileNewName = "DownloadFile_" + Tools.TimeMS().ToString() + "." + FileType;

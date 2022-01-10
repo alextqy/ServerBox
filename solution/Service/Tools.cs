@@ -752,15 +752,33 @@ namespace Service
         /// <returns></returns>
         public static bool FileSlice(string ResourcePath, string TargetPath, int BlockSize)
         {
-            //if (String.IsNullOrEmpty(ResourcePath)) { return false; }
-            //else if (String.IsNullOrEmpty(TargetPath)) { return false; }
-            //else if (BlockSize <= 0) { return false; }
-            //else if (!DirIsExists(ResourcePath)) { return false; }
-            //else if (!DirIsExists(TargetPath)) { return false; }
-            //else
-            //{
+            if (String.IsNullOrEmpty(ResourcePath)) { return false; }
+            else if (String.IsNullOrEmpty(TargetPath)) { return false; }
+            else if (BlockSize <= 0) { return false; }
+            else
+            {
+                if (!DirIsExists(ResourcePath))
+                {
+                    if (!CreateDir(ResourcePath)) { return false; }
+                }
+                if (DirIsExists(ResourcePath))
+                {
+                    if (DelDir(ResourcePath, true))
+                    {
+                        if (!CreateDir(ResourcePath)) { return false; }
+                    }
+                    else { return false; }
+                }
+                if (DirIsExists(TargetPath)) { return false; }
+                if (!DirIsExists(TargetPath))
+                {
+                    if (!CreateDir(TargetPath)) { return false; }
+                }
+                else
+                {
 
-            //}
+                }
+            }
             return true;
         }
 
