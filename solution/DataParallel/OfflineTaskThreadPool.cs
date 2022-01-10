@@ -39,10 +39,10 @@ namespace DataParallel
             this._fileLogic.SetOfflineTaskState(this._offlineTaskEntity.ID, 2);
         }
 
-        public void UnlockTask()
+        public void UnlockTask(int State = 1)
         {
             this.MissionComplete = true;
-            this._fileLogic.SetOfflineTaskState(this._offlineTaskEntity.ID, 1);
+            this._fileLogic.SetOfflineTaskState(this._offlineTaskEntity.ID, State);
         }
 
         public void ProcessFile()
@@ -68,7 +68,7 @@ namespace DataParallel
                     else
                     {
                         var TaskDir = UserBasePath + "/" + Tools.MD5(this._offlineTaskEntity.URL);
-                        if (HttpDownload(this._offlineTaskEntity.URL, TaskDir)) { this.UnlockTask(); }
+                        if (HttpDownload(this._offlineTaskEntity.URL, TaskDir)) { this.UnlockTask(3); }
                     }
                 }
             }
@@ -95,17 +95,21 @@ namespace DataParallel
                 // Stream FS = new FileStream(tempFile, FileMode.Create); // 创建本地文件写入流
                 byte[] Buffer = new byte[1024];
                 var Size = ResponseStream.Read(Buffer, 0, Buffer.Length);
+                var SizeCur = 1024;
                 while (Size > 0)
                 {
                     // FS.Write(bArr, 0, size);
                     FS.Write(Buffer, 0, Size);
                     Size = ResponseStream.Read(Buffer, 0, Buffer.Length);
+                    SizeCur += Size;
                 }
                 // FS.Close();
                 FS.Close();
                 ResponseStream.Close();
-                File.Move(TempFile, SavePath);
-                return true;
+                var FileType = Response.ContentType.Split("/")[^1];
+                var FileSize = Response.ContentLength;
+                if (FileSize == SizeCur) { return true; }
+                else { return false; }
             }
             catch (Exception e)
             {
