@@ -2,6 +2,7 @@
 using Service;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -66,41 +67,51 @@ namespace DataParallel
                     }
                     else
                     {
-                        var TaskBase = UserBasePath + "/RoboticArm" + Tools.MD5(UserInfo.Createtime.ToString()) + "/";
-                        var TaskDir = TaskBase + Tools.MD5(this._offlineTaskEntity.URL);
-                        if (!Tools.DirIsExists(TaskDir))
-                        {
-                            this.UnlockTask();
-                        }
-                        else if (!Tools.ClearDir(TaskDir))
-                        {
-                            this.UnlockTask();
-                        }
-                        else
-                        {
-                            if (Download(this._offlineTaskEntity.URL, TaskDir)) { this.UnlockTask(); }
-                        }
+                        var TaskDir = UserBasePath + "/" + Tools.MD5(this._offlineTaskEntity.URL);
+                        if (HttpDownload(this._offlineTaskEntity.URL, TaskDir)) { this.UnlockTask(); }
                     }
                 }
             }
         }
 
-        internal static bool Download(string URL, string SavePath)
+        internal static bool HttpDownload(string URL, string SavePath)
         {
-            if (!String.IsNullOrEmpty(URL) && Tools.DirIsExists(SavePath))
+            Directory.CreateDirectory(SavePath); // 创建临时文件目录
+            string TempFile = SavePath + "/" + Path.GetFileName("TempFile"); // 临时文件
+            if (Tools.FileIsExists(TempFile))
             {
-                try
-                {
-                    using var _webClient = new WebClient();
-                    _webClient.DownloadFile(URL, SavePath);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                    return false;
-                }
+                Tools.DelFile(TempFile); // 存在则删除
             }
-            return true;
+            if (!Tools.DirIsExists(SavePath))
+            {
+                if (!Tools.CreateDir(SavePath)) { return false; }
+            }
+            try
+            {
+                FileStream FS = new(TempFile, FileMode.Append, FileAccess.Write, FileShare.ReadWrite);
+                HttpWebRequest Request = WebRequest.Create(URL) as HttpWebRequest; // 设置参数
+                HttpWebResponse Response = Request.GetResponse() as HttpWebResponse; // 发送Post请求并获取相应回应数据
+                Stream ResponseStream = Response.GetResponseStream();
+                // Stream FS = new FileStream(tempFile, FileMode.Create); // 创建本地文件写入流
+                byte[] Buffer = new byte[1024];
+                var Size = ResponseStream.Read(Buffer, 0, Buffer.Length);
+                while (Size > 0)
+                {
+                    // FS.Write(bArr, 0, size);
+                    FS.Write(Buffer, 0, Size);
+                    Size = ResponseStream.Read(Buffer, 0, Buffer.Length);
+                }
+                // FS.Close();
+                FS.Close();
+                ResponseStream.Close();
+                File.Move(TempFile, SavePath);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
         }
     }
 
