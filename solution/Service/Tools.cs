@@ -507,6 +507,16 @@ namespace Service
         }
 
         /// <summary>
+        /// 文件名(不带扩展名)
+        /// </summary>
+        /// <param name="FilePath"></param>
+        /// <returns></returns>
+        public static string FileName(string FilePath)
+        {
+            return Path.GetFileNameWithoutExtension(FilePath.Trim()).Trim();
+        }
+
+        /// <summary>
         /// 重命名文件
         /// </summary>
         /// <param name="Path"></param>
@@ -731,6 +741,27 @@ namespace Service
                 FileName = Response.ResponseUri.Segments[^1];
             }
             return FileName.Trim();
+        }
+
+        /// <summary>
+        /// 文件切片
+        /// </summary>
+        /// <param name="ResourcePath"></param>
+        /// <param name="TargetPath"></param>
+        /// <param name="BlockSize"></param>
+        /// <returns></returns>
+        public static bool FileSlice(string ResourcePath, string TargetPath, int BlockSize)
+        {
+            //if (String.IsNullOrEmpty(ResourcePath)) { return false; }
+            //else if (String.IsNullOrEmpty(TargetPath)) { return false; }
+            //else if (BlockSize <= 0) { return false; }
+            //else if (!DirIsExists(ResourcePath)) { return false; }
+            //else if (!DirIsExists(TargetPath)) { return false; }
+            //else
+            //{
+
+            //}
+            return true;
         }
 
         /// <summary>

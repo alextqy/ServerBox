@@ -117,7 +117,7 @@ namespace DataParallel
                 {
                     if (Tools.RenameFile(TempFile, FileNewName))
                     {
-                        if (this.FollowUpOperation(Path.Combine(Path.GetDirectoryName(TempFile), FileNewName))) { return true; }
+                        if (this.CreateFileOperation(Path.Combine(Path.GetDirectoryName(TempFile), FileNewName))) { return true; }
                         else { return false; }
                     }
                     else { return false; }
@@ -131,7 +131,7 @@ namespace DataParallel
             }
         }
 
-        internal bool FollowUpOperation(string FilePath)
+        internal bool CreateFileOperation(string FilePath)
         {
             if (String.IsNullOrEmpty(FilePath))
             {
@@ -143,16 +143,17 @@ namespace DataParallel
             }
             else
             {
-                // Console.WriteLine(Path.GetDirectoryName(FilePath));
-                // Console.WriteLine(FilePath);
                 var ConfigInfo = this._fileLogic.CheckFileBlockSize();
                 if (!ConfigInfo.State) { return false; }
                 else
                 {
-                    int FileBlockSize = Convert.ToInt32(ConfigInfo.Data);
-                    Console.WriteLine(FileBlockSize);
+                    var FileDirName = Path.GetDirectoryName(FilePath); // 文件所在文件夹
+                    var FileName = Tools.FileName(FilePath); // 文件本名
+                    var TargetPath = Path.GetDirectoryName(FileDirName) + "/" + FileName; // 目标文件夹
+                    int BlockSize = Convert.ToInt32(ConfigInfo.Data); // 切片大小
+                    if (Tools.FileSlice(FilePath, TargetPath, BlockSize)) { return true; }
+                    else { return false; }
                 }
-                return true;
             }
         }
     }
