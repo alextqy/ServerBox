@@ -68,13 +68,13 @@ namespace DataParallel
                     else
                     {
                         var TaskDir = UserBasePath + "/" + Tools.MD5(this._offlineTaskEntity.URL);
-                        if (HttpDownload(this._offlineTaskEntity.URL, TaskDir)) { this.UnlockTask(3); }
+                        if (this.HttpDownload(this._offlineTaskEntity.URL, TaskDir)) { this.UnlockTask(3); }
                     }
                 }
             }
         }
 
-        internal static bool HttpDownload(string URL, string SavePath)
+        internal bool HttpDownload(string URL, string SavePath)
         {
             Directory.CreateDirectory(SavePath); // 创建临时文件目录
             string TempFile = SavePath + "/" + Path.GetFileName("TempFile"); // 临时文件
@@ -106,15 +106,53 @@ namespace DataParallel
                 // FS.Close();
                 FS.Close();
                 ResponseStream.Close();
-                var FileType = Response.ContentType.Split("/")[^1];
+                var FileType = Response.ContentType.Split("/")[^1].Trim();
                 var FileSize = Response.ContentLength;
-                if (FileSize == SizeCur) { return true; }
+                var FileNewName = Tools.CheckHttpFileName(Response);
+                if (String.IsNullOrEmpty(FileNewName))
+                {
+                    FileNewName = "DownloadFile_" + Tools.TimeMS().ToString() + "." + FileType;
+                }
+                if (FileSize == SizeCur)
+                {
+                    if (Tools.RenameFile(TempFile, FileNewName))
+                    {
+                        if (this.FollowUpOperation(Path.Combine(Path.GetDirectoryName(TempFile), FileNewName))) { return true; }
+                        else { return false; }
+                    }
+                    else { return false; }
+                }
                 else { return false; }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
                 return false;
+            }
+        }
+
+        internal bool FollowUpOperation(string FilePath)
+        {
+            if (String.IsNullOrEmpty(FilePath))
+            {
+                return false;
+            }
+            if (!Tools.FileIsExists(FilePath))
+            {
+                return false;
+            }
+            else
+            {
+                // Console.WriteLine(Path.GetDirectoryName(FilePath));
+                // Console.WriteLine(FilePath);
+                var ConfigInfo = this._fileLogic.CheckFileBlockSize();
+                if (!ConfigInfo.State) { return false; }
+                else
+                {
+                    int FileBlockSize = Convert.ToInt32(ConfigInfo.Data);
+                    Console.WriteLine(FileBlockSize);
+                }
+                return true;
             }
         }
     }

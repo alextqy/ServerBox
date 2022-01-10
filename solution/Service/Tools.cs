@@ -512,26 +512,46 @@ namespace Service
         /// <param name="Path"></param>
         /// <param name="NewName"></param>
         /// <returns></returns>
+        //public static bool RenameFile(string OldFilePath, string NewName)
+        //{
+        //    if (!File.Exists(OldFilePath))
+        //    {
+        //        return false;
+        //    }
+        //    OldFilePath = OldFilePath.Replace(@"\\", "/");
+        //    string[] OldFilePathArr = Explode("/", OldFilePath);
+        //    string OldFileName = OldFilePathArr[OldFilePathArr.Length - 1];
+        //    string[] OldFileNameArr = Explode(".", OldFileName);
+        //    string NewFileName = NewName + "." + OldFileNameArr[1];
+        //    OldFilePathArr[OldFilePathArr.Length - 1] = NewFileName;
+        //    string NewFilePath = Implode("/", OldFilePathArr);
+        //    if (File.Exists(NewFilePath))
+        //    {
+        //        return false;
+        //    }
+        //    try
+        //    {
+        //        File.Move(OldFilePath, NewFilePath);
+        //        return true;
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Console.WriteLine(e.Message);
+        //        return false;
+        //    }
+        //}
         public static bool RenameFile(string OldFilePath, string NewName)
         {
             if (!File.Exists(OldFilePath))
             {
                 return false;
             }
-            OldFilePath = OldFilePath.Replace(@"\\", "/");
-            string[] OldFilePathArr = Explode("/", OldFilePath);
-            string OldFileName = OldFilePathArr[OldFilePathArr.Length - 1];
-            string[] OldFileNameArr = Explode(".", OldFileName);
-            string NewFileName = NewName + "." + OldFileNameArr[1];
-            OldFilePathArr[OldFilePathArr.Length - 1] = NewFileName;
-            string NewFilePath = Implode("/", OldFilePathArr);
-            if (File.Exists(NewFilePath))
-            {
-                return false;
-            }
             try
             {
-                File.Move(OldFilePath, NewFilePath);
+                string OldFullPath = Path.GetDirectoryName(OldFilePath); // 获取当前文件全路径
+                string NewFilePath = Path.Combine(OldFullPath, NewName); // 组合新文件路径
+                FileInfo fileInfo = new(OldFilePath);
+                fileInfo.MoveTo(NewFilePath); // 修改文件名称
                 return true;
             }
             catch (Exception e)
@@ -696,6 +716,21 @@ namespace Service
             var FileMS = new MemoryStream(FileBytes) { Position = 0 };
             IFormFile _FormFile = new FormFile(FileMS, 0, FileMS.Length, Path.GetFileNameWithoutExtension(FilePath), Path.GetFileName(FilePath));
             return _FormFile;
+        }
+
+        /// <summary>
+        /// 获取http请求 Headers 文件名
+        /// </summary>
+        /// <param name="Response"></param>
+        /// <returns></returns>
+        public static string CheckHttpFileName(HttpWebResponse Response)
+        {
+            var FileName = Response.Headers["Content-Disposition"];
+            if (String.IsNullOrEmpty(FileName))
+            {
+                FileName = Response.ResponseUri.Segments[^1];
+            }
+            return FileName.Trim();
         }
 
         /// <summary>

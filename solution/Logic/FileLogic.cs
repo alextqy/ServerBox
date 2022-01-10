@@ -3185,5 +3185,13 @@ namespace Logic
             return this.Result;
         }
 
+        public Entity.CommonResultEntity CheckFileBlockSize()
+        {
+            this.Result.State = true;
+            this.Result.Memo = "Success";
+            this.Result.Data = this.ConfigModel.CheckConfigValue("BlockSize");
+            return this.Result;
+        }
+
     }
 }
