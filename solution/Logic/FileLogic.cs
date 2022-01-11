@@ -3193,5 +3193,57 @@ namespace Logic
             return this.Result;
         }
 
+        public Entity.CommonResultEntity CheckUserByAccount(string Account)
+        {
+            this.Result.State = true;
+            this.Result.Memo = "Success";
+            this.Result.Data = this.UserModel.FindByAccount(Account);
+            return this.Result;
+        }
+
+        public Entity.CommonResultEntity CheckUserRootDir(int UserID)
+        {
+            this.Result.State = true;
+            this.Result.Memo = "Success";
+            this.Result.Data = this.DirModel.RootDir(UserID);
+            return this.Result;
+        }
+
+        public Entity.CommonResultEntity CreateOfflineTaskFile(Entity.FileEntity FileData)
+        {
+            var TA = this.BeginTransaction();
+            try
+            {
+                this.FileModel.Insert(FileData);
+                this.DbContent.SaveChanges();
+                this.Result.State = true;
+                this.Result.Memo = "Success";
+                this.Result.ID = FileData.ID;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                TA.Rollback();
+                this.Result.Memo = "Create error";
+            }
+            if (!Tools.DirIsExists(FileData.ServerStoragePath))
+            {
+                if (!Tools.CreateDir(FileData.ServerStoragePath))
+                {
+                    this.Result.Memo = "Create file dir error";
+                    TA.Rollback();
+                }
+            }
+            TA.Commit();
+            return this.Result;
+        }
+
+        public Entity.CommonResultEntity CheckOfflineTaskFileExist(int DirID, string FileName)
+        {
+            this.Result.State = true;
+            this.Result.Memo = "Success";
+            this.Result.Data = this.FileModel.FileExist(DirID, FileName);
+            return this.Result;
+        }
     }
 }

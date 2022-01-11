@@ -22,6 +22,7 @@ namespace DataParallel
     {
         public bool MissionComplete { set; get; }
         public FileLogic _fileLogic { set; get; }
+        public UserLogic _userLogic { set; get; }
         public Entity.OfflineTaskEntity _offlineTaskEntity = null;
         public string Mark { set; get; }
         public OfflineTask()
@@ -49,32 +50,40 @@ namespace DataParallel
         {
             if (this._offlineTaskEntity == null)
             {
-                this.UnlockTask();
+                this.UnlockTask(4);
             }
             else
             {
                 Entity.UserEntity UserInfo = this._fileLogic.CheckTaskUserInfo(this._offlineTaskEntity.UserID).Data;
                 if (UserInfo.ID == 0)
                 {
-                    this.UnlockTask();
+                    this.UnlockTask(4);
                 }
                 else
                 {
                     var UserBasePath = Tools.UserBaseDir() + UserInfo.Account;
                     if (!Tools.DirIsExists(UserBasePath))
                     {
-                        this.UnlockTask();
+                        this.UnlockTask(4);
                     }
                     else
                     {
                         var TaskDir = UserBasePath + "/" + Tools.MD5(this._offlineTaskEntity.URL);
-                        if (this.HttpDownload(this._offlineTaskEntity.URL, TaskDir)) { this.UnlockTask(3); }
+                        if (this.HttpDownload(this._offlineTaskEntity.URL, TaskDir, UserInfo.ID))
+                        {
+                            this.UnlockTask(3);
+                        }
+                        else
+                        {
+                            this.UnlockTask(4);
+                            Tools.DelDir(TaskDir, true);
+                        }
                     }
                 }
             }
         }
 
-        internal bool HttpDownload(string URL, string SavePath)
+        internal bool HttpDownload(string URL, string SavePath, int UserID)
         {
             Directory.CreateDirectory(SavePath); // 创建临时文件目录
             string TempFile = SavePath + "/" + Path.GetFileName("TempFile"); // 临时文件
@@ -92,6 +101,15 @@ namespace DataParallel
                 HttpWebRequest Request = WebRequest.Create(URL) as HttpWebRequest; // 设置参数
                 HttpWebResponse Response = Request.GetResponse() as HttpWebResponse; // 发送Post请求并获取相应回应数据
                 Stream ResponseStream = Response.GetResponseStream();
+                var FileType = Response.ContentType.Split("/")[^1].Trim();
+                var FileSize = Response.ContentLength;
+                var FileNewName = Tools.CheckHttpFileName(Response);
+
+                // 该用户根目录是否已经存在同名文件
+                Entity.DirEntity UserRootDir = this._fileLogic.CheckUserRootDir(UserID).Data;
+                if (UserRootDir.ID == 0) { return false; }
+                if (this._fileLogic.CheckOfflineTaskFileExist(UserRootDir.ID, FileNewName[..FileNewName.LastIndexOf(".")]).Data.ID > 0) { return false; }
+
                 // Stream FS = new FileStream(tempFile, FileMode.Create); // 创建本地文件写入流
                 byte[] Buffer = new byte[1024];
                 var Size = ResponseStream.Read(Buffer, 0, Buffer.Length);
@@ -106,9 +124,6 @@ namespace DataParallel
                 // FS.Close();
                 FS.Close();
                 ResponseStream.Close();
-                var FileType = Response.ContentType.Split("/")[^1].Trim();
-                var FileSize = Response.ContentLength;
-                var FileNewName = Tools.CheckHttpFileName(Response) + "_" + Tools.Time32().ToString();
                 if (String.IsNullOrEmpty(FileNewName))
                 {
                     FileNewName = "DownloadFile_" + Tools.TimeMS().ToString() + "." + FileType;
@@ -147,12 +162,59 @@ namespace DataParallel
                 if (!ConfigInfo.State) { return false; }
                 else
                 {
+                    var OperationTime = Tools.TimeMS();
                     var FileDirName = Path.GetDirectoryName(FilePath); // 文件所在文件夹
                     var FileName = Tools.FileName(FilePath); // 文件本名
-                    var TargetPath = Path.GetDirectoryName(FileDirName) + "/" + FileName; // 目标文件夹
+                    var TargetPath = Path.GetDirectoryName(FileDirName) + "/" + FileName + "." + OperationTime.ToString(); // 目标文件夹
+                    if (Tools.DirIsExists(TargetPath))
+                    {
+                        if (!Tools.ClearDir(TargetPath)) { return false; }
+                    }
+                    else
+                    {
+                        if (!Tools.CreateDir(TargetPath)) { return false; }
+                    }
                     int BlockSize = Convert.ToInt32(ConfigInfo.Data); // 切片大小
-                    if (Tools.FileSlice(FilePath, TargetPath, BlockSize)) { return true; }
-                    else { return false; }
+                    var UserAccount = Path.GetDirectoryName(FileDirName).Replace(@"\", "/").Split("/")[^1]; // 用户目录名称
+                    var FileMD5 = Tools.FileMD5(FilePath);
+                    if (String.IsNullOrEmpty(FileMD5)) { return false; }
+                    var FileSize = Tools.FileInfo(FilePath).Length;
+
+                    Entity.UserEntity UserInfo = this._fileLogic.CheckUserByAccount(UserAccount).Data;
+                    if (UserInfo.ID == 0) { return false; }
+                    Entity.DirEntity UserRootDir = this._fileLogic.CheckUserRootDir(UserInfo.ID).Data;
+                    if (UserRootDir.ID == 0) { return false; }
+
+                    if (Tools.FileSlice(FilePath, TargetPath, BlockSize))
+                    {
+                        // 新建文件
+                        Entity.FileEntity FileData = new();
+                        FileData.FileName = FileName;
+                        FileData.UserID = UserInfo.ID;
+                        FileData.Createtime = OperationTime;
+                        FileData.FileType = Tools.FileType(FilePath).Replace(".", "");
+                        FileData.State = 1;
+                        FileData.FileSize = FileSize.ToString();
+                        var BlockSizeDecimal = Convert.ToDecimal(Convert.ToDouble(FileSize) / Convert.ToDouble(BlockSize));
+                        FileData.BlockSize = (int)Math.Ceiling(BlockSizeDecimal);
+                        FileData.UploadBlockSize = 0;
+                        FileData.ServerStoragePath = TargetPath.Replace("\\", "/");
+                        FileData.UploadPath = "offline download";
+                        FileData.DirID = UserRootDir.ID;
+                        FileData.MD5 = FileMD5;
+                        if (!this._fileLogic.CreateOfflineTaskFile(FileData).State)
+                        {
+                            Tools.DelDir(TargetPath, true);
+                            return false;
+                        }
+                        Tools.DelDir(FileDirName, true);
+                        return true;
+                    }
+                    else
+                    {
+                        Tools.DelDir(TargetPath, true);
+                        return false;
+                    }
                 }
             }
         }

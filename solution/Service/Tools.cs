@@ -105,7 +105,7 @@ namespace Service
         /// <returns></returns>
         public static bool MKDir(string Path, string DirName)
         {
-            Path = Path.Replace(@"\\", "/");
+            Path = Path.Replace(@"\", "/");
             string DirPath = Path + "/" + DirName;
             if (!Directory.Exists(DirPath))
             {
@@ -133,7 +133,7 @@ namespace Service
         /// <returns></returns>
         public static bool CreateDir(string DirPath)
         {
-            DirPath = DirPath.Replace(@"\\", "/");
+            DirPath = DirPath.Replace(@"\", "/");
             if (!Directory.Exists(DirPath))
             {
                 try
@@ -239,8 +239,8 @@ namespace Service
         /// <returns></returns>
         public static bool CopyDir(string SourcePath, string DestPath, bool overwriteexisting = false)
         {
-            SourcePath = SourcePath.Replace(@"\\", "/");
-            DestPath = DestPath.Replace(@"\\", "/");
+            SourcePath = SourcePath.Replace(@"\", "/");
+            DestPath = DestPath.Replace(@"\", "/");
             string[] SourcePathArr = Explode("/", SourcePath);
             string DestinationPath = DestPath + "/" + SourcePathArr[SourcePathArr.Length - 1];
             if (Directory.Exists(DestinationPath))
@@ -404,6 +404,32 @@ namespace Service
         }
 
         /// <summary>
+        /// 获取文件MD5
+        /// </summary>
+        /// <param name="FilePath"></param>
+        /// <returns></returns>
+        public static string FileMD5(string FilePath, int bufferSize = 128)
+        {
+            if (!File.Exists(FilePath)) { return ""; }
+            int BufferSize = 1024 * bufferSize; // 自定义缓冲区大小16K
+            byte[] Buffer = new byte[BufferSize];
+            Stream InputStream = File.Open(FilePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+            HashAlgorithm HashAlgorithm = new MD5CryptoServiceProvider();
+            int ReadLength = 0; // 每次读取长度
+            var output = new byte[BufferSize];
+            while ((ReadLength = InputStream.Read(Buffer, 0, Buffer.Length)) > 0)
+            {
+                HashAlgorithm.TransformBlock(Buffer, 0, ReadLength, output, 0); // 计算MD5
+            }
+            // 完成最后计算，必须调用(由于上一部循环已经完成所有运算，所以调用此方法时后面的两个参数都为0)
+            HashAlgorithm.TransformFinalBlock(Buffer, 0, 0);
+            string MD5 = BitConverter.ToString(HashAlgorithm.Hash).Replace("-", "");
+            HashAlgorithm.Clear();
+            InputStream.Close();
+            return MD5;
+        }
+
+        /// <summary>
         /// 文件是否存在
         /// </summary>
         /// <param name="FilePath"></param>
@@ -421,7 +447,7 @@ namespace Service
         /// <returns></returns>
         public static bool MKFile(string Path, string FileName)
         {
-            Path = Path.Replace(@"\\", "/");
+            Path = Path.Replace(@"\", "/");
             string FilePath = Path + "/" + FileName;
             if (!File.Exists(FilePath))
             {
@@ -450,7 +476,7 @@ namespace Service
         /// <returns></returns>
         public static bool CreateFile(string FilePath)
         {
-            FilePath = FilePath.Replace(@"\\", "/");
+            FilePath = FilePath.Replace(@"\", "/");
             if (!File.Exists(FilePath))
             {
                 try
@@ -528,7 +554,7 @@ namespace Service
         //    {
         //        return false;
         //    }
-        //    OldFilePath = OldFilePath.Replace(@"\\", "/");
+        //    OldFilePath = OldFilePath.Replace(@"\", "/");
         //    string[] OldFilePathArr = Explode("/", OldFilePath);
         //    string OldFileName = OldFilePathArr[OldFilePathArr.Length - 1];
         //    string[] OldFileNameArr = Explode(".", OldFileName);
@@ -589,8 +615,8 @@ namespace Service
             }
             else
             {
-                FilePath = FilePath.Replace(@"\\", "/");
-                DestPath = DestPath.Replace(@"\\", "/");
+                FilePath = FilePath.Replace(@"\", "/");
+                DestPath = DestPath.Replace(@"\", "/");
                 string[] FilePathArr = Explode("/", FilePath);
                 string FileName = FilePathArr[FilePathArr.Length - 1];
                 string DestFilePath = DestPath + FileName;
@@ -750,36 +776,64 @@ namespace Service
         /// <param name="TargetPath"></param>
         /// <param name="BlockSize"></param>
         /// <returns></returns>
-        public static bool FileSlice(string ResourcePath, string TargetPath, int BlockSize)
+        public static bool FileSlice(string ResourcePath, string TargetPath, int BlockSize, bool CleanUpTraces = false)
         {
             if (String.IsNullOrEmpty(ResourcePath)) { return false; }
             else if (String.IsNullOrEmpty(TargetPath)) { return false; }
             else if (BlockSize <= 0) { return false; }
+            else if (!FileIsExists(ResourcePath)) { return false; }
+            else if (!DirIsExists(TargetPath)) { return false; }
             else
             {
-                if (!DirIsExists(ResourcePath))
+                try
                 {
-                    if (!CreateDir(ResourcePath)) { return false; }
-                }
-                if (DirIsExists(ResourcePath))
-                {
-                    if (DelDir(ResourcePath, true))
+                    FileInfo _fileInfo = new(ResourcePath);
+                    string FileName = _fileInfo.Name.Replace(_fileInfo.Extension, "");
+                    FileStream FSRead = new(ResourcePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+                    BinaryReader BR = new(FSRead);
+                    byte[] Buffer = new byte[BlockSize];
+                    int FileIndex = 1;
+                    long FileLength = _fileInfo.Length;
+                    long ReadFileLength = 0;
+                    while (ReadFileLength < FileLength)
                     {
-                        if (!CreateDir(ResourcePath)) { return false; }
+                        string WriteFile = Path.Combine(TargetPath, $"{FileName}_{FileIndex}{_fileInfo.Extension}");
+                        FileStream FSWrite = new(WriteFile, FileMode.CreateNew, FileAccess.Write);
+                        BinaryWriter BW = new(FSWrite);
+                        long singleFileLength = 0;
+                        int ReadLength;
+                        while ((ReadLength = BR.Read(Buffer, 0, Buffer.Length)) > 0)
+                        {
+                            BW.Write(Buffer, 0, ReadLength);
+                            ReadFileLength += ReadLength;
+                            singleFileLength += ReadLength;
+                            if (singleFileLength >= BlockSize)
+                            {
+                                BW?.Close();
+                                BW?.Dispose();
+                                FSWrite?.Close();
+                                FSWrite?.Dispose();
+                                break;
+                            }
+                        }
+                        BW?.Close();
+                        BW?.Dispose();
+                        FSWrite?.Close();
+                        FSWrite?.Dispose();
+                        FileIndex++;
                     }
-                    else { return false; }
+                    BR?.Close();
+                    BR?.Dispose();
+                    FSRead?.Close();
+                    FSRead.Dispose();
+                    return true;
                 }
-                if (DirIsExists(TargetPath)) { return false; }
-                if (!DirIsExists(TargetPath))
+                catch (Exception e)
                 {
-                    if (!CreateDir(TargetPath)) { return false; }
-                }
-                else
-                {
-
+                    Console.WriteLine(e.Message);
+                    return false;
                 }
             }
-            return true;
         }
 
         /// <summary>
