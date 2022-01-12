@@ -75,8 +75,8 @@ namespace DataParallel
                         }
                         else
                         {
-                            this.UnlockTask(4);
                             Tools.DelDir(TaskDir, true);
+                            this.UnlockTask(4);
                         }
                     }
                 }

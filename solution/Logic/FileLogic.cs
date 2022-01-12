@@ -1030,7 +1030,7 @@ namespace Logic
                                     var Data = new byte[FileSize];
                                     FS.Read(Data, 0, Data.Length);
                                     var FileEntityPathList = Tools.Explode("/", FileEntity);
-                                    FileData.FileEntityName = FileEntityPathList[FileEntityPathList.Length - 1];
+                                    FileData.FileEntityName = FileEntityPathList[^1];
                                     FileData.Data = Tools.ByteToBase64(Data);
 
                                     Result.Data = FileData;
