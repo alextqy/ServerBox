@@ -1025,18 +1025,16 @@ namespace Logic
 
                             try
                             {
-                                using (var FS = File.OpenRead(FileEntity))
-                                {
-                                    var Data = new byte[FileSize];
-                                    FS.Read(Data, 0, Data.Length);
-                                    var FileEntityPathList = Tools.Explode("/", FileEntity);
-                                    FileData.FileEntityName = FileEntityPathList[^1];
-                                    FileData.Data = Tools.ByteToBase64(Data);
+                                using var FS = File.OpenRead(FileEntity);
+                                var Data = new byte[FileSize];
+                                FS.Read(Data, 0, Data.Length);
+                                var FileEntityPathList = Tools.Explode("/", FileEntity);
+                                FileData.FileEntityName = FileEntityPathList[^1];
+                                FileData.Data = Tools.ByteToBase64(Data);
 
-                                    Result.Data = FileData;
-                                    Result.State = true;
-                                    Result.Memo = "Success";
-                                }
+                                Result.Data = FileData;
+                                Result.State = true;
+                                Result.Memo = "Success";
                             }
                             catch (IOException e)
                             {
