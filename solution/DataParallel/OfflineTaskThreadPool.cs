@@ -197,7 +197,7 @@ namespace DataParallel
                         FileData.FileSize = FileSize.ToString();
                         var BlockSizeDecimal = Convert.ToDecimal(Convert.ToDouble(FileSize) / Convert.ToDouble(BlockSize));
                         FileData.BlockSize = (int)Math.Ceiling(BlockSizeDecimal);
-                        FileData.UploadBlockSize = 0;
+                        FileData.UploadBlockSize = (int)Math.Ceiling(BlockSizeDecimal);
                         FileData.ServerStoragePath = TargetPath.Replace("\\", "/");
                         FileData.UploadPath = "offline_download";
                         FileData.DirID = UserRootDir.ID;
