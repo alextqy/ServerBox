@@ -176,7 +176,7 @@ namespace DataParallel
                     }
                     int BlockSize = Convert.ToInt32(ConfigInfo.Data); // 切片大小
                     var UserAccount = Path.GetDirectoryName(FileDirName).Replace(@"\", "/").Split("/")[^1]; // 用户目录名称
-                    var FileMD5 = Tools.FileMD5(FilePath);
+                    var FileMD5 = Tools.FileMD5(FilePath).ToLower();
                     if (String.IsNullOrEmpty(FileMD5)) { return false; }
                     var FileSize = Tools.FileInfo(FilePath).Length;
 
@@ -199,7 +199,7 @@ namespace DataParallel
                         FileData.BlockSize = (int)Math.Ceiling(BlockSizeDecimal);
                         FileData.UploadBlockSize = 0;
                         FileData.ServerStoragePath = TargetPath.Replace("\\", "/");
-                        FileData.UploadPath = "offline download";
+                        FileData.UploadPath = "offline_download";
                         FileData.DirID = UserRootDir.ID;
                         FileData.MD5 = FileMD5;
                         if (!this._fileLogic.CreateOfflineTaskFile(FileData).State)

@@ -797,7 +797,20 @@ namespace Service
                     long ReadFileLength = 0;
                     while (ReadFileLength < FileLength)
                     {
-                        string WriteFile = Path.Combine(TargetPath, $"{FileName}_{FileIndex}{_fileInfo.Extension}");
+                        var PartStr = "";
+                        if (FileIndex > 0 && FileIndex < 10)
+                        {
+                            PartStr = "part.00";
+                        }
+                        else if (FileIndex >= 10 && FileIndex < 100)
+                        {
+                            PartStr = "part.0";
+                        }
+                        else
+                        {
+                            PartStr = "part.";
+                        }
+                        string WriteFile = Path.Combine(TargetPath, PartStr + FileIndex.ToString());
                         FileStream FSWrite = new(WriteFile, FileMode.CreateNew, FileAccess.Write);
                         BinaryWriter BW = new(FSWrite);
                         long singleFileLength = 0;
