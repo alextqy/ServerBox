@@ -942,6 +942,33 @@ namespace Service
         }
 
         /// <summary>
+        /// 获取当前年份
+        /// </summary>
+        /// <returns></returns>
+        public static string NowYear()
+        {
+            return DateTime.Now.Year.ToString().Substring(2, 2);
+        }
+
+        /// <summary>
+        /// 获取当前月份
+        /// </summary>
+        /// <returns></returns>
+        public static string NowMonth()
+        {
+            return DateTime.Now.Month.ToString().PadLeft(2, '0');
+        }
+
+        /// <summary>
+        /// 获取当前日期
+        /// </summary>
+        /// <returns></returns>
+        public static string NowDay()
+        {
+            return DateTime.Now.Day.ToString().PadLeft(2, '0');
+        }
+
+        /// <summary>
         /// Md5加密
         /// </summary>
         /// <param name="EncypStr"></param>
