@@ -960,7 +960,7 @@ namespace Service
         /// <returns></returns>
         public static string NowYear()
         {
-            return DateTime.Now.Year.ToString().Substring(2, 2);
+            return DateTime.Now.Year.ToString();
         }
 
         /// <summary>
