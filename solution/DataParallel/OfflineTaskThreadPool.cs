@@ -193,7 +193,7 @@ namespace DataParallel
                         FileData.UserID = UserInfo.ID;
                         FileData.Createtime = OperationTime;
                         FileData.FileType = Tools.FileType(FilePath).Replace(".", "");
-                        FileData.State = 1;
+                        FileData.State = 2;
                         FileData.FileSize = FileSize.ToString();
                         var BlockSizeDecimal = Convert.ToDecimal(Convert.ToDouble(FileSize) / Convert.ToDouble(BlockSize));
                         FileData.BlockSize = (int)Math.Ceiling(BlockSizeDecimal);
