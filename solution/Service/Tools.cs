@@ -1507,6 +1507,29 @@ namespace Service
             }
             return Result;
         }
+
+        /// <summary>
+        /// 发送Get
+        /// </summary>
+        /// <param name="URL"></param>
+        /// <returns></returns>
+        public static string GetHelper(string URL)
+        {
+            string Result = "";
+            HttpWebRequest Req = (HttpWebRequest)WebRequest.Create(URL);
+            HttpWebResponse Resp = (HttpWebResponse)Req.GetResponse();
+            Stream Stm = Resp.GetResponseStream();
+            try
+            {
+                using StreamReader Reader = new StreamReader(Stm);
+                Result = Reader.ReadToEnd();
+            }
+            finally
+            {
+                Stm.Close();
+            }
+            return Result;
+        }
     }
 
     public class FormFile : IFormFile
