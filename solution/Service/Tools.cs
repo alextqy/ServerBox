@@ -1469,6 +1469,44 @@ namespace Service
         {
             return Environment.ProcessorCount;
         }
+
+        /// <summary>
+        /// 发送Post
+        /// </summary>
+        /// <param name="URL"></param>
+        /// <param name="PostDict"></param>
+        /// <returns></returns>
+        public static string PostHelper(string URL, Dictionary<string, string> PostDict)
+        {
+            string Result = "";
+            HttpWebRequest Req = (HttpWebRequest)WebRequest.Create(URL);
+            Req.Method = "POST";
+            Req.ContentType = "application/x-www-form-urlencoded";
+            StringBuilder Builder = new();
+            int i = 0;
+            foreach (var item in PostDict)
+            {
+                if (i > 0)
+                    Builder.Append('&');
+                Builder.AppendFormat("{0}={1}", item.Key, item.Value);
+                i++;
+            }
+            byte[] Data = Encoding.UTF8.GetBytes(Builder.ToString());
+            Req.ContentLength = Data.Length;
+            using (Stream ReqStream = Req.GetRequestStream())
+            {
+                ReqStream.Write(Data, 0, Data.Length);
+                ReqStream.Close();
+            }
+            HttpWebResponse Resp = (HttpWebResponse)Req.GetResponse();
+            Stream Stm = Resp.GetResponseStream();
+            //获取响应内容
+            using (StreamReader Reader = new(Stm, Encoding.UTF8))
+            {
+                Result = Reader.ReadToEnd();
+            }
+            return Result;
+        }
     }
 
     public class FormFile : IFormFile
