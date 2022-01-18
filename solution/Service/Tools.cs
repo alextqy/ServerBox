@@ -1426,27 +1426,37 @@ namespace Service
             if (FileIsExists(CommandFile))
                 DelFile(CommandFile);
             if (!CreateFile(CommandFile))
-                return "无法创建执行命令脚本";
+                return "error";
             if (!WriteFile(CommandFile, CommandLine))
-                return "写入执行命令脚本失败";
-            var pro = new Process()
+                return "error";
+            try
             {
-                StartInfo = new ProcessStartInfo
+                var pro = new Process()
                 {
-                    FileName = CommandLine,
-                    Arguments = Args,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                }
-            };
-            pro.Start();
-            string OutputMsg = pro.StandardOutput.ReadToEnd();
-            string ErrorMsg = pro.StandardError.ReadToEnd();
-            pro.WaitForExit();
-            if (String.IsNullOrEmpty(ErrorMsg)) { return OutputMsg; }
-            else { return ErrorMsg; }
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = CommandLine,
+                        Arguments = Args,
+                        RedirectStandardOutput = true,
+                        RedirectStandardError = true,
+                        UseShellExecute = false,
+                        CreateNoWindow = true,
+                    }
+                };
+                pro.Start();
+                string OutputMsg = pro.StandardOutput.ReadToEnd();
+                string ErrorMsg = pro.StandardError.ReadToEnd();
+                pro.WaitForExit();
+                if (String.IsNullOrEmpty(ErrorMsg))
+                    return OutputMsg;
+                else
+                    return ErrorMsg;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return e.Message;
+            }
         }
 
         /// <summary>
