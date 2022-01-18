@@ -2,6 +2,7 @@ desktop.ini
 /.vs
 /.vscode
 solution/.vs
+solution/bin
 solution/Matrix
 solution/Log
 solution/old_*
@@ -9,6 +10,7 @@ solution/DaoRoom.db
 solution/Init.conf
 solution/ActivationFile.conf
 solution/appsettings.json
+solution/Wrapper.sh
 
 solution/Service/.vscode
 solution/Service/.vs

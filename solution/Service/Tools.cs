@@ -1420,14 +1420,14 @@ namespace Service
         /// </summary>
         /// <param name="CommandLine"></param>
         /// <returns></returns>
-        public static string Shell(string CommandLine, string Args = "")
+        public static string Shell(string CommandLine)
         {
-            var CommandFile = "bin/Wrapper.sh";
+            var CommandFile = "../Wrapper.sh";
             if (FileIsExists(CommandFile))
                 DelFile(CommandFile);
             if (!CreateFile(CommandFile))
                 return "error";
-            if (!WriteFile(CommandFile, CommandLine))
+            if (!WriteFileUTF8(CommandFile, CommandLine))
                 return "error";
             try
             {
@@ -1435,8 +1435,8 @@ namespace Service
                 {
                     StartInfo = new ProcessStartInfo
                     {
-                        FileName = CommandLine,
-                        Arguments = Args,
+                        FileName = "bash",
+                        Arguments = CommandFile,
                         RedirectStandardOutput = true,
                         RedirectStandardError = true,
                         UseShellExecute = false,
