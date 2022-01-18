@@ -1422,6 +1422,13 @@ namespace Service
         /// <returns></returns>
         public static string Shell(string CommandLine, string Args = "")
         {
+            var CommandFile = "bin/Wrapper.sh";
+            if (FileIsExists(CommandFile))
+                DelFile(CommandFile);
+            if (!CreateFile(CommandFile))
+                return "无法创建执行命令脚本";
+            if (!WriteFile(CommandFile, CommandLine))
+                return "写入执行命令脚本失败";
             var pro = new Process()
             {
                 StartInfo = new ProcessStartInfo
