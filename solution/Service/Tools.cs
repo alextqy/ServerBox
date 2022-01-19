@@ -1447,6 +1447,7 @@ namespace Service
                 string OutputMsg = pro.StandardOutput.ReadToEnd();
                 string ErrorMsg = pro.StandardError.ReadToEnd();
                 pro.WaitForExit();
+                DelFile(CommandFile);
                 if (String.IsNullOrEmpty(ErrorMsg))
                     return OutputMsg;
                 else
@@ -1455,6 +1456,7 @@ namespace Service
             catch (Exception e)
             {
                 Console.WriteLine(e);
+                DelFile(CommandFile);
                 return e.Message;
             }
         }
