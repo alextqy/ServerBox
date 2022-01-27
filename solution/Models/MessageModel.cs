@@ -104,14 +104,14 @@ namespace Models
             var List = this.DbContent.MessageEntity.Where(p => p.ID > 0);
             if (Data.Title != null)
             {
-                if (Data.Title != "")
+                if (!String.IsNullOrEmpty(Data.Title))
                 {
                     List = List.Where(p => p.Title.Contains(Data.Title));
                 }
             }
             if (Data.Content != null)
             {
-                if (Data.Content != "")
+                if (!String.IsNullOrEmpty(Data.Content))
                 {
                     List = List.Where(p => p.Content.Contains(Data.Content));
                 }

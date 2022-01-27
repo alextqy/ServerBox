@@ -79,7 +79,7 @@ namespace Logic
         {
             var CountUser = this.UserModel.CountUser() + UserIncrement; // 验证用户数
             var ActivationCode = ConfigHelper.AppSettingsHelper.ActivationCode();
-            if (ActivationCode != "")
+            if (!String.IsNullOrEmpty(ActivationCode))
             {
                 // 获取操作系统类型和机器码
                 var OSType = Tools.OSType();
@@ -97,7 +97,7 @@ namespace Logic
                     Motherboard = "";
                 }
 
-                if (Motherboard != "")
+                if (!String.IsNullOrEmpty(Motherboard))
                 {
                     var DeCode = Tools.AES_Decrypt(ActivationCode, 3); // 解密
                     var DeCodeArr = Tools.Explode("_", DeCode);

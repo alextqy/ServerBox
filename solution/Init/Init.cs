@@ -34,7 +34,7 @@ namespace Init
                 else
                 {
                     var PathValue = Environment.GetEnvironmentVariable("Path"); // 获取系统变量Path的值
-                    if (PathValue == null || PathValue == "")
+                    if (String.IsNullOrEmpty(PathValue))
                     {
                         Tools.WarningConsole("Sys environment error!");
                         return false;

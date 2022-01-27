@@ -72,7 +72,7 @@ namespace Models
                     Info.Name = Data.Name;
                 }
             }
-            if (Data.Password != "")
+            if (!String.IsNullOrEmpty(Data.Password))
             {
                 var CheckPassword = Tools.UserPWD(Data.Password, Info.Secret.ToString());
                 if (Info.Password != CheckPassword)
@@ -143,14 +143,14 @@ namespace Models
 
             if (Data.Account != null)
             {
-                if (Data.Account != "")
+                if (String.IsNullOrEmpty(Data.Account))
                 {
                     List = List.Where(p => p.Account.Contains(Data.Account));
                 }
             }
             if (Data.Name != null)
             {
-                if (Data.Name != "")
+                if (String.IsNullOrEmpty(Data.Name))
                 {
                     List = List.Where(p => p.Name.Contains(Data.Name));
                 }

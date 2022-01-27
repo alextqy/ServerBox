@@ -97,7 +97,7 @@ namespace Models
             var List = this.DbContent.DirEntity.Where(p => p.ID > 0);
             if (Data.DirName != null)
             {
-                if (Data.DirName != "")
+                if (!String.IsNullOrEmpty(Data.DirName))
                 {
                     List = List.Where(p => p.DirName.Contains(Data.DirName));
                 }

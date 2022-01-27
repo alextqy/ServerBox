@@ -12,11 +12,11 @@ namespace Logic
         public Entity.LoginResultEntity SignIn(string Account, string Password, int TokenType)
         {
             Entity.LoginResultEntity Result = new();
-            if (Account == "")
+            if (String.IsNullOrEmpty(Account))
             {
                 Result.Memo = "Account error";
             }
-            else if (Password == "")
+            else if (String.IsNullOrEmpty(Password))
             {
                 Result.Memo = "Password error";
             }
@@ -359,7 +359,7 @@ namespace Logic
                     }
                     else
                     {
-                        if (Data.Account == "")
+                        if (String.IsNullOrEmpty(Data.Account))
                         {
                             this.Result.Memo = "Account error";
                         }
@@ -372,7 +372,7 @@ namespace Logic
                             this.Result.Memo = "Account Length error";
                         }
 
-                        else if (Data.Name == "")
+                        else if (String.IsNullOrEmpty(Data.Name))
                         {
                             this.Result.Memo = "Name error";
                         }
@@ -385,7 +385,7 @@ namespace Logic
                             this.Result.Memo = "Name Length error";
                         }
 
-                        else if (Data.Password == "")
+                        else if (String.IsNullOrEmpty(Data.Password))
                         {
                             this.Result.Memo = "Password error";
                         }
@@ -407,11 +407,6 @@ namespace Logic
                         {
                             this.Result.Memo = "Status error";
                         }
-
-                        //else if (Data.Permission == "")
-                        //{
-                        //    this.Result.Memo = "Permission error";
-                        //}
 
                         else if (Data.Master <= 0)
                         {
@@ -444,7 +439,7 @@ namespace Logic
                             {
                                 var CountUser = this.UserModel.CountUser(); // 验证用户数
                                 var ActivationCode = ConfigHelper.AppSettingsHelper.ActivationCode();
-                                if (ActivationCode != "")
+                                if (!String.IsNullOrEmpty(ActivationCode))
                                 {
                                     var OSType = Tools.OSType();
                                     string Motherboard;
@@ -461,7 +456,7 @@ namespace Logic
                                         Motherboard = "";
                                     }
 
-                                    if (Motherboard != "")
+                                    if (!String.IsNullOrEmpty(Motherboard))
                                     {
                                         var DeCode = Tools.AES_Decrypt(ActivationCode, 3);
                                         var DeCodeArr = Tools.Explode("_", DeCode);
@@ -715,7 +710,7 @@ namespace Logic
             {
                 this.Result.Memo = "UserID error";
             }
-            else if (Data.ExtraDesc == "")
+            else if (String.IsNullOrEmpty(Data.ExtraDesc))
             {
                 this.Result.Memo = "ExtraDesc error";
             }
@@ -727,7 +722,7 @@ namespace Logic
             {
                 this.Result.Memo = "ExtraType error";
             }
-            else if (Data.ExtraValue == "")
+            else if (String.IsNullOrEmpty(Data.ExtraValue))
             {
                 this.Result.Memo = "ExtraValue error";
             }
@@ -944,7 +939,7 @@ namespace Logic
             {
                 this.Result.Memo = "OuterToken error";
             }
-            else if (Data.TokenDesc == "")
+            else if (String.IsNullOrEmpty(Data.TokenDesc))
             {
                 this.Result.Memo = "TokenDesc error";
             }
@@ -1012,7 +1007,7 @@ namespace Logic
             {
                 this.Result.Memo = "TokenType error";
             }
-            else if (Data.Title == "")
+            else if (String.IsNullOrEmpty(Data.Title))
             {
                 this.Result.Memo = "Title error";
             }
@@ -1020,7 +1015,7 @@ namespace Logic
             {
                 this.Result.Memo = "Title format error";
             }
-            else if (Data.Content == "")
+            else if (String.IsNullOrEmpty(Data.Content))
             {
                 this.Result.Memo = "Content error";
             }

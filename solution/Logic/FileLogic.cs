@@ -20,7 +20,7 @@ namespace Logic
             {
                 this.Result.Memo = "TokenType error";
             }
-            else if (Data.DirName == "")
+            else if (String.IsNullOrEmpty(Data.DirName))
             {
                 this.Result.Memo = "DirName error";
             }
@@ -281,7 +281,7 @@ namespace Logic
             {
                 this.Result.Memo = "ID error";
             }
-            else if (Data.DirName == "")
+            else if (String.IsNullOrEmpty(Data.DirName))
             {
                 this.Result.Memo = "DirName error";
             }
@@ -453,7 +453,7 @@ namespace Logic
             {
                 this.Result.Memo = "DirID error";
             }
-            else if (Data.ExtraDesc == "")
+            else if (String.IsNullOrEmpty(Data.ExtraDesc))
             {
                 this.Result.Memo = "ExtraDesc error";
             }
@@ -465,7 +465,7 @@ namespace Logic
             {
                 this.Result.Memo = "ExtraType error";
             }
-            else if (Data.ExtraValue == "")
+            else if (String.IsNullOrEmpty(Data.ExtraValue))
             {
                 this.Result.Memo = "ExtraValue error";
             }
@@ -721,7 +721,7 @@ namespace Logic
             {
                 this.Result.Memo = "TokenType error";
             }
-            else if (Data.FileName == "")
+            else if (String.IsNullOrEmpty(Data.FileName))
             {
                 this.Result.Memo = "FileName error";
             }
@@ -741,7 +741,7 @@ namespace Logic
             {
                 this.Result.Memo = "FileSize error";
             }
-            else if (Data.UploadPath == "")
+            else if (String.IsNullOrEmpty(Data.UploadPath))
             {
                 this.Result.Memo = "UploadPath error";
             }
@@ -878,7 +878,7 @@ namespace Logic
             {
                 this.Result.Memo = "FileSectionName error";
             }
-            else if (FileSectionName == "")
+            else if (String.IsNullOrEmpty(FileSectionName))
             {
                 this.Result.Memo = "FileSectionName error";
             }
@@ -1005,7 +1005,7 @@ namespace Logic
                     {
                         Result.Memo = "Data state error";
                     }
-                    else if (FileInfo.ServerStoragePath == "")
+                    else if (String.IsNullOrEmpty(FileInfo.ServerStoragePath))
                     {
                         Result.Memo = "Data error";
                     }
@@ -1141,7 +1141,7 @@ namespace Logic
             {
                 this.Result.Memo = "ID error";
             }
-            else if (Data.FileName == null || Data.FileName == "")
+            else if (String.IsNullOrEmpty(Data.FileName))
             {
                 this.Result.Memo = "FileName error";
             }
@@ -1169,7 +1169,7 @@ namespace Logic
             {
                 this.Result.Memo = "DirID error";
             }
-            else if (Data.MD5 == "")
+            else if (String.IsNullOrEmpty(Data.MD5))
             {
                 this.Result.Memo = "MD5 error";
             }
@@ -1483,7 +1483,7 @@ namespace Logic
             {
                 this.Result.Memo = "FileID error";
             }
-            else if (Data.ExtraDesc == "")
+            else if (String.IsNullOrEmpty(Data.ExtraDesc))
             {
                 this.Result.Memo = "ExtraDesc error";
             }
@@ -1495,7 +1495,7 @@ namespace Logic
             {
                 this.Result.Memo = "ExtraType error";
             }
-            else if (Data.ExtraValue == "")
+            else if (String.IsNullOrEmpty(Data.ExtraValue))
             {
                 this.Result.Memo = "ExtraValue error";
             }
@@ -1970,7 +1970,7 @@ namespace Logic
             {
                 this.Result.Memo = "FileSectionName error";
             }
-            else if (FileSectionName == "")
+            else if (String.IsNullOrEmpty(FileSectionName))
             {
                 this.Result.Memo = "FileSectionName error";
             }
@@ -2288,7 +2288,7 @@ namespace Logic
             {
                 Result.Memo = "Token lost";
             }
-            else if (LangType == "")
+            else if (String.IsNullOrEmpty(LangType))
             {
                 Result.Memo = "Lang type error";
             }
@@ -2403,7 +2403,7 @@ namespace Logic
                     var TA = this.BeginTransaction();
                     foreach (var u in UserList)
                     {
-                        if (u.Account == "")
+                        if (String.IsNullOrEmpty(u.Account))
                         {
                             this.Result.Memo = "Account error";
                             return this.Result;
@@ -2425,7 +2425,7 @@ namespace Logic
                             return this.Result;
                         }
 
-                        if (u.Name == "")
+                        if (String.IsNullOrEmpty(u.Name))
                         {
                             this.Result.Memo = "Name error";
                             return this.Result;
@@ -2441,7 +2441,7 @@ namespace Logic
                             return this.Result;
                         }
 
-                        if (u.Password == "")
+                        if (String.IsNullOrEmpty(u.Password))
                         {
                             this.Result.Memo = "Password error";
                             return this.Result;

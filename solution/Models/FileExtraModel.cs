@@ -99,7 +99,7 @@ namespace Models
             }
             if (Data.ExtraDesc != null)
             {
-                if (Data.ExtraDesc != "")
+                if (!String.IsNullOrEmpty(Data.ExtraDesc))
                 {
                     List = List.Where(p => p.ExtraDesc.Contains(Data.ExtraDesc));
                 }
@@ -110,7 +110,7 @@ namespace Models
             }
             if (Data.ExtraValue != null)
             {
-                if (Data.ExtraValue != "")
+                if (!String.IsNullOrEmpty(Data.ExtraValue))
                 {
                     List = List.Where(p => p.ExtraValue.Contains(Data.ExtraValue));
                 }

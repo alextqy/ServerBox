@@ -98,7 +98,7 @@ namespace Models
 
             if (Data.DepartmentName != null)
             {
-                if (Data.DepartmentName != "")
+                if (!string.IsNullOrEmpty(Data.DepartmentName))
                 {
                     List = List.Where(p => p.DepartmentName.Contains(Data.DepartmentName.Trim()));
                 }

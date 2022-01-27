@@ -38,7 +38,7 @@ namespace Logic
                     }
                     else
                     {
-                        if (Data.DepartmentName == "")
+                        if (String.IsNullOrEmpty(Data.DepartmentName))
                         {
                             this.Result.Memo = "DepartmentName error";
                         }
@@ -305,7 +305,7 @@ namespace Logic
                     }
                     else
                     {
-                        if (Data.DepartmentName == "")
+                        if (String.IsNullOrEmpty(Data.DepartmentName))
                         {
                             this.Result.Memo = "DepartmentName error";
                         }
@@ -437,7 +437,7 @@ namespace Logic
             {
                 this.Result.Memo = "DepartmentID error";
             }
-            else if (Data.ExtraDesc == "")
+            else if (String.IsNullOrEmpty(Data.ExtraDesc))
             {
                 this.Result.Memo = "ExtraDesc error";
             }
@@ -445,7 +445,7 @@ namespace Logic
             {
                 this.Result.Memo = "ExtraType error";
             }
-            else if (Data.ExtraValue == "")
+            else if (String.IsNullOrEmpty(Data.ExtraValue))
             {
                 this.Result.Memo = "ExtraValue error";
             }

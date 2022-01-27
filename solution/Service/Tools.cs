@@ -1201,11 +1201,6 @@ namespace Service
         /// <returns></returns>
         public static string ByteToBase64(byte[] Param)
         {
-            //if (Param == null || Param == "")
-            //{
-            //    return "";
-            //}
-            //byte[] bytes = Encoding.UTF8.GetBytes(Param);
             return Convert.ToBase64String(Param);
         }
 
@@ -1216,11 +1211,6 @@ namespace Service
         /// <returns></returns>
         public static string Base64ToByte(byte[] Param)
         {
-            //if (Param == null || Param == "")
-            //{
-            //    return "";
-            //}
-            //byte[] bytes = Convert.FromBase64String(Param);
             return Encoding.UTF8.GetString(Param);
         }
 
@@ -1274,7 +1264,7 @@ namespace Service
         public static string SysShell(string Param1, string Param2)
         {
             var Result = "";
-            if (Param1 != "" && Param2 != "")
+            if (!String.IsNullOrEmpty(Param1) && !String.IsNullOrEmpty(Param2))
             {
                 // 创建一个ProcessStartInfo对象 使用系统shell 指定命令和参数 设置标准输出
                 var PSI = new ProcessStartInfo(Param1, Param2) { RedirectStandardOutput = true };

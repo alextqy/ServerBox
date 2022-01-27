@@ -142,7 +142,7 @@ namespace Models
 
             if (Data.FileName != null)
             {
-                if (Data.FileName != "")
+                if (!String.IsNullOrEmpty(Data.FileName))
                 {
                     List = List.Where(p => p.FileName.Contains(Data.FileName));
                 }
@@ -157,7 +157,7 @@ namespace Models
             }
             if (Data.FileType != null)
             {
-                if (Data.FileType != "")
+                if (!String.IsNullOrEmpty(Data.FileType))
                 {
                     List = List.Where(p => p.FileType.Contains(Data.FileType));
                 }
@@ -180,14 +180,14 @@ namespace Models
             }
             if (Data.ServerStoragePath != null)
             {
-                if (Data.ServerStoragePath != "")
+                if (!String.IsNullOrEmpty(Data.ServerStoragePath))
                 {
                     List = List.Where(p => p.ServerStoragePath.Contains(Data.ServerStoragePath));
                 }
             }
             if (Data.UploadPath != null)
             {
-                if (Data.UploadPath != "")
+                if (!String.IsNullOrEmpty(Data.UploadPath))
                 {
                     List = List.Where(p => p.UploadPath.Contains(Data.UploadPath));
                 }
@@ -198,7 +198,7 @@ namespace Models
             }
             if (Data.MD5 != null)
             {
-                if (Data.MD5 != "")
+                if (!String.IsNullOrEmpty(Data.MD5))
                 {
                     List = List.Where(p => p.MD5.Contains(Data.MD5));
                 }

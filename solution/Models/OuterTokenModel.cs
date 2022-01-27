@@ -62,14 +62,14 @@ namespace Models
             }
             if (Data.OuterToken != null)
             {
-                if (Data.OuterToken != "")
+                if (!String.IsNullOrEmpty(Data.OuterToken))
                 {
                     Info.OuterToken = Data.OuterToken;
                 }
             }
             if (Data.TokenDesc != null)
             {
-                if (Data.TokenDesc != "")
+                if (!String.IsNullOrEmpty(Data.TokenDesc))
                 {
                     Info.TokenDesc = Data.TokenDesc;
                 }
@@ -100,14 +100,14 @@ namespace Models
             }
             if (Data.OuterToken != null)
             {
-                if (Data.OuterToken != "")
+                if (!String.IsNullOrEmpty(Data.OuterToken))
                 {
                     List = List.Where(p => p.OuterToken.Contains(Data.OuterToken));
                 }
             }
             if (Data.TokenDesc != null)
             {
-                if (Data.TokenDesc != "")
+                if (!String.IsNullOrEmpty(Data.TokenDesc))
                 {
                     List = List.Where(p => p.TokenDesc.Contains(Data.TokenDesc));
                 }

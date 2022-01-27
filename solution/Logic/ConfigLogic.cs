@@ -170,11 +170,11 @@ namespace Logic
                         Motherboard = "";
                     }
 
-                    if (Motherboard != "")
+                    if (!String.IsNullOrEmpty(Motherboard))
                     {
                         var OldAccountsNum = "0";
                         var ActivationCode = ConfigHelper.AppSettingsHelper.ActivationCode();
-                        if (ActivationCode != "")
+                        if (!String.IsNullOrEmpty(ActivationCode))
                         {
                             var DeCode = Tools.AES_Decrypt(ActivationCode, 3);
                             OldAccountsNum = Tools.Explode("_", DeCode)[2];
@@ -198,7 +198,7 @@ namespace Logic
             {
                 this.Result.Memo = "TokenType error";
             }
-            else if (EncryptedCode == "")
+            else if (String.IsNullOrEmpty(EncryptedCode))
             {
                 this.Result.Memo = "EncryptedCode error";
             }
@@ -212,11 +212,11 @@ namespace Logic
                 else
                 {
                     var DeCode = Tools.AES_Decrypt(EncryptedCode, 2); // 解密
-                    if (DeCode != "")
+                    if (!String.IsNullOrEmpty(DeCode))
                     {
                         var DeCodeArr = Tools.Explode("_", DeCode);
                         var ActivationCode = ConfigHelper.AppSettingsHelper.ActivationCode();
-                        if (ActivationCode != "")
+                        if (!String.IsNullOrEmpty(ActivationCode))
                         {
                             if (ActivationCode != EncryptedCode)
                             {
@@ -241,7 +241,7 @@ namespace Logic
                                 {
                                     CurrentHardwareCode = "";
                                 }
-                                if (CurrentHardwareCode == "")
+                                if (String.IsNullOrEmpty(CurrentHardwareCode))
                                 {
                                     this.Result.Memo = "Activation fails";
                                     return this.Result;
@@ -301,7 +301,7 @@ namespace Logic
                 {
                     var UserCount = this.UserModel.CountUser(); // 统计已使用的账号
                     var ActivationCode = ConfigHelper.AppSettingsHelper.ActivationCode();
-                    if (ActivationCode == "")
+                    if (String.IsNullOrEmpty(ActivationCode))
                     {
                         Result.Data = UserCount.ToString() + "_5";
                     }
