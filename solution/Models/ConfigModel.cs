@@ -56,30 +56,21 @@ namespace Models
                 Console.WriteLine(e.Message);
             }
 
-            if (Data.ConfigKey != null)
+            if (!String.IsNullOrEmpty(Data.ConfigKey) && Data.ConfigKey != Info.ConfigKey)
             {
-                if (Data.ConfigKey != "" && Data.ConfigKey != Info.ConfigKey)
-                {
-                    Info.ConfigKey = Data.ConfigKey;
-                }
+                Info.ConfigKey = Data.ConfigKey;
             }
-            if (Data.ConfigDesc != null)
+            if (!String.IsNullOrEmpty(Data.ConfigDesc) && Data.ConfigDesc != Info.ConfigDesc)
             {
-                if (Data.ConfigDesc != "" && Data.ConfigDesc != Info.ConfigDesc)
-                {
-                    Info.ConfigDesc = Data.ConfigDesc;
-                }
+                Info.ConfigDesc = Data.ConfigDesc;
             }
             if (Data.ConfigType > 0 && Data.ConfigType != Info.ConfigType)
             {
                 Info.ConfigType = Data.ConfigType;
             }
-            if (Data.ConfigValue != null)
+            if (!String.IsNullOrEmpty(Data.ConfigValue) && Data.ConfigValue != Info.ConfigValue)
             {
-                if (Data.ConfigValue != "" && Data.ConfigValue != Info.ConfigValue)
-                {
-                    Info.ConfigValue = Data.ConfigValue;
-                }
+                Info.ConfigValue = Data.ConfigValue;
             }
         }
 

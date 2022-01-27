@@ -56,19 +56,13 @@ namespace Models
                 Console.WriteLine(e.Message);
             }
 
-            if (Data.TagName != null)
+            if (!String.IsNullOrEmpty(Data.TagName) && Data.TagName != Info.TagName)
             {
-                if (Data.TagName != "" && Data.TagName != Info.TagName)
-                {
-                    Info.TagName = Data.TagName;
-                }
+                Info.TagName = Data.TagName;
             }
-            if (Data.TagMemo != null)
+            if (!String.IsNullOrEmpty(Data.TagMemo) && Data.TagMemo != Info.TagMemo)
             {
-                if (Data.TagMemo != "" && Data.TagMemo != Info.TagMemo)
-                {
-                    Info.TagMemo = Data.TagMemo;
-                }
+                Info.TagMemo = Data.TagMemo;
             }
             if (Data.UserID > 0 && Data.UserID != Info.UserID)
             {

@@ -97,23 +97,17 @@ namespace Models
             {
                 List = List.Where(p => p.FileID == Data.FileID);
             }
-            if (Data.ExtraDesc != null)
+            if (!String.IsNullOrEmpty(Data.ExtraDesc))
             {
-                if (!String.IsNullOrEmpty(Data.ExtraDesc))
-                {
-                    List = List.Where(p => p.ExtraDesc.Contains(Data.ExtraDesc));
-                }
+                List = List.Where(p => p.ExtraDesc.Contains(Data.ExtraDesc));
             }
             if (Data.ExtraType > 0)
             {
                 List = List.Where(p => p.ExtraType == Data.ExtraType);
             }
-            if (Data.ExtraValue != null)
+            if (!String.IsNullOrEmpty(Data.ExtraValue))
             {
-                if (!String.IsNullOrEmpty(Data.ExtraValue))
-                {
-                    List = List.Where(p => p.ExtraValue.Contains(Data.ExtraValue));
-                }
+                List = List.Where(p => p.ExtraValue.Contains(Data.ExtraValue));
             }
 
             try

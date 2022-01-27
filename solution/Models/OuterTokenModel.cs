@@ -60,19 +60,13 @@ namespace Models
             {
                 Info.UserID = Data.UserID;
             }
-            if (Data.OuterToken != null)
+            if (!String.IsNullOrEmpty(Data.OuterToken))
             {
-                if (!String.IsNullOrEmpty(Data.OuterToken))
-                {
-                    Info.OuterToken = Data.OuterToken;
-                }
+                Info.OuterToken = Data.OuterToken;
             }
-            if (Data.TokenDesc != null)
+            if (!String.IsNullOrEmpty(Data.TokenDesc))
             {
-                if (!String.IsNullOrEmpty(Data.TokenDesc))
-                {
-                    Info.TokenDesc = Data.TokenDesc;
-                }
+                Info.TokenDesc = Data.TokenDesc;
             }
         }
 
@@ -98,19 +92,13 @@ namespace Models
             {
                 List = List.Where(p => p.UserID == Data.UserID);
             }
-            if (Data.OuterToken != null)
+            if (!String.IsNullOrEmpty(Data.OuterToken))
             {
-                if (!String.IsNullOrEmpty(Data.OuterToken))
-                {
-                    List = List.Where(p => p.OuterToken.Contains(Data.OuterToken));
-                }
+                List = List.Where(p => p.OuterToken.Contains(Data.OuterToken));
             }
-            if (Data.TokenDesc != null)
+            if (!String.IsNullOrEmpty(Data.TokenDesc))
             {
-                if (!String.IsNullOrEmpty(Data.TokenDesc))
-                {
-                    List = List.Where(p => p.TokenDesc.Contains(Data.TokenDesc));
-                }
+                List = List.Where(p => p.TokenDesc.Contains(Data.TokenDesc));
             }
 
             try

@@ -130,10 +130,6 @@ namespace Logic
 
         public int TokenVerify(string Token, int TokenType)
         {
-            if (Token == null)
-            {
-                return 0;
-            }
             if (String.IsNullOrEmpty(Token))
             {
                 return 0;

@@ -60,23 +60,17 @@ namespace Models
             {
                 Info.DirID = Data.DirID;
             }
-            if (Data.ExtraDesc != null)
+            if (!String.IsNullOrEmpty(Data.ExtraDesc) && Data.ExtraDesc != Info.ExtraDesc)
             {
-                if (Data.ExtraDesc != "" && Data.ExtraDesc != Info.ExtraDesc)
-                {
-                    Info.ExtraDesc = Data.ExtraDesc;
-                }
+                Info.ExtraDesc = Data.ExtraDesc;
             }
             if (Data.ExtraType > 0 && Data.ExtraType != Info.ExtraType)
             {
                 Info.ExtraType = Data.ExtraType;
             }
-            if (Data.ExtraValue != null)
+            if (!String.IsNullOrEmpty(Data.ExtraValue) && Data.ExtraValue != Info.ExtraValue)
             {
-                if (Data.ExtraValue != "" && Data.ExtraValue != Info.ExtraValue)
-                {
-                    Info.ExtraValue = Data.ExtraValue;
-                }
+                Info.ExtraValue = Data.ExtraValue;
             }
         }
 
@@ -103,23 +97,17 @@ namespace Models
             {
                 List = List.Where(p => p.DirID == Data.DirID);
             }
-            if (Data.ExtraDesc != null)
+            if (!String.IsNullOrEmpty(Data.ExtraDesc))
             {
-                if (!String.IsNullOrEmpty(Data.ExtraDesc))
-                {
-                    List = List.Where(p => p.ExtraDesc.Contains(Data.ExtraDesc.Trim()));
-                }
+                List = List.Where(p => p.ExtraDesc.Contains(Data.ExtraDesc.Trim()));
             }
             if (Data.ExtraType > 0)
             {
                 List = List.Where(p => p.ExtraType == Data.ExtraType);
             }
-            if (Data.ExtraValue != null)
+            if (!String.IsNullOrEmpty(Data.ExtraValue))
             {
-                if (!String.IsNullOrEmpty(Data.ExtraValue))
-                {
-                    List = List.Where(p => p.ExtraValue.Contains(Data.ExtraValue.Trim()));
-                }
+                List = List.Where(p => p.ExtraValue.Contains(Data.ExtraValue.Trim()));
             }
 
             try

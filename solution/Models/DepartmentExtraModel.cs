@@ -60,23 +60,17 @@ namespace Models
             {
                 Info.DepartmentID = Data.DepartmentID;
             }
-            if (Data.ExtraDesc != null)
+            if (!String.IsNullOrEmpty(Data.ExtraDesc) && Data.ExtraDesc != Info.ExtraDesc)
             {
-                if (Data.ExtraDesc != "" && Data.ExtraDesc != Info.ExtraDesc)
-                {
-                    Info.ExtraDesc = Data.ExtraDesc;
-                }
+                Info.ExtraDesc = Data.ExtraDesc;
             }
             if (Data.ExtraType > 0 && Data.ExtraType != Info.ExtraType)
             {
                 Info.ExtraType = Data.ExtraType;
             }
-            if (Data.ExtraValue != null)
+            if (!String.IsNullOrEmpty(Data.ExtraValue) && Data.ExtraValue != Info.ExtraValue)
             {
-                if (Data.ExtraValue != "" && Data.ExtraValue != Info.ExtraValue)
-                {
-                    Info.ExtraValue = Data.ExtraValue;
-                }
+                Info.ExtraValue = Data.ExtraValue;
             }
         }
 

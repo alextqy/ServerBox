@@ -56,12 +56,9 @@ namespace Models
                 Console.WriteLine(e.Message);
             }
 
-            if (TokenInfo.Token != null)
+            if (!String.IsNullOrEmpty(TokenInfo.Token) && TokenInfo.Token != TokenData.Token)
             {
-                if (TokenInfo.Token != "" && TokenInfo.Token != TokenData.Token)
-                {
-                    TokenInfo.Token = TokenData.Token;
-                }
+                TokenInfo.Token = TokenData.Token;
             }
             if (TokenInfo.TokenType > 0 && TokenInfo.TokenType != TokenData.TokenType)
             {

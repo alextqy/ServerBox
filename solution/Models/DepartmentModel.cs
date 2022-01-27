@@ -56,12 +56,9 @@ namespace Models
                 Console.WriteLine(e.Message);
             }
 
-            if (Data.DepartmentName != null)
+            if (!String.IsNullOrEmpty(Data.DepartmentName) && Data.DepartmentName != Info.DepartmentName)
             {
-                if (Data.DepartmentName != "" && Data.DepartmentName != Info.DepartmentName)
-                {
-                    Info.DepartmentName = Data.DepartmentName;
-                }
+                Info.DepartmentName = Data.DepartmentName;
             }
             if (Data.ParentID > 0 && Data.ParentID != Info.ParentID)
             {
@@ -96,12 +93,9 @@ namespace Models
             List<Entity.DepartmentEntity> Result = new();
             var List = this.DbContent.DepartmentEntity.Where(p => p.ID > 0);
 
-            if (Data.DepartmentName != null)
+            if (!string.IsNullOrEmpty(Data.DepartmentName))
             {
-                if (!string.IsNullOrEmpty(Data.DepartmentName))
-                {
-                    List = List.Where(p => p.DepartmentName.Contains(Data.DepartmentName.Trim()));
-                }
+                List = List.Where(p => p.DepartmentName.Contains(Data.DepartmentName.Trim()));
             }
             if (Data.ParentID >= 0)
             {

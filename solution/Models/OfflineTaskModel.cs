@@ -59,12 +59,9 @@ namespace Models
             {
                 Info.UserID = Data.UserID;
             }
-            if (Data.URL != null)
+            if (!String.IsNullOrEmpty(Data.URL) && Data.URL != Info.URL)
             {
-                if (Data.URL != "" && Data.URL != Info.URL)
-                {
-                    Info.URL = Data.URL;
-                }
+                Info.URL = Data.URL;
             }
             if (Data.State > 0 && Data.State != Info.State)
             {

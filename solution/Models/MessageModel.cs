@@ -56,19 +56,13 @@ namespace Models
                 Console.WriteLine(e.Message);
             }
 
-            if (Data.Title != null)
+            if (!String.IsNullOrEmpty(Data.Title) && Data.Title != Info.Title)
             {
-                if (Data.Title != "" && Data.Title != Info.Title)
-                {
-                    Info.Title = Data.Title;
-                }
+                Info.Title = Data.Title;
             }
-            if (Data.Content != null)
+            if (!String.IsNullOrEmpty(Data.Content) && Data.Content != Info.Content)
             {
-                if (Data.Content != "" && Data.Content != Info.Content)
-                {
-                    Info.Content = Data.Content;
-                }
+                Info.Content = Data.Content;
             }
             if (Data.SenderID > 0 && Data.SenderID != Info.SenderID)
             {
@@ -102,19 +96,13 @@ namespace Models
         {
             List<Entity.MessageEntity> Result = new();
             var List = this.DbContent.MessageEntity.Where(p => p.ID > 0);
-            if (Data.Title != null)
+            if (!String.IsNullOrEmpty(Data.Title))
             {
-                if (!String.IsNullOrEmpty(Data.Title))
-                {
-                    List = List.Where(p => p.Title.Contains(Data.Title));
-                }
+                List = List.Where(p => p.Title.Contains(Data.Title));
             }
-            if (Data.Content != null)
+            if (!String.IsNullOrEmpty(Data.Content))
             {
-                if (!String.IsNullOrEmpty(Data.Content))
-                {
-                    List = List.Where(p => p.Content.Contains(Data.Content));
-                }
+                List = List.Where(p => p.Content.Contains(Data.Content));
             }
             if (Data.SenderID > 0)
             {

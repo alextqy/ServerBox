@@ -56,12 +56,9 @@ namespace Models
                 Console.WriteLine(e.Message);
             }
 
-            if (Data.DirName != null)
+            if (!String.IsNullOrEmpty(Data.DirName) && Data.DirName != Info.DirName)
             {
-                if (Data.DirName != "" && Data.DirName != Info.DirName)
-                {
-                    Info.DirName = Data.DirName;
-                }
+                Info.DirName = Data.DirName;
             }
             if (Data.ParentID > 0 && Data.ParentID != Info.ParentID)
             {
@@ -95,12 +92,9 @@ namespace Models
         {
             List<Entity.DirEntity> Result = new();
             var List = this.DbContent.DirEntity.Where(p => p.ID > 0);
-            if (Data.DirName != null)
+            if (!String.IsNullOrEmpty(Data.DirName))
             {
-                if (!String.IsNullOrEmpty(Data.DirName))
-                {
-                    List = List.Where(p => p.DirName.Contains(Data.DirName));
-                }
+                List = List.Where(p => p.DirName.Contains(Data.DirName));
             }
             if (Data.ParentID > 0)
             {

@@ -57,20 +57,9 @@ namespace Models
             {
                 Console.WriteLine(e.Message);
             }
-
-            //if (Data.Account != null)
-            //{
-            //    if (Data.Account != "" && Data.Account != Info.Account)
-            //    {
-            //        Info.Account = Data.Account;
-            //    }
-            //}
-            if (Data.Name != null)
+            if (!String.IsNullOrEmpty(Data.Name) && Data.Name != Info.Name && Data.Name.Length >= 4)
             {
-                if (Data.Name != "" && Data.Name != Info.Name && Data.Name.Length >= 4)
-                {
-                    Info.Name = Data.Name;
-                }
+                Info.Name = Data.Name;
             }
             if (!String.IsNullOrEmpty(Data.Password))
             {
@@ -91,26 +80,17 @@ namespace Models
             {
                 Info.Admin = Data.Admin;
             }
-            if (Data.Avatar != null)
+            if (!String.IsNullOrEmpty(Data.Avatar) && Data.Avatar != Info.Avatar)
             {
-                if (Data.Avatar != "" && Data.Avatar != Info.Avatar)
-                {
-                    Info.Avatar = Data.Avatar;
-                }
+                Info.Avatar = Data.Avatar;
             }
-            if (Data.Wallpaper != null)
+            if (!String.IsNullOrEmpty(Data.Wallpaper) && Data.Wallpaper != Info.Wallpaper)
             {
-                if (Data.Wallpaper != "" && Data.Wallpaper != Info.Wallpaper)
-                {
-                    Info.Wallpaper = Data.Wallpaper;
-                }
+                Info.Wallpaper = Data.Wallpaper;
             }
-            if (Data.Permission != null)
+            if (!String.IsNullOrEmpty(Data.Permission) && Data.Permission != Info.Permission)
             {
-                if (Data.Permission != "" && Data.Permission != Info.Permission)
-                {
-                    Info.Permission = Data.Password;
-                }
+                Info.Permission = Data.Password;
             }
             if (Data.Master > 0 && Data.Master != Info.Master)
             {
@@ -141,19 +121,13 @@ namespace Models
             List<Entity.UserEntity> Result = new();
             var List = this.DbContent.UserEntity.Where(p => p.ID > 0);
 
-            if (Data.Account != null)
+            if (String.IsNullOrEmpty(Data.Account))
             {
-                if (String.IsNullOrEmpty(Data.Account))
-                {
-                    List = List.Where(p => p.Account.Contains(Data.Account));
-                }
+                List = List.Where(p => p.Account.Contains(Data.Account));
             }
-            if (Data.Name != null)
+            if (String.IsNullOrEmpty(Data.Name))
             {
-                if (String.IsNullOrEmpty(Data.Name))
-                {
-                    List = List.Where(p => p.Name.Contains(Data.Name));
-                }
+                List = List.Where(p => p.Name.Contains(Data.Name));
             }
             if (Data.State > 0)
             {

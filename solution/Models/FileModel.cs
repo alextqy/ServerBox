@@ -56,12 +56,9 @@ namespace Models
                 Console.WriteLine(e.Message);
             }
 
-            if (Data.FileName != null)
+            if (!String.IsNullOrEmpty(Data.FileName) && Data.FileName != Info.FileName)
             {
-                if (Data.FileName != "" && Data.FileName != Info.FileName)
-                {
-                    Info.FileName = Data.FileName;
-                }
+                Info.FileName = Data.FileName;
             }
             if (Data.UserID > 0 && Data.UserID != Info.UserID)
             {
@@ -71,12 +68,9 @@ namespace Models
             {
                 Info.Createtime = Data.Createtime;
             }
-            if (Data.FileType != null)
+            if (!String.IsNullOrEmpty(Data.FileType) && Data.FileType != Info.FileType)
             {
-                if (Data.FileType != "" && Data.FileType != Info.FileType)
-                {
-                    Info.FileType = Data.FileType;
-                }
+                Info.FileType = Data.FileType;
             }
             if (Data.State > 0 && Data.State != Info.State)
             {
@@ -94,30 +88,21 @@ namespace Models
             {
                 Info.UploadBlockSize = Data.UploadBlockSize;
             }
-            if (Data.ServerStoragePath != null)
+            if (!String.IsNullOrEmpty(Data.ServerStoragePath) && Data.ServerStoragePath != Info.ServerStoragePath)
             {
-                if (Data.ServerStoragePath != "" && Data.ServerStoragePath != Info.ServerStoragePath)
-                {
-                    Info.ServerStoragePath = Data.ServerStoragePath;
-                }
+                Info.ServerStoragePath = Data.ServerStoragePath;
             }
-            if (Data.UploadPath != null)
+            if (!String.IsNullOrEmpty(Data.UploadPath) && Data.UploadPath != Info.UploadPath)
             {
-                if (Data.UploadPath != "" && Data.UploadPath != Info.UploadPath)
-                {
-                    Info.UploadPath = Data.UploadPath;
-                }
+                Info.UploadPath = Data.UploadPath;
             }
             if (Data.DirID > 0 && Data.DirID != Info.DirID)
             {
                 Info.DirID = Data.DirID;
             }
-            if (Data.MD5 != null)
+            if (!String.IsNullOrEmpty(Data.MD5) && Data.MD5 != Info.MD5)
             {
-                if (Data.MD5 != "" && Data.MD5 != Info.MD5)
-                {
-                    Info.MD5 = Data.MD5;
-                }
+                Info.MD5 = Data.MD5;
             }
         }
 
@@ -140,12 +125,9 @@ namespace Models
             List<Entity.FileEntity> Result = new();
             var List = this.DbContent.FileEntity.Where(p => p.ID > 0);
 
-            if (Data.FileName != null)
+            if (!String.IsNullOrEmpty(Data.FileName))
             {
-                if (!String.IsNullOrEmpty(Data.FileName))
-                {
-                    List = List.Where(p => p.FileName.Contains(Data.FileName));
-                }
+                List = List.Where(p => p.FileName.Contains(Data.FileName));
             }
             if (Data.UserID > 0)
             {
@@ -155,12 +137,9 @@ namespace Models
             {
                 List = List.Where(p => p.Createtime == Data.Createtime);
             }
-            if (Data.FileType != null)
+            if (!String.IsNullOrEmpty(Data.FileType))
             {
-                if (!String.IsNullOrEmpty(Data.FileType))
-                {
-                    List = List.Where(p => p.FileType.Contains(Data.FileType));
-                }
+                List = List.Where(p => p.FileType.Contains(Data.FileType));
             }
             if (Data.State > 0)
             {
@@ -178,30 +157,21 @@ namespace Models
             {
                 List = List.Where(p => p.UploadBlockSize == Data.UploadBlockSize);
             }
-            if (Data.ServerStoragePath != null)
+            if (!String.IsNullOrEmpty(Data.ServerStoragePath))
             {
-                if (!String.IsNullOrEmpty(Data.ServerStoragePath))
-                {
-                    List = List.Where(p => p.ServerStoragePath.Contains(Data.ServerStoragePath));
-                }
+                List = List.Where(p => p.ServerStoragePath.Contains(Data.ServerStoragePath));
             }
-            if (Data.UploadPath != null)
+            if (!String.IsNullOrEmpty(Data.UploadPath))
             {
-                if (!String.IsNullOrEmpty(Data.UploadPath))
-                {
-                    List = List.Where(p => p.UploadPath.Contains(Data.UploadPath));
-                }
+                List = List.Where(p => p.UploadPath.Contains(Data.UploadPath));
             }
             if (Data.DirID > 0)
             {
                 List = List.Where(p => p.DirID == Data.DirID);
             }
-            if (Data.MD5 != null)
+            if (!String.IsNullOrEmpty(Data.MD5))
             {
-                if (!String.IsNullOrEmpty(Data.MD5))
-                {
-                    List = List.Where(p => p.MD5.Contains(Data.MD5));
-                }
+                List = List.Where(p => p.MD5.Contains(Data.MD5));
             }
             try
             {

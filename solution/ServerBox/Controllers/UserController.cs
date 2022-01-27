@@ -234,11 +234,11 @@ namespace ServerBox.Controllers
         {
             Token = Token == null ? "" : Token.Trim().ToLower();
             Entity.UserSelectParamEntity Data = new();
-            if (Account != null)
+            if (!String.IsNullOrEmpty(Account))
             {
                 Data.Account = Account.Trim();
             }
-            if (Name != null)
+            if (!String.IsNullOrEmpty(Name))
             {
                 Data.Name = Name.Trim();
             }
@@ -267,12 +267,12 @@ namespace ServerBox.Controllers
             Token = Token == null ? "" : Token.Trim().ToLower();
             Entity.UserExtraEntity Data = new();
             Data.UserID = UserID;
-            if (ExtraDesc != null)
+            if (!String.IsNullOrEmpty(ExtraDesc))
             {
                 Data.ExtraDesc = ExtraDesc.Trim();
             }
             Data.ExtraType = ExtraType;
-            if (ExtraValue != null)
+            if (!String.IsNullOrEmpty(ExtraValue))
             {
                 Data.ExtraValue = ExtraValue.Trim();
             }
@@ -314,12 +314,12 @@ namespace ServerBox.Controllers
             Token = Token == null ? "" : Token.Trim().ToLower();
             Entity.UserExtraSelectParamEntity Data = new();
             Data.UserID = UserID;
-            if (ExtraDesc != null)
+            if (!String.IsNullOrEmpty(ExtraDesc))
             {
                 Data.ExtraDesc = ExtraDesc.Trim();
             }
             Data.ExtraType = ExtraType;
-            if (ExtraValue != null)
+            if (!String.IsNullOrEmpty(ExtraValue))
             {
                 Data.ExtraValue = ExtraValue.Trim();
             }

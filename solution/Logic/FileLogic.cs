@@ -874,10 +874,6 @@ namespace Logic
             {
                 this.Result.Memo = "ID error";
             }
-            else if (FileSectionName == null)
-            {
-                this.Result.Memo = "FileSectionName error";
-            }
             else if (String.IsNullOrEmpty(FileSectionName))
             {
                 this.Result.Memo = "FileSectionName error";
@@ -1965,10 +1961,6 @@ namespace Logic
             else if (FileID <= 0)
             {
                 this.Result.Memo = "ID error";
-            }
-            else if (FileSectionName == null)
-            {
-                this.Result.Memo = "FileSectionName error";
             }
             else if (String.IsNullOrEmpty(FileSectionName))
             {
