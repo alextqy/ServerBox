@@ -2518,13 +2518,21 @@ namespace Logic
             {
                 this.Result.Memo = "The tagName format is incorrect";
             }
+            else if (TagName.Length > 64)
+            {
+                this.Result.Memo = "TagName is too long";
+            }
             else if (String.IsNullOrEmpty(TagMemo))
             {
                 this.Result.Memo = "TagMemo error";
             }
             else if (!Tools.RegCheckPro(TagMemo))
             {
-                this.Result.Memo = "The tagMemo format is incorrect";
+                this.Result.Memo = "The TagMemo format is incorrect";
+            }
+            else if (TagMemo.Length > 128)
+            {
+                this.Result.Memo = "TagMemo is too long";
             }
             else
             {
@@ -2582,13 +2590,21 @@ namespace Logic
             {
                 this.Result.Memo = "The tagName format is incorrect";
             }
+            else if (TagName.Length > 64)
+            {
+                this.Result.Memo = "TagName is too long";
+            }
             else if (String.IsNullOrEmpty(TagMemo))
             {
                 this.Result.Memo = "TagMemo error";
             }
             else if (!Tools.RegCheckPro(TagMemo))
             {
-                this.Result.Memo = "The tagMemo format is incorrect";
+                this.Result.Memo = "The TagMemo format is incorrect";
+            }
+            else if (TagMemo.Length > 128)
+            {
+                this.Result.Memo = "TagMemo is too long";
             }
             else
             {
@@ -2699,6 +2715,63 @@ namespace Logic
             return this.Result;
         }
 
+        public Entity.CommonResultEntity TagRename(string Token, int TokenType, int ID, string TagName)
+        {
+            if (String.IsNullOrEmpty(Token))
+            {
+                this.Result.Memo = "Token error";
+            }
+            else if (TokenType <= 0)
+            {
+                this.Result.Memo = "TokenType error";
+            }
+            else if (ID <= 0)
+            {
+                this.Result.Memo = "ID error";
+            }
+            else if (String.IsNullOrEmpty(TagName))
+            {
+                this.Result.Memo = "TagName error";
+            }
+            else
+            {
+                var UserID = this.TokenVerify(Token, TokenType);
+                if (UserID == 0)
+                {
+                    this.Result.Memo = "Token lost";
+                }
+                else
+                {
+                    var TagInfo = this.TagModel.Find(ID);
+                    if (TagInfo.ID == 0)
+                    {
+                        this.Result.Memo = "Data not found";
+                    }
+                    else if (TagInfo.UserID != UserID)
+                    {
+                        this.Result.Memo = "Permission denied";
+                    }
+                    else
+                    {
+                        TagInfo.TagName = TagName;
+                        try
+                        {
+                            this.TagModel.Modify(ID, TagInfo);
+                            this.DbContent.SaveChanges();
+                            this.Result.State = true;
+                            this.Result.Memo = "Success";
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.Message);
+                            this.Result.Memo = "Modify error";
+                        }
+                    }
+                }
+            }
+            return this.Result;
+        }
+
         public Entity.CommonResultEntity DelTag(string Token, int TokenType, int ID)
         {
             if (String.IsNullOrEmpty(Token))
@@ -2727,7 +2800,7 @@ namespace Logic
                     {
                         this.Result.Memo = "Data not found";
                     }
-                    else if (TagInfo.ID > 0 && TagInfo.ID != UserID)
+                    else if (TagInfo.ID > 0 && TagInfo.UserID != UserID)
                     {
                         this.Result.Memo = "Permission denied";
                     }

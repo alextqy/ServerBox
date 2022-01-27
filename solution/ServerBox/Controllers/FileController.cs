@@ -592,6 +592,24 @@ namespace ServerBox.Controllers
         }
 
         /// <summary>
+        /// 标签重命名
+        /// </summary>
+        /// <param name="Token"></param>
+        /// <param name="TokenType"></param>
+        /// <param name="ID"></param>
+        /// <param name="TagName"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("/Tag/Rename")]
+        public IActionResult TagRename(string Token, int TokenType, int ID, string TagName)
+        {
+            Token = Token == null ? "" : Token.Trim();
+            TagName = TagName == null ? "" : TagName.Trim();
+            var Result = this.FileLogic.TagRename(Token, TokenType, ID, TagName);
+            return Json(Result);
+        }
+
+        /// <summary>
         /// 删除标签
         /// </summary>
         /// <param name="Token"></param>
