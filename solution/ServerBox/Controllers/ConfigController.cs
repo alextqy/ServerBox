@@ -111,5 +111,22 @@ namespace ServerBox.Controllers
             var Result = this.ConfigLogic.AccountNumberStatistics(Token, TokenType);
             return Json(Result);
         }
+
+        /// <summary>
+        /// 系统日志
+        /// </summary>
+        /// <param name="Token"></param>
+        /// <param name="TokenType"></param>
+        /// <param name="TimeStamp"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("/Check/Sys/Log")]
+        public IActionResult CheckSysLog(string Token, int TokenType, int TimeStamp)
+        {
+            Token = Token == null ? "" : Token.Trim();
+            var Result = this.ConfigLogic.CheckSysLog(Token, TokenType, TimeStamp);
+            return Json(Result);
+        }
+
     }
 }

@@ -317,5 +317,36 @@ namespace Logic
             }
             return Result;
         }
+
+        public Entity.CommonResultEntity CheckSysLog(string Token, int TokenType, int TimeStamp)
+        {
+            if (String.IsNullOrEmpty(Token))
+            {
+                Result.Memo = "Token error";
+            }
+            else if (TokenType <= 0)
+            {
+                Result.Memo = "TokenType error";
+            }
+            else
+            {
+                var UserID = this.TokenVerify(Token, TokenType);
+                if (UserID == 0)
+                {
+                    Result.Memo = "Token lost";
+                }
+                else if (!this.MasterVerify(UserID))
+                {
+
+                }
+                else
+                {
+                    Result.State = true;
+                    Result.Memo = "Success";
+                    Result.Data = this.RL(TimeStamp);
+                }
+            }
+            return this.Result;
+        }
     }
 }
