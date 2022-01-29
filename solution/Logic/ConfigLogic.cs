@@ -337,7 +337,7 @@ namespace Logic
                 }
                 else if (!this.MasterVerify(UserID))
                 {
-
+                    Result.Memo = "Permission denied";
                 }
                 else
                 {

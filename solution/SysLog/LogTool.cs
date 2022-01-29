@@ -7,6 +7,8 @@ namespace SysLog
 {
     public class LogTool
     {
+        private static readonly string LogFile = Tools.RootPath() + "Log/" + Tools.NowYear() + Tools.NowMonth() + Tools.NowDay() + ".log";
+
         public LogTool() { }
 
         /// <summary>
@@ -26,13 +28,11 @@ namespace SysLog
         {
             var LogDir = Tools.RootPath() + "Log/";
             Tools.CreateDir(LogDir);
-            var LogFile = LogDir + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Day.ToString() + ".log";
             Tools.CreateFile(LogFile);
         }
 
         public static bool WriteLog(string Content)
         {
-            var LogFile = Tools.RootPath() + "Log/" + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Day.ToString() + ".log";
             Tools.CreateFile(LogFile);
             return Tools.WriteFile(LogFile, Content, true);
         }
@@ -42,12 +42,11 @@ namespace SysLog
             string SetLogDate;
             if (TimeStamp == 0)
             {
-                SetLogDate = DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Day.ToString();
+                SetLogDate = Tools.NowYear() + Tools.NowMonth() + Tools.NowDay();
             }
             else
             {
-                var Date = Tools.TimeStampToDateTime(TimeStamp);
-                SetLogDate = Date.Year.ToString() + Date.Month.ToString() + Date.Day.ToString();
+                SetLogDate = Tools.TimeToStr(TimeStamp).Split(" ")[0].Replace("-", "");
             }
             var LogFile = Tools.RootPath() + "Log/" + SetLogDate + ".log";
             if (!Tools.FileIsExists(LogFile))
