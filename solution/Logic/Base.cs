@@ -254,7 +254,7 @@ namespace Logic
 
         public string RL(int TimeStamp = 0)
         {
-            return LogTool.ReadLog(TimeStamp);
+            return LogTool.ReadLog(TimeStamp).Replace("\r", "");
         }
 
         /// <summary>
