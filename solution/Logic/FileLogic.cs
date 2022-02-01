@@ -2885,6 +2885,12 @@ namespace Logic
                         return this.Result;
                     }
 
+                    if (this.FileTagModel.FindItem(TagID, FileID).ID > 0)
+                    {
+                        this.Result.Memo = "Data already exists";
+                        return this.Result;
+                    }
+
                     Entity.FileTagEntity Data = new();
                     Data.FileID = FileID;
                     Data.TagID = TagID;

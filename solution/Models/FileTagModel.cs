@@ -128,5 +128,19 @@ namespace Models
                 Console.WriteLine(e.Message);
             }
         }
+
+        public Entity.FileTagEntity FindItem(int TagID, int FileID)
+        {
+            Entity.FileTagEntity Data = new();
+            try
+            {
+                Data = this.DbContent.FileTagEntity.Where(p => p.TagID == TagID).Where(p => p.FileID == FileID).First();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return Data;
+        }
     }
 }
