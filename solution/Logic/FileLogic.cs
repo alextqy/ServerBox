@@ -918,7 +918,7 @@ namespace Logic
                         try
                         {
                             string FilePath = Path.Combine(FileInfo.ServerStoragePath, FileSectionName);
-                            using (var Stream = System.IO.File.Create(FilePath))
+                            using (var Stream = File.Create(FilePath))
                             {
                                 FileEntity.CopyTo(Stream);
                                 Stream.Flush();
@@ -1093,7 +1093,18 @@ namespace Logic
                             try
                             {
                                 this.FileModel.Delete(ID);
-                                this.DbContent.SaveChanges();
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine(e.Message);
+                                TA.Rollback();
+                                this.Result.Memo = "Delete error";
+                                return this.Result;
+                            }
+
+                            try
+                            {
+                                this.FileTagModel.DeleteByTagID(ID);
                             }
                             catch (Exception e)
                             {
@@ -1113,6 +1124,8 @@ namespace Logic
                                     return this.Result;
                                 }
                             }
+
+                            this.DbContent.SaveChanges();
                             TA.Commit();
                             this.Result.State = true;
                             this.Result.Memo = "Success";
@@ -2006,7 +2019,7 @@ namespace Logic
                             try
                             {
                                 string FilePath = Path.Combine(SyncDir, FileSectionName);
-                                using (var Stream = System.IO.File.Create(FilePath))
+                                using (var Stream = File.Create(FilePath))
                                 {
                                     FileEntity.CopyTo(Stream);
                                     Stream.Flush();
@@ -2370,11 +2383,9 @@ namespace Logic
 
                     try
                     {
-                        using (var Stream = System.IO.File.Create(Path.Combine(UploadPath, FileEntity.FileName)))
-                        {
-                            FileEntity.CopyTo(Stream);
-                            Stream.Flush();
-                        }
+                        using var Stream = File.Create(Path.Combine(UploadPath, FileEntity.FileName));
+                        FileEntity.CopyTo(Stream);
+                        Stream.Flush();
                     }
                     catch (Exception e)
                     {

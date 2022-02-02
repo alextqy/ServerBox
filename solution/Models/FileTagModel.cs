@@ -142,5 +142,29 @@ namespace Models
             }
             return Data;
         }
+
+        public void DeleteByFileID(int FileID)
+        {
+            Entity.FileTagEntity Data = new();
+            try
+            {
+                Data = this.DbContent.FileTagEntity.Where(p => p.FileID == FileID).First();
+                if (Data.ID > 0)
+                {
+                    try
+                    {
+                        this.DbContent.FileTagEntity.Remove(Data);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
     }
 }
