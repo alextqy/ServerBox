@@ -1104,7 +1104,7 @@ namespace Logic
 
                             try
                             {
-                                this.FileTagModel.DeleteByTagID(ID);
+                                this.FileTagModel.DeleteByFileID(ID);
                             }
                             catch (Exception e)
                             {
@@ -1276,7 +1276,6 @@ namespace Logic
                             try
                             {
                                 this.FileModel.Modify(ID, FileInfo);
-                                this.DbContent.SaveChanges();
                             }
                             catch (Exception e)
                             {
@@ -1298,6 +1297,22 @@ namespace Logic
                                 }
                             }
 
+                            if (Data.State == 4)
+                            {
+                                try
+                                {
+                                    this.FileTagModel.DeleteByFileID(ID);
+                                }
+                                catch (Exception e)
+                                {
+                                    Console.WriteLine(e.Message);
+                                    TA.Rollback();
+                                    this.Result.Memo = "error";
+                                    return this.Result;
+                                }
+                            }
+
+                            this.DbContent.SaveChanges();
                             TA.Commit();
                             this.Result.State = true;
                             this.Result.Memo = "Success";
