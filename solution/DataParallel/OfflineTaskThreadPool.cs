@@ -214,12 +214,11 @@ namespace DataParallel
     public class TaskHelper
     {
         private QueueHandler<OfflineTask> _queueHandler;
-        public TaskHelper() { }
+        public TaskHelper() { this._queueHandler = new(0); }
 
         #region 生产者/消费者 模式
         public void ProducerRun()
         {
-            this._queueHandler = new(2);
             while (true)
             {
                 Thread.Sleep(500);
