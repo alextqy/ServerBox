@@ -76,13 +76,12 @@ namespace DataParallel
 
         internal bool HttpDownload(string URL, string SavePath, int UserID)
         {
-            Directory.CreateDirectory(SavePath); // 创建临时文件目录
             string TempFile = SavePath + "/" + Path.GetFileName("TempFile"); // 临时文件
             if (Tools.FileIsExists(TempFile))
             {
                 Tools.DelFile(TempFile); // 存在则删除
             }
-            if (!Tools.DirIsExists(SavePath))
+            if (!Tools.DirIsExists(SavePath)) // 创建临时文件目录
             {
                 if (!Tools.CreateDir(SavePath)) { return false; }
             }
