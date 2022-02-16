@@ -9,15 +9,6 @@ using System.Threading.Tasks;
 
 namespace DataParallel
 {
-    //public class TaskProcessing
-    //{
-    //    public string Content { set; get; }
-    //    public TaskProcessing(string Content)
-    //    {
-    //        this.Content = Content;
-    //    }
-    //}
-
     public class OfflineTask
     {
         public bool MissionComplete { set; get; }
@@ -85,6 +76,8 @@ namespace DataParallel
 
         internal bool HttpDownload(string URL, string SavePath, int UserID)
         {
+            Thread.Sleep(10000);
+            return true;
             Directory.CreateDirectory(SavePath); // 创建临时文件目录
             string TempFile = SavePath + "/" + Path.GetFileName("TempFile"); // 临时文件
             if (Tools.FileIsExists(TempFile))
@@ -222,12 +215,13 @@ namespace DataParallel
 
     public class TaskHelper
     {
-        private readonly QueueHandler<OfflineTask> _queueHandler;
-        public TaskHelper() { this._queueHandler = new(2); }
+        private QueueHandler<OfflineTask> _queueHandler;
+        public TaskHelper() { }
 
         #region 生产者/消费者 模式
         public void ProducerRun()
         {
+            this._queueHandler = new(2);
             while (true)
             {
                 Thread.Sleep(500);
@@ -267,6 +261,7 @@ namespace DataParallel
                         if (Item.MissionComplete)
                         {
                             this._queueHandler.TryDequeue(Item);
+                            this._queueHandler.Refresh();
                         }
                         else
                         {
@@ -294,25 +289,38 @@ namespace DataParallel
         }
     }
 
+    public class TaskProcessing
+    {
+        public string Content { set; get; }
+        public TaskProcessing(string Content)
+        {
+            this.Content = Content;
+        }
+    }
+
     public class OfflineTaskThreadPool
     {
-        //public static void Run()
+        //public static async void TestRun()
         //{
-        //Queue<TaskProcessing> chatMsgs = new();
-        //Console.WriteLine(chatMsgs.Count);
-        //chatMsgs.Enqueue(new TaskProcessing("fuck"));
-        //chatMsgs.Enqueue(new TaskProcessing("you"));
-        //Console.WriteLine(chatMsgs.Count);
-        //Thread.Sleep(500);
-        //Console.WriteLine(chatMsgs.ToArray()[0]);
-        //Console.WriteLine(chatMsgs.ToArray()[1]);
-        //Task.Factory.StartNew(() =>
-        //{
-        //    while (chatMsgs.TryDequeue(out var chat)) { Console.WriteLine(chat.Content); Console.WriteLine("==="); }
-        //    chatMsgs.TrimExcess();
-        //});
-        //Thread.Sleep(500);
-        //Console.WriteLine(chatMsgs.Count);
+        //    await Task.Delay(0);
+        //    Queue<TaskProcessing> chatMsgs = new();
+        //    Console.WriteLine(chatMsgs.Count);
+        //    chatMsgs.Enqueue(new TaskProcessing("fuck"));
+        //    chatMsgs.Enqueue(new TaskProcessing("you"));
+        //    Console.WriteLine(chatMsgs.Count);
+        //    Thread.Sleep(500);
+        //    Console.WriteLine(chatMsgs.ToArray()[0]);
+        //    Console.WriteLine(chatMsgs.ToArray()[1]);
+        //    await Task.Factory.StartNew(() =>
+        //    {
+        //        while (chatMsgs.TryDequeue(out var chat))
+        //        {
+        //            Console.WriteLine(chat.Content); Console.WriteLine("===");
+        //        }
+        //        chatMsgs.TrimExcess();
+        //    });
+        //    Thread.Sleep(500);
+        //    Console.WriteLine(chatMsgs.Count);
         //}
 
         private static TaskHelper _taskHelper = new();
@@ -323,6 +331,7 @@ namespace DataParallel
             try
             {
                 _taskHelper.ProducerRun();
+                //TestRun();
             }
             catch (Exception e)
             {

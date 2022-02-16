@@ -27,7 +27,7 @@ namespace DataParallel
             if (Item == null) { return; }
             lock (this._queue)
             {
-                while (this._queue.Count == this._queueSize)
+                if (this._queue.Count == this._queueSize)
                 {
                     Monitor.Wait(this._queue);
                 }
@@ -40,31 +40,12 @@ namespace DataParallel
         }
 
         // 直接出队列
-        public T Dequeue()
-        {
-            this._queue.TrimExcess();
-            lock (this._queue)
-            {
-                while (this._queue.Count == 0)
-                {
-                    Monitor.Wait(this._queue);
-                }
-                T Item = this._queue.Dequeue();
-                if (this._queue.Count >= this._queueSize)
-                {
-                    Monitor.PulseAll(this._queue);
-                }
-                return Item;
-            }
-        }
-
-        // 获取出列对象
         public bool TryDequeue(T Item)
         {
             this._queue.TrimExcess();
             lock (this._queue)
             {
-                while (this._queue.Count == 0)
+                if (this._queue.Count == 0)
                 {
                     if (this._shutdown)
                     {
@@ -83,6 +64,25 @@ namespace DataParallel
                     Monitor.PulseAll(this._queue);
                 }
                 return true;
+            }
+        }
+
+        // 获取出列对象
+        public T Dequeue()
+        {
+            this._queue.TrimExcess();
+            lock (this._queue)
+            {
+                while (_queue.Count == 0)
+                {
+                    Monitor.Wait(this._queue);
+                }
+                T Item = this._queue.Dequeue();
+                if (this._queue.Count >= this._queueSize)
+                {
+                    Monitor.PulseAll(this._queue);
+                }
+                return Item;
             }
         }
 
