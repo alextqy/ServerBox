@@ -55,7 +55,7 @@ namespace DataParallel
                         }
                         else
                         {
-                            Tools.DelDir(TaskDir, true);
+                            //Tools.DelDir(TaskDir, true);
                             this.UnlockTask(4);
                         }
                     }
@@ -83,11 +83,18 @@ namespace DataParallel
             }
             if (!Tools.DirIsExists(SavePath)) // 创建临时文件目录
             {
-                if (!Tools.CreateDir(SavePath)) { return false; }
+                if (!Tools.CreateDir(SavePath))
+                {
+                    return false;
+                }
             }
             try
             {
+                // 创建本地文件写入流
+                // Stream FS = new FileStream(tempFile, FileMode.Create);
                 FileStream FS = new(TempFile, FileMode.Append, FileAccess.Write, FileShare.ReadWrite);
+
+                // 请求下载地址
                 HttpWebRequest Request = WebRequest.Create(URL) as HttpWebRequest; // 设置参数
                 HttpWebResponse Response = Request.GetResponse() as HttpWebResponse; // 发送Post请求并获取相应回应数据
                 Stream ResponseStream = Response.GetResponseStream();
@@ -97,10 +104,19 @@ namespace DataParallel
 
                 // 该用户根目录是否已经存在同名文件
                 Entity.DirEntity UserRootDir = this._fileLogic.CheckUserRootDir(UserID).Data;
-                if (UserRootDir.ID == 0) { return false; }
-                if (this._fileLogic.CheckOfflineTaskFileExist(UserRootDir.ID, FileNewName[..FileNewName.LastIndexOf(".")]).Data.ID > 0) { return false; }
+                if (UserRootDir.ID == 0)
+                {
+                    //Tools.DelDir(SavePath, true);
+                    //Console.WriteLine(1);
+                    return false;
+                }
+                //if (this._fileLogic.CheckOfflineTaskFileExist(UserRootDir.ID, FileNewName[..FileNewName.LastIndexOf(".")]).Data.ID > 0)
+                //{
+                //    Tools.DelDir(SavePath, true);
+                //    Console.WriteLine(2);
+                //    return false;
+                //}
 
-                // Stream FS = new FileStream(tempFile, FileMode.Create); // 创建本地文件写入流
                 byte[] Buffer = new byte[1024];
                 var Size = ResponseStream.Read(Buffer, 0, Buffer.Length);
                 var SizeCur = 1024;
@@ -120,16 +136,35 @@ namespace DataParallel
                 {
                     if (Tools.RenameFile(TempFile, FileNewName))
                     {
-                        if (this.CreateFileOperation(Path.Combine(Path.GetDirectoryName(TempFile), FileNewName))) { return true; }
-                        else { return false; }
+                        if (this.CreateFileOperation(Path.Combine(Path.GetDirectoryName(TempFile), FileNewName)))
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            //Tools.DelDir(SavePath, true);
+                            //Console.WriteLine(3);
+                            return false;
+                        }
                     }
-                    else { return false; }
+                    else
+                    {
+                        //Tools.DelDir(SavePath, true);
+                        //Console.WriteLine(4);
+                        return false;
+                    }
                 }
-                else { return false; }
+                else
+                {
+                    //Tools.DelDir(SavePath, true);
+                    //Console.WriteLine(5);
+                    return false;
+                }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                //Tools.DelDir(SavePath, true);
                 return false;
             }
         }
@@ -153,15 +188,7 @@ namespace DataParallel
                     var OperationTime = Tools.TimeMS();
                     var FileDirName = Path.GetDirectoryName(FilePath); // 文件所在文件夹
                     var FileName = Tools.FileName(FilePath); // 文件本名
-                    var TargetPath = Path.GetDirectoryName(FileDirName) + "/" + FileName + "." + OperationTime.ToString(); // 目标文件夹
-                    if (Tools.DirIsExists(TargetPath))
-                    {
-                        if (!Tools.ClearDir(TargetPath)) { return false; }
-                    }
-                    else
-                    {
-                        if (!Tools.CreateDir(TargetPath)) { return false; }
-                    }
+
                     int BlockSize = Convert.ToInt32(ConfigInfo.Data); // 切片大小
                     var UserAccount = Path.GetDirectoryName(FileDirName).Replace(@"\", "/").Split("/")[^1]; // 用户目录名称
                     var FileMD5 = Tools.FileMD5(FilePath).ToLower();
@@ -172,6 +199,20 @@ namespace DataParallel
                     if (UserInfo.ID == 0) { return false; }
                     Entity.DirEntity UserRootDir = this._fileLogic.CheckUserRootDir(UserInfo.ID).Data;
                     if (UserRootDir.ID == 0) { return false; }
+
+                    if (this._fileLogic.CheckOfflineTaskFileExist(UserRootDir.ID, FileName).Data.ID > 0)
+                    {
+                        FileName = FileName + "_" + Tools.MD5(OperationTime.ToString());
+                    }
+                    var TargetPath = Path.GetDirectoryName(FileDirName) + "/" + FileName + "." + OperationTime.ToString(); // 目标文件夹
+                    if (Tools.DirIsExists(TargetPath))
+                    {
+                        if (!Tools.ClearDir(TargetPath)) { return false; }
+                    }
+                    else
+                    {
+                        if (!Tools.CreateDir(TargetPath)) { return false; }
+                    }
 
                     if (Tools.FileSlice(FilePath, TargetPath, BlockSize))
                     {
