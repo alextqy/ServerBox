@@ -107,12 +107,10 @@ namespace DataParallel
                 var SizeCur = 1024;
                 while (Size > 0)
                 {
-                    // FS.Write(bArr, 0, size);
                     FS.Write(Buffer, 0, Size);
                     Size = ResponseStream.Read(Buffer, 0, Buffer.Length);
                     SizeCur += Size;
                 }
-                // FS.Close();
                 FS.Close();
                 ResponseStream.Close();
                 if (String.IsNullOrEmpty(FileNewName))
