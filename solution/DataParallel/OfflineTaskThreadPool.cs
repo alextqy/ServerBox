@@ -240,7 +240,7 @@ namespace DataParallel
                 var ItemArr = this._queueHandler._queue.ToArray();
                 foreach (var Item in ItemArr)
                 {
-                    Thread.Sleep(500);
+                    //Thread.Sleep(500);
                     await Task.Factory.StartNew(() => Item.ProcessFile(), TaskCreationOptions.LongRunning);
                 }
             }
