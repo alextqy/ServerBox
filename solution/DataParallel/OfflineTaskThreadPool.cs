@@ -26,17 +26,6 @@ namespace DataParallel
             this.Mark = this._offlineTaskEntity == null ? "" : Tools.MD5(this._offlineTaskEntity.URL);
         }
 
-        public void LockTask()
-        {
-            this._fileLogic.SetOfflineTaskState(this._offlineTaskEntity.ID, 2);
-        }
-
-        public void UnlockTask(int State = 1)
-        {
-            this.MissionComplete = true;
-            this._fileLogic.SetOfflineTaskState(this._offlineTaskEntity.ID, State);
-        }
-
         public void ProcessFile()
         {
             if (this._offlineTaskEntity == null)
@@ -72,6 +61,17 @@ namespace DataParallel
                     }
                 }
             }
+        }
+
+        internal void LockTask()
+        {
+            this._fileLogic.SetOfflineTaskState(this._offlineTaskEntity.ID, 2);
+        }
+
+        internal void UnlockTask(int State = 1)
+        {
+            this.MissionComplete = true;
+            this._fileLogic.SetOfflineTaskState(this._offlineTaskEntity.ID, State);
         }
 
         internal bool HttpDownload(string URL, string SavePath, int UserID)
