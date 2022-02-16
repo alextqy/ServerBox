@@ -76,7 +76,7 @@ namespace DataParallel
 
         internal bool HttpDownload(string URL, string SavePath, int UserID)
         {
-            Thread.Sleep(10000);
+            Thread.Sleep(5000);
             return true;
             Directory.CreateDirectory(SavePath); // 创建临时文件目录
             string TempFile = SavePath + "/" + Path.GetFileName("TempFile"); // 临时文件
