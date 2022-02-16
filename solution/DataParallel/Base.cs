@@ -31,11 +31,8 @@ namespace DataParallel
                 {
                     Monitor.Wait(this._queue);
                 }
+                Monitor.PulseAll(this._queue);
                 this._queue.Enqueue(Item);
-                if (this._queue.Count == 1)
-                {
-                    Monitor.PulseAll(this._queue);
-                }
             }
         }
 
@@ -54,14 +51,11 @@ namespace DataParallel
                     }
                     Monitor.Wait(this._queue);
                 }
+                Monitor.PulseAll(this._queue);
                 Item = this._queue.Dequeue();
                 if (this._queue.Count == 0)
                 {
                     return true;
-                }
-                if (this._queue.Count >= this._queueSize)
-                {
-                    Monitor.PulseAll(this._queue);
                 }
                 return true;
             }
@@ -77,11 +71,8 @@ namespace DataParallel
                 {
                     Monitor.Wait(this._queue);
                 }
+                Monitor.PulseAll(this._queue);
                 T Item = this._queue.Dequeue();
-                if (this._queue.Count >= this._queueSize)
-                {
-                    Monitor.PulseAll(this._queue);
-                }
                 return Item;
             }
         }

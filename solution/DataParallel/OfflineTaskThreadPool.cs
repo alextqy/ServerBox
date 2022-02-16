@@ -76,8 +76,6 @@ namespace DataParallel
 
         internal bool HttpDownload(string URL, string SavePath, int UserID)
         {
-            Thread.Sleep(5000);
-            return true;
             Directory.CreateDirectory(SavePath); // 创建临时文件目录
             string TempFile = SavePath + "/" + Path.GetFileName("TempFile"); // 临时文件
             if (Tools.FileIsExists(TempFile))
@@ -289,39 +287,8 @@ namespace DataParallel
         }
     }
 
-    public class TaskProcessing
-    {
-        public string Content { set; get; }
-        public TaskProcessing(string Content)
-        {
-            this.Content = Content;
-        }
-    }
-
     public class OfflineTaskThreadPool
     {
-        //public static async void TestRun()
-        //{
-        //    await Task.Delay(0);
-        //    Queue<TaskProcessing> chatMsgs = new();
-        //    Console.WriteLine(chatMsgs.Count);
-        //    chatMsgs.Enqueue(new TaskProcessing("fuck"));
-        //    chatMsgs.Enqueue(new TaskProcessing("you"));
-        //    Console.WriteLine(chatMsgs.Count);
-        //    Thread.Sleep(500);
-        //    Console.WriteLine(chatMsgs.ToArray()[0]);
-        //    Console.WriteLine(chatMsgs.ToArray()[1]);
-        //    await Task.Factory.StartNew(() =>
-        //    {
-        //        while (chatMsgs.TryDequeue(out var chat))
-        //        {
-        //            Console.WriteLine(chat.Content); Console.WriteLine("===");
-        //        }
-        //        chatMsgs.TrimExcess();
-        //    });
-        //    Thread.Sleep(500);
-        //    Console.WriteLine(chatMsgs.Count);
-        //}
 
         private static TaskHelper _taskHelper = new();
 
@@ -331,7 +298,6 @@ namespace DataParallel
             try
             {
                 _taskHelper.ProducerRun();
-                //TestRun();
             }
             catch (Exception e)
             {
