@@ -1478,7 +1478,7 @@ namespace Service
                 TC.Connect("www.microsoft.com", 80);
                 string IPData = ((IPEndPoint)TC.Client.LocalEndPoint).Address.ToString().Trim();
                 TC.Close();
-                var IP = IPData.Substring(IPData.IndexOf("192"));
+                var IP = IPData[IPData.IndexOf("192")..];
                 return IP;
             }
             catch (Exception)
