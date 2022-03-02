@@ -1455,19 +1455,35 @@ namespace Service
         /// 获取本地IP地址
         /// </summary>
         /// <returns></returns>
+        //public static string LocalIP()
+        //{
+        //    string HostName = Dns.GetHostName();
+        //    var IPAddrList = Dns.GetHostAddresses(HostName);
+        //    var Result = "";
+        //    foreach (IPAddress IP in IPAddrList)
+        //    {
+        //        if (IP.AddressFamily == AddressFamily.InterNetwork)
+        //        {
+        //            Result = IP.ToString();
+        //        }
+        //    }
+        //    return Result;
+        //}
         public static string LocalIP()
         {
-            string HostName = Dns.GetHostName();
-            var IPAddrList = Dns.GetHostAddresses(HostName);
-            var Result = "";
-            foreach (IPAddress IP in IPAddrList)
+
+            try
             {
-                if (IP.AddressFamily == AddressFamily.InterNetwork)
-                {
-                    Result = IP.ToString();
-                }
+                TcpClient TC = new();
+                TC.Connect("www.microsoft.com", 80);
+                string IP = ((IPEndPoint)TC.Client.LocalEndPoint).Address.ToString();
+                TC.Close();
+                return IP;
             }
-            return Result;
+            catch (Exception)
+            {
+                return "";
+            }
         }
 
         /// <summary>
