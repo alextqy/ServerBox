@@ -1455,21 +1455,21 @@ namespace Service
         /// 获取本地IP地址
         /// </summary>
         /// <returns></returns>
-        //public static string LocalIP()
-        //{
-        //    string HostName = Dns.GetHostName();
-        //    var IPAddrList = Dns.GetHostAddresses(HostName);
-        //    var Result = "";
-        //    foreach (IPAddress IP in IPAddrList)
-        //    {
-        //        if (IP.AddressFamily == AddressFamily.InterNetwork)
-        //        {
-        //            Result = IP.ToString();
-        //        }
-        //    }
-        //    return Result;
-        //}
-        public static string LocalIP()
+        public static string LocalIP2()
+        {
+            string HostName = Dns.GetHostName();
+            var IPAddrList = Dns.GetHostAddresses(HostName);
+            var Result = "";
+            foreach (IPAddress IP in IPAddrList)
+            {
+                if (IP.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    Result = IP.ToString();
+                }
+            }
+            return Result;
+        }
+        public static string LocalIP1()
         {
 
             try
@@ -1485,6 +1485,15 @@ namespace Service
             {
                 return "";
             }
+        }
+        public static string LocalIP()
+        {
+            var IP = LocalIP1();
+            if (IP == "")
+            {
+                IP = LocalIP2();
+            }
+            return IP;
         }
 
         /// <summary>
