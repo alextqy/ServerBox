@@ -1565,6 +1565,26 @@ namespace Service
             }
             return Result;
         }
+
+        /// <summary>
+        /// Byte转字符串
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public static string ByteToStr(Byte[] Param)
+        {
+            return System.Text.Encoding.Default.GetString(Param);
+        }
+
+        /// <summary>
+        /// 字符串转Byte
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public static Byte[] StrToByte(String Param)
+        {
+            return System.Text.Encoding.Default.GetBytes(Param);
+        }
     }
 
     public class FormFile : IFormFile
