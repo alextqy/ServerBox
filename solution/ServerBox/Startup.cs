@@ -21,7 +21,7 @@ namespace ServerBox
             Configuration = configuration;
             var Init = new SysInit();
             if (!Init.CheckConfigFile()) { Tools.WarningConsole("Press enter to exit."); Console.ReadLine(); Environment.Exit(0); }
-            Tools.CorrectConsole("========== Ver 0.0.1 alpha ==========");
+            Tools.CorrectConsole("========== Ver 1.0.0 beta ==========");
             Tools.CorrectConsole("Bit Box is working!");
             Tools.CorrectConsole("Server IP address: " + Tools.ByteToStr(Encoding.Default.GetBytes(ConfigHelper.AppSettingsHelper.GetSettings("URL").Replace("*", Tools.LocalIP()))));
             CrondTool.RunTask();
