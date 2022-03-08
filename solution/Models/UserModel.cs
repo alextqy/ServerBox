@@ -143,7 +143,7 @@ namespace Models
                 List = List.Where(p => p.Master == Data.Master);
             }
 
-            if (Data.DepartmentID > 0)
+            if (Data.DepartmentID >= 0)
             {
                 List = List.Where(p => p.DepartmentID == Data.DepartmentID);
             }
