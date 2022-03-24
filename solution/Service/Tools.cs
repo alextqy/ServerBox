@@ -15,6 +15,7 @@ using System.Threading;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using System.Collections;
+using System.IO.Compression;
 
 namespace Service
 {
@@ -1584,6 +1585,46 @@ namespace Service
         public static Byte[] StrToByte(String Param)
         {
             return System.Text.Encoding.Default.GetBytes(Param);
+        }
+
+        /// <summary>
+        /// 压缩文件
+        /// </summary>
+        /// <param name="DirPath"></param>
+        /// <param name="ZipPath"></param>
+        /// <returns></returns>
+        public static bool ZIP(string DirPath, string ZipPath)
+        {
+            try
+            {
+                ZipFile.CreateFromDirectory(DirPath, ZipPath);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 解压文件
+        /// </summary>
+        /// <param name="ZipPath"></param>
+        /// <param name="ExtractPath"></param>
+        /// <returns></returns>
+        public static bool UnZIP(string ZipPath, string ExtractPath)
+        {
+            try
+            {
+                ZipFile.ExtractToDirectory(ZipPath, ExtractPath);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
         }
     }
 
