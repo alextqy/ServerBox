@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using System.Collections;
 using System.IO.Compression;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Service
 {
@@ -1619,6 +1620,65 @@ namespace Service
             {
                 ZipFile.ExtractToDirectory(ZipPath, ExtractPath);
                 return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 本地内存缓存
+    /// 用法:
+    /// MemoryCacheService.SetChacheValue("key", "value", 0.5);
+    /// MemoryCacheService.GetCacheValue("key");
+    /// </summary>
+    public class MemoryCacheService
+    {
+        static readonly MemoryCache _cache = new MemoryCache(new MemoryCacheOptions());
+
+        /// <summary>
+        /// 读取
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <returns></returns>
+        public static object GetCacheValue(string _key)
+        {
+            if (!String.IsNullOrEmpty(_key) && _cache.TryGetValue(_key, out object _value))
+            {
+                return _value;
+            }
+            else
+            {
+                return default;
+            }
+        }
+
+        /// <summary>
+        /// 写入
+        /// </summary>
+        /// <param name="_key"></param>
+        /// <param name="_value"></param>
+        /// <param name="_hours"></param>
+        /// <returns></returns>
+        public static bool SetChacheValue(string _key, object _value, double _hours = 1)
+        {
+            try
+            {
+                if (!String.IsNullOrEmpty(_key) && _value != null)
+                {
+                    _cache.Set(_key, _value, new MemoryCacheEntryOptions
+                    {
+                        SlidingExpiration = TimeSpan.FromHours(_hours)
+                    });
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             catch (Exception e)
             {
