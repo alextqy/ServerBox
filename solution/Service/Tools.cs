@@ -1637,7 +1637,7 @@ namespace Service
     /// </summary>
     public class MemoryCacheService
     {
-        static readonly MemoryCache _cache = new MemoryCache(new MemoryCacheOptions());
+        static readonly MemoryCache _cache = new(new MemoryCacheOptions());
 
         /// <summary>
         /// 读取
